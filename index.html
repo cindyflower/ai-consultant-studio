@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CindyFlower 智能顧問工作室 | 台灣中小企業 AI 一站式導入夥伴</title>
+  <meta name="description" content="CindyFlower 智能顧問工作室——協助台灣中小企業一站式導入 AI 工具與雲端服務。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Closest available: DM Sans (geometric, ss01-like) + Noto Sans TC for CJK -->
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=Noto+Sans+TC:wght@300;400;500&family=Source+Code+Pro:wght@500;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── STRIPE HDS TOKENS ── */
+    :root {
+      /* Brand */
+      --stripe-purple:     #533afd;
+      --stripe-purple-h:   #4434d4;
+      --stripe-purple-l:   #b9b9f9;
+      --stripe-purple-soft:#d6d9fc;
+      --brand-dark:        #1c1e54; /* dark section bg */
+      --dark-navy:         #0d253d;
+      /* Text */
+      --heading:           #061b31; /* deep navy — never pure black */
+      --label:             #273951;
+      --body:              #64748d;
+      --white:             #ffffff;
+      /* Surfaces */
+      --border:            #e5edf5;
+      --bg:                #ffffff;
+      --bg-subtle:         #f6f9fc;
+      /* Accents (decorative only) */
+      --ruby:              #ea2261;
+      --magenta:           #f96bee;
+      --success:           #15be53;
+      --success-text:      #108c3d;
+      /* Shadows — blue-tinted, multi-layer */
+      --shadow-card:       rgba(50,50,93,0.25) 0px 30px 45px -30px, rgba(0,0,0,0.1) 0px 18px 36px -18px;
+      --shadow-ambient:    rgba(23,23,23,0.08) 0px 15px 35px 0px;
+      --shadow-hover:      rgba(50,50,93,0.35) 0px 30px 45px -30px, rgba(0,0,0,0.15) 0px 18px 36px -18px;
+      /* Radius — conservative, 4-8px only */
+      --r-xs:  4px;
+      --r-sm:  5px;
+      --r-md:  6px;
+      --r-lg:  8px;
+      /* Fonts */
+      --font:  'DM Sans', 'Noto Sans TC', system-ui, sans-serif;
+      --mono:  'Source Code Pro', 'SFMono-Regular', monospace;
+    }
+
+    /* ── RESET ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; scroll-padding-top: 64px; }
+    body {
+      font-family: var(--font);
+      font-size: 16px;
+      font-weight: 300;
+      line-height: 1.5;
+      color: var(--heading);
+      background: var(--bg);
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button { cursor: pointer; border: none; background: none; font: inherit; color: inherit; }
+    ul { list-style: none; }
+    ::selection { background: rgba(83,58,253,0.12); color: var(--stripe-purple); }
+    :focus-visible { outline: 2px solid var(--stripe-purple); outline-offset: 2px; border-radius: var(--r-xs); }
+
+    /* ── NAV ── */
+    .nav {
+      position: sticky; top: 0; z-index: 200;
+      background: rgba(255,255,255,0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      box-shadow: rgba(0,55,112,0.08) 0px -1px 0px 0px inset;
+    }
+    .nav-inner {
+      max-width: 1080px; margin: auto;
+      padding: 0 clamp(16px, 4vw, 48px);
+      height: 64px;
+      display: flex; align-items: center; justify-content: space-between; gap: 24px;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; }
+    .nav-logo-icon { color: var(--stripe-purple); }
+    .nav-logo-name { font-size: 17px; font-weight: 500; color: var(--heading); letter-spacing: -0.3px; }
+    .nav-logo-sub { font-size: 11px; font-weight: 400; color: var(--body); }
+    .nav-links { display: flex; align-items: center; gap: 20px; }
+    @media (max-width: 768px) { .nav-links .hide-md { display: none; } }
+    @media (max-width: 500px) { .nav-links .hide-sm { display: none; } }
+    .nav-link { font-size: 14px; font-weight: 400; color: var(--heading); transition: color .15s; position: relative; }
+    .nav-link:hover { color: var(--stripe-purple); }
+    .nav-link.active { color: var(--stripe-purple); }
+    .nav-link.active::after {
+      content: '';
+      position: absolute; left: 0; right: 0; bottom: -22px;
+      height: 2px; border-radius: 2px;
+      background: var(--stripe-purple);
+    }
+    .nav-cta {
+      font-size: 14px; font-weight: 400;
+      padding: 7px 14px; border-radius: var(--r-xs);
+      background: var(--stripe-purple); color: var(--white);
+      transition: background .15s;
+      white-space: nowrap;
+    }
+    .nav-cta:hover { background: var(--stripe-purple-h); }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--bg);
+      padding: clamp(64px, 10vw, 120px) clamp(16px, 4vw, 48px);
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+    /* Stripe-style gradient mesh decoration */
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 20% 30%, rgba(83,58,253,0.07) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 40% at 80% 20%, rgba(249,107,238,0.05) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 60% at 60% 80%, rgba(234,34,97,0.04) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-inner { position: relative; z-index: 1; max-width: 800px; margin: auto; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 12px; font-weight: 400; color: var(--stripe-purple);
+      background: rgba(83,58,253,0.06);
+      border: 1px solid var(--stripe-purple-soft);
+      padding: 4px 12px; border-radius: var(--r-xs);
+      margin-bottom: 28px;
+      font-family: var(--mono);
+      letter-spacing: 0.02em;
+    }
+    .hero-badge::before { content: '→'; font-family: var(--font); }
+    .hero-h1 {
+      font-size: clamp(2.2rem, 5vw + .5rem, 3.5rem);
+      font-weight: 300;
+      line-height: 1.1;
+      letter-spacing: clamp(-0.64px, -0.02em, -1.4px);
+      color: var(--heading);
+      margin-bottom: 20px;
+    }
+    .hero-h1 em {
+      font-style: normal;
+      background: linear-gradient(100deg, var(--stripe-purple) 0%, var(--magenta) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .hero-sub {
+      font-size: 18px; font-weight: 300; line-height: 1.6;
+      color: var(--body); max-width: 52ch; margin: 0 auto 36px;
+    }
+    .hero-ctas { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-purple {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 16px; font-weight: 400;
+      padding: 10px 20px; border-radius: var(--r-xs);
+      background: var(--stripe-purple); color: var(--white);
+      transition: background .15s, box-shadow .15s;
+    }
+    .btn-purple:hover { background: var(--stripe-purple-h); box-shadow: rgba(83,58,253,0.35) 0px 8px 20px -8px; }
+    .btn-outline {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 16px; font-weight: 400;
+      padding: 10px 20px; border-radius: var(--r-xs);
+      background: transparent; color: var(--stripe-purple);
+      border: 1px solid var(--stripe-purple-l);
+      transition: background .15s, border-color .15s;
+    }
+    .btn-outline:hover { background: rgba(83,58,253,0.05); border-color: var(--stripe-purple); }
+    .hero-stats {
+      display: flex; gap: clamp(24px, 5vw, 64px); justify-content: center; flex-wrap: wrap;
+      margin-top: 56px; padding-top: 36px;
+      border-top: 1px solid var(--border);
+    }
+    .stat-n {
+      display: block;
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      font-weight: 300; letter-spacing: -0.64px; line-height: 1;
+      color: var(--heading);
+      font-variant-numeric: tabular-nums;
+    }
+    .stat-l { display: block; font-size: 13px; font-weight: 400; color: var(--body); margin-top: 6px; }
+
+    /* ── LAYOUT ── */
+    .wrap { max-width: 1080px; margin: auto; padding-inline: clamp(16px, 4vw, 48px); }
+    section { padding-block: clamp(48px, 8vw, 96px); }
+    .sec-eyebrow {
+      font-family: var(--mono); font-size: 11px; font-weight: 500;
+      letter-spacing: .12em; text-transform: uppercase;
+      color: var(--stripe-purple); margin-bottom: 12px;
+    }
+    .sec-title {
+      font-size: clamp(1.6rem, 2.5vw + .3rem, 2.4rem);
+      font-weight: 300; letter-spacing: -0.64px; line-height: 1.1;
+      color: var(--heading); margin-bottom: 12px;
+    }
+    .sec-sub {
+      font-size: 16px; font-weight: 300; color: var(--body); line-height: 1.65;
+      max-width: 52ch;
+    }
+    .sec-header { margin-bottom: clamp(32px, 5vw, 56px); }
+    .sec-header.center { text-align: center; }
+    .sec-header.center .sec-sub { margin-inline: auto; }
+
+    /* ── SERVICES ── */
+    .services { background: var(--bg-subtle); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    @media (max-width: 960px) { .services-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 550px) { .services-grid { grid-template-columns: 1fr; } }
+
+    .svc {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      box-shadow: var(--shadow-ambient);
+      padding: 24px;
+      display: flex; flex-direction: column; gap: 12px;
+      transition: box-shadow .25s, transform .25s;
+    }
+    .svc:hover { box-shadow: var(--shadow-card); transform: translateY(-2px); }
+    .svc--featured {
+      background: var(--brand-dark); color: var(--white);
+      border-color: transparent;
+      box-shadow: var(--shadow-card);
+    }
+    .svc--featured:hover { box-shadow: var(--shadow-hover); }
+    .svc-icon {
+      width: 38px; height: 38px; border-radius: var(--r-sm);
+      background: rgba(83,58,253,0.08);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .svc-icon svg { width: 18px; height: 18px; stroke: var(--stripe-purple); fill: none; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+    .svc--featured .svc-icon { background: rgba(255,255,255,0.1); }
+    .svc--featured .svc-icon svg { stroke: var(--stripe-purple-l); }
+    .svc-tag {
+      align-self: flex-start;
+      font-family: var(--mono); font-size: 10px; font-weight: 500;
+      letter-spacing: .08em; text-transform: uppercase;
+      padding: 2px 8px; border-radius: var(--r-xs);
+      background: rgba(83,58,253,0.08); color: var(--stripe-purple);
+      border: 1px solid var(--stripe-purple-soft);
+    }
+    .svc--featured .svc-tag { background: rgba(255,255,255,.1); color: var(--stripe-purple-l); border-color: rgba(185,185,249,.3); }
+    .svc-title { font-size: 17px; font-weight: 400; letter-spacing: -0.22px; line-height: 1.25; color: var(--heading); }
+    .svc--featured .svc-title { color: var(--white); }
+    .svc-desc { font-size: 14px; font-weight: 300; color: var(--body); line-height: 1.65; flex: 1; }
+    .svc--featured .svc-desc { color: rgba(255,255,255,0.6); }
+    .svc-price {
+      font-size: 13px; font-weight: 400; color: var(--label);
+      font-variant-numeric: tabular-nums;
+      border-top: 1px solid var(--border); padding-top: 12px; margin-top: auto;
+    }
+    .svc--featured .svc-price { color: rgba(255,255,255,0.7); border-color: rgba(255,255,255,.12); }
+
+    /* ── WHY (dark brand section) ── */
+    .why { background: var(--brand-dark); }
+    .why-grid { display: grid; gap: clamp(32px, 6vw, 64px); align-items: center; }
+    @media (min-width: 768px) { .why-grid { grid-template-columns: 1fr 1fr; } }
+    .why-visual {
+      aspect-ratio: 4/3; overflow: hidden;
+      border-radius: var(--r-lg);
+      box-shadow: rgba(50,50,93,0.5) 0px 30px 60px -12px, rgba(0,0,0,0.3) 0px 18px 36px -18px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .why-visual img { width: 100%; height: 100%; object-fit: cover; opacity: .85; }
+    .why .sec-eyebrow { color: var(--stripe-purple-l); }
+    .why .sec-title { color: var(--white); }
+    .why-p { font-size: 15px; font-weight: 300; color: rgba(255,255,255,0.65); line-height: 1.75; margin-bottom: 12px; }
+    .risk-list { display: flex; flex-direction: column; gap: 8px; margin-top: 20px; }
+    .risk-item {
+      display: flex; gap: 12px; align-items: flex-start;
+      padding: 12px 16px;
+      border-radius: var(--r-sm);
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .risk-item--warn { border-left: 3px solid var(--ruby); }
+    .risk-item--safe { border-left: 3px solid var(--success); }
+    .risk-dot {
+      font-family: var(--mono); font-size: 10px; font-weight: 700;
+      flex-shrink: 0; margin-top: 2px;
+      width: 20px; text-align: center;
+    }
+    .risk-item--warn .risk-dot { color: var(--ruby); }
+    .risk-item--safe .risk-dot { color: var(--success); }
+    .risk-text strong { display: block; font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.9); margin-bottom: 2px; }
+    .risk-text span { font-size: 12px; font-weight: 300; color: rgba(255,255,255,0.5); line-height: 1.55; }
+
+    /* ── PROCESS ── */
+    .process { background: var(--bg); }
+    .steps-grid { display: grid; gap: 16px; grid-template-columns: repeat(4,1fr); }
+    @media (max-width: 960px) { .steps-grid { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 500px) { .steps-grid { grid-template-columns: 1fr; } }
+    .step {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      box-shadow: var(--shadow-ambient);
+      padding: 24px;
+      display: flex; flex-direction: column; gap: 12px;
+      transition: box-shadow .2s;
+    }
+    .step:hover { box-shadow: var(--shadow-card); }
+    .step-num {
+      font-family: var(--mono); font-size: 11px; font-weight: 500;
+      color: var(--stripe-purple); letter-spacing: .12em;
+      background: rgba(83,58,253,0.07); border: 1px solid var(--stripe-purple-soft);
+      padding: 3px 8px; border-radius: var(--r-xs); align-self: flex-start;
+    }
+    .step-title { font-size: 16px; font-weight: 400; letter-spacing: -0.18px; color: var(--heading); }
+    .step-desc { font-size: 13px; font-weight: 300; color: var(--body); line-height: 1.7; }
+
+    /* ── ABOUT ── */
+    .about { background: var(--bg-subtle); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .about-grid { display: grid; gap: clamp(32px, 6vw, 64px); align-items: center; }
+    @media (min-width: 768px) { .about-grid { grid-template-columns: 280px 1fr; } }
+    .about-portrait {
+      aspect-ratio: 3/4; overflow: hidden;
+      border-radius: var(--r-lg); border: 1px solid var(--border);
+      box-shadow: var(--shadow-card);
+    }
+    .about-portrait img { width: 100%; height: 100%; object-fit: cover; }
+    .about-tagline {
+      font-size: clamp(1rem, 1.1vw + .3rem, 1.2rem);
+      font-weight: 300; letter-spacing: -0.26px; color: var(--stripe-purple);
+      margin-bottom: 16px; line-height: 1.4;
+    }
+    .about-body { font-size: 15px; font-weight: 300; color: var(--body); line-height: 1.8; margin-bottom: 12px; }
+    .about-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
+    .chip {
+      font-family: var(--mono); font-size: 11px; font-weight: 500;
+      letter-spacing: .04em;
+      padding: 4px 10px; border-radius: var(--r-xs);
+      background: var(--white); color: var(--label);
+      border: 1px solid var(--border);
+      box-shadow: rgba(23,23,23,0.06) 0px 1px 3px;
+    }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials { background: var(--bg); }
+    .testi-grid { display: grid; gap: 16px; }
+    @media (min-width: 768px) { .testi-grid { grid-template-columns: repeat(3, 1fr); } }
+    .testi {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: var(--r-lg); box-shadow: var(--shadow-ambient);
+      padding: 24px; display: flex; flex-direction: column; gap: 16px;
+      transition: box-shadow .2s;
+    }
+    .testi:hover { box-shadow: var(--shadow-card); }
+    .testi-stars { color: var(--stripe-purple); font-size: 13px; letter-spacing: 3px; }
+    .testi-quote { font-size: 14px; font-weight: 300; color: var(--body); line-height: 1.75; flex: 1; }
+    .testi-author { display: flex; align-items: center; gap: 12px; border-top: 1px solid var(--border); padding-top: 16px; }
+    .testi-av {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(83,58,253,0.1); color: var(--stripe-purple);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 500; flex-shrink: 0;
+      border: 1px solid var(--stripe-purple-soft);
+    }
+    .testi-name { font-size: 14px; font-weight: 500; color: var(--heading); }
+    .testi-role { font-size: 12px; font-weight: 300; color: var(--body); margin-top: 1px; }
+
+    /* ── PRICING ── */
+    .pricing { background: var(--bg-subtle); border-top: 1px solid var(--border); }
+    .pricing-grid { display: grid; gap: 16px; }
+    @media (min-width: 768px) { .pricing-grid { grid-template-columns: repeat(3,1fr); align-items: start; } }
+    .plan {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      box-shadow: var(--shadow-ambient);
+      padding: 24px;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .plan--pop {
+      background: var(--brand-dark); color: var(--white);
+      border-color: transparent;
+      box-shadow: var(--shadow-card);
+    }
+    .plan-badge {
+      align-self: flex-start;
+      font-family: var(--mono); font-size: 10px; font-weight: 500;
+      letter-spacing: .1em; text-transform: uppercase;
+      padding: 3px 8px; border-radius: var(--r-xs);
+      background: rgba(83,58,253,0.08); color: var(--stripe-purple);
+      border: 1px solid var(--stripe-purple-soft);
+    }
+    .plan--pop .plan-badge { background: rgba(185,185,249,0.15); color: var(--stripe-purple-l); border-color: rgba(185,185,249,.25); }
+    .plan-name { font-size: 20px; font-weight: 300; letter-spacing: -0.26px; color: var(--heading); }
+    .plan--pop .plan-name { color: var(--white); }
+    .plan-price {
+      font-size: 2.4rem; font-weight: 300; letter-spacing: -0.96px; line-height: 1;
+      color: var(--heading); font-variant-numeric: tabular-nums;
+    }
+    .plan--pop .plan-price { color: var(--white); }
+    .plan-price span { font-size: 14px; font-weight: 300; opacity: .55; letter-spacing: 0; }
+    .plan-desc { font-size: 13px; font-weight: 300; color: var(--body); line-height: 1.65; }
+    .plan--pop .plan-desc { color: rgba(255,255,255,.55); }
+    .plan-divider { height: 1px; background: var(--border); margin: 4px 0; }
+    .plan--pop .plan-divider { background: rgba(255,255,255,.1); }
+    .plan-feats { display: flex; flex-direction: column; gap: 8px; flex: 1; }
+    .plan-feat { display: flex; gap: 8px; font-size: 13px; font-weight: 300; align-items: flex-start; }
+    .plan-check {
+      font-family: var(--mono); font-size: 9px; font-weight: 700;
+      width: 16px; height: 16px; border-radius: 50%; flex-shrink: 0;
+      background: rgba(21,190,83,0.15); color: var(--success-text);
+      border: 1px solid rgba(21,190,83,0.3);
+      display: flex; align-items: center; justify-content: center; margin-top: 1px;
+    }
+    .plan--pop .plan-check { background: rgba(21,190,83,0.2); color: #6ee496; border-color: rgba(21,190,83,0.3); }
+    .plan-cta {
+      display: block; text-align: center;
+      font-size: 14px; font-weight: 400;
+      padding: 9px 18px; border-radius: var(--r-xs);
+      background: var(--stripe-purple); color: var(--white);
+      transition: background .15s, box-shadow .15s;
+      margin-top: auto;
+    }
+    .plan-cta:hover { background: var(--stripe-purple-h); box-shadow: rgba(83,58,253,0.3) 0px 8px 20px -8px; }
+    .plan--pop .plan-cta { background: var(--white); color: var(--stripe-purple); }
+    .plan--pop .plan-cta:hover { background: #f0f0ff; }
+
+    /* ── CTA BANNER (deep brand dark) ── */
+    .cta-banner { background: var(--brand-dark); padding-block: clamp(56px, 8vw, 96px); text-align: center; }
+    .cta-banner h2 {
+      font-size: clamp(1.8rem, 4vw + .3rem, 3rem);
+      font-weight: 300; letter-spacing: -0.96px; line-height: 1.1;
+      color: var(--white); margin-bottom: 16px;
+    }
+    .cta-banner p {
+      font-size: 16px; font-weight: 300; color: rgba(255,255,255,0.65);
+      max-width: 48ch; margin: 0 auto 32px; line-height: 1.7;
+    }
+    .cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-white {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 16px; font-weight: 400;
+      padding: 10px 20px; border-radius: var(--r-xs);
+      background: var(--white); color: var(--stripe-purple);
+      transition: background .15s, box-shadow .15s;
+    }
+    .btn-white:hover { background: #f0f0ff; box-shadow: rgba(83,58,253,0.25) 0px 8px 24px -8px; }
+    .btn-ghost-dark {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 16px; font-weight: 400;
+      padding: 10px 20px; border-radius: var(--r-xs);
+      background: transparent; color: rgba(255,255,255,0.8);
+      border: 1px solid rgba(255,255,255,0.2);
+      transition: border-color .15s, background .15s;
+    }
+    .btn-ghost-dark:hover { border-color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.06); }
+
+    /* ── FOOTER ── */
+    footer { background: var(--dark-navy); padding-block: 48px; border-top: 1px solid rgba(255,255,255,0.06); }
+    .footer-grid { display: grid; gap: 40px; }
+    @media (min-width: 768px) { .footer-grid { grid-template-columns: 1fr 1fr 1fr; } }
+    .footer-brand { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .footer-brand-name { font-size: 15px; font-weight: 400; color: rgba(255,255,255,0.85); }
+    .footer-tagline { font-size: 13px; font-weight: 300; color: rgba(255,255,255,0.4); line-height: 1.65; max-width: 26ch; }
+    .footer-h {
+      font-family: var(--mono); font-size: 10px; font-weight: 700;
+      letter-spacing: .14em; text-transform: uppercase;
+      color: rgba(255,255,255,0.3); margin-bottom: 14px;
+    }
+    .footer-links { display: flex; flex-direction: column; gap: 10px; }
+    .footer-links a { font-size: 13px; font-weight: 300; color: rgba(255,255,255,0.55); transition: color .15s; }
+    .footer-links a:hover { color: rgba(255,255,255,0.85); }
+    .footer-bottom {
+      margin-top: 40px; padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+      font-size: 12px; font-weight: 300; color: rgba(255,255,255,0.3);
+    }
+
+    /* ── SCROLL REVEAL ── */
+    @supports (animation-timeline: scroll()) {
+      .reveal {
+        opacity: 0;
+        animation: fade-in linear both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 72%;
+      }
+      @keyframes fade-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" aria-label="主要導覽">
+    <div class="nav-inner">
+      <a href="javascript:void(0)" class="nav-logo" aria-label="CindyFlower 智能顧問工作室" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+        <svg class="nav-logo-icon" width="28" height="28" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+          <polygon points="4,14 10,4 16,14" fill="currentColor" opacity="0.18"/>
+          <polygon points="20,14 26,4 32,14" fill="currentColor" opacity="0.18"/>
+          <circle cx="18" cy="20" r="12" stroke="currentColor" stroke-width="2"/>
+          <polyline points="6,14 10,6 14,14" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/>
+          <polyline points="22,14 26,6 30,14" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/>
+          <circle cx="14" cy="19" r="2" fill="currentColor"/>
+          <circle cx="22" cy="19" r="2" fill="currentColor"/>
+          <line x1="14" y1="17" x2="14" y2="14" stroke="currentColor" stroke-width="1.2" opacity="0.45"/>
+          <line x1="22" y1="17" x2="22" y2="14" stroke="currentColor" stroke-width="1.2" opacity="0.45"/>
+          <line x1="14" y1="14" x2="22" y2="14" stroke="currentColor" stroke-width="1.2" opacity="0.45"/>
+          <circle cx="18" cy="22" r="1" fill="currentColor" opacity="0.45"/>
+        </svg>
+        <div>
+          <div class="nav-logo-name">CindyFlower</div>
+          <div class="nav-logo-sub">智能顧問工作室</div>
+        </div>
+      </a>
+      <div class="nav-links">
+        <a href="javascript:void(0)" data-scroll="services" class="nav-link hide-md">服務</a>
+        <a href="javascript:void(0)" data-scroll="why" class="nav-link hide-md">導入說明</a>
+        <a href="javascript:void(0)" data-scroll="about" class="nav-link hide-md">關於</a>
+        <a href="javascript:void(0)" data-scroll="pricing" class="nav-link hide-sm">方案</a>
+        <a href="javascript:void(0)" data-scroll="contact" class="nav-cta">免費諮詢</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- HERO -->
+    <header class="hero" id="hero">
+      <div class="hero-inner">
+        <div class="hero-badge">台灣中小企業 AI 一站式導入夥伴</div>
+        <h1 class="hero-h1">讓 AI 工具<br>真正<em>為你工作</em><br>而不是讓你替它善後</h1>
+        <p class="hero-sub">CindyFlower 結合 30 年設計思維與 AI 技術深度，幫助台灣中小企業一站式導入 OpenClaw、Zeabur、n8n、LINE Bot——從安裝、設定到落地應用，全程陪跑。</p>
+        <div class="hero-ctas">
+          <a href="javascript:void(0)" data-scroll="contact" class="btn-purple">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M8 12h.01M12 12h.01M16 12h.01M21 3H3a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h5l4 4 4-4h5a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2z"/></svg>
+            預約免費診斷
+          </a>
+          <a href="javascript:void(0)" data-scroll="services" class="btn-outline">查看服務項目</a>
+        </div>
+        <div class="hero-stats">
+          <div><span class="stat-n">30+</span><span class="stat-l">年設計經驗</span></div>
+          <div><span class="stat-n">10+</span><span class="stat-l">支援 AI 工具</span></div>
+          <div><span class="stat-n">100%</span><span class="stat-l">在地中文服務</span></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- SERVICES -->
+    <section class="services" id="services">
+      <div class="wrap">
+        <div class="sec-header reveal">
+          <div class="sec-eyebrow">services</div>
+          <h2 class="sec-title">一站式導入，安心上線</h2>
+          <p class="sec-sub">不只讓工具跑起來，更讓它真正有用——完整的技術實作加上在地中文支援。</p>
+        </div>
+        <div class="services-grid">
+          <div class="svc reveal">
+            <div class="svc-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+            <span class="svc-tag">most popular</span>
+            <h3 class="svc-title">AI Agent 安全部署</h3>
+            <p class="svc-desc">OpenClaw、Dify、n8n、Flowise……遠端安裝與資安設定。Docker 沙箱、最低權限、網路隔離，安全上線不踩雷。</p>
+            <div class="svc-price">NT$6,000 起</div>
+          </div>
+          <div class="svc svc--featured reveal">
+            <div class="svc-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
+            <span class="svc-tag">recommended</span>
+            <h3 class="svc-title">企業 AI 導入包</h3>
+            <p class="svc-desc">完整環境評估 → 安全部署 → 客製 Agent 工作流 → 員工培訓 → 一個月後續支援。讓 AI 真正融入日常業務。</p>
+            <div class="svc-price">NT$20,000 起</div>
+          </div>
+          <div class="svc reveal">
+            <div class="svc-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+            <h3 class="svc-title">AI 工作坊（企業內訓）</h3>
+            <p class="svc-desc">2–4 小時實作課程。AI 工具概念 + 資安觀念 + 第一個自動化流程實作。針對零售、餐飲、設計行業量身設計。</p>
+            <div class="svc-price">NT$20,000 起 / 場</div>
+          </div>
+          <div class="svc reveal">
+            <div class="svc-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+            <h3 class="svc-title">代管與維運服務</h3>
+            <p class="svc-desc">月費制托管。版本安全更新、每月稽核日誌、Skills 優化建議、優先技術支援——你專心經營，IT 交給我們。</p>
+            <div class="svc-price">NT$3,000 / 月起</div>
+          </div>
+          <div class="svc reveal">
+            <div class="svc-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+            <h3 class="svc-title">品牌 × AI 自動化整合</h3>
+            <p class="svc-desc">結合 30 年設計背景，設計 AI 輔助的品牌內容生產流程。社群、廣告、EDM 批量生成，保有品牌一致性。</p>
+            <div class="svc-price">依需求報價</div>
+          </div>
+          <div class="svc reveal">
+            <div class="svc-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg></div>
+            <h3 class="svc-title">LINE 整合 Agent 開發</h3>
+            <p class="svc-desc">透過 LINE 官方帳號接收 AI 代理指令，台灣本地化的獨特優勢。幫你設計 LINE 驅動的 AI 自動化工作流。</p>
+            <div class="svc-price">NT$8,000 起</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHY (dark brand section) -->
+    <section class="why" id="why">
+      <div class="wrap">
+        <div class="why-grid">
+          <div class="why-visual reveal">
+            <img src="https://user-gen-media-assets.s3.amazonaws.com/seedream_images/cd66bac9-e513-45d7-b036-a53250feb569.png"
+              alt="安全的 AI 工作環境" width="800" height="600" loading="lazy">
+          </div>
+          <div class="reveal">
+            <div class="sec-eyebrow">security</div>
+            <h2 class="sec-title" style="color:var(--white)">AI 工具功能強大，<br>但設定錯誤代價高</h2>
+            <p class="why-p">OpenClaw、Zeabur、n8n 等 AI 工具能大幅提升效率——但它們的預設設定往往並不安全，且每一套工具的坑都不同。</p>
+            <p class="why-p">以 OpenClaw 為例，預設安裝後任何人都可從網路連入你的系統；Zeabur 若未設環境變數隔離，機密金鑰可能外洩；n8n 若未開啟認證，Webhook 可能被濫用。台灣數位部資安署已正式警示 AI 代理工具的資安風險。</p>
+            <ul class="risk-list">
+              <li class="risk-item risk-item--warn">
+                <span class="risk-dot">!</span>
+                <div class="risk-text"><strong>預設全域暴露</strong><span>綁定 0.0.0.0:18789，任何人可連入</span></div>
+              </li>
+              <li class="risk-item risk-item--warn">
+                <span class="risk-dot">!</span>
+                <div class="risk-text"><strong>提示詞注入風險</strong><span>惡意郵件或網頁可劫持 AI 指令</span></div>
+              </li>
+              <li class="risk-item risk-item--safe">
+                <span class="risk-dot">✓</span>
+                <div class="risk-text"><strong>CindyFlower 安全部署標準</strong><span>Docker 沙箱 + 環境隔離 + 最低權限 + 監控日誌，適用所有主流 AI 工具</span></div>
+              </li>
+              <li class="risk-item risk-item--safe">
+                <span class="risk-dot">✓</span>
+                <div class="risk-text"><strong>符合資安署指引</strong><span>依據 2026 年官方公告，為每套工具執行客製化安全設定</span></div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROCESS -->
+    <section class="process" id="how">
+      <div class="wrap">
+        <div class="sec-header center reveal">
+          <div class="sec-eyebrow">how it works</div>
+          <h2 class="sec-title">四步驟，無縫啟動</h2>
+          <p class="sec-sub">清楚、透明、可預期——讓你放心把 AI 基礎建設交給我們。</p>
+        </div>
+        <div class="steps-grid">
+          <div class="step reveal">
+            <div class="step-num">STEP 01</div>
+            <h3 class="step-title">免費診斷</h3>
+            <p class="step-desc">30 分鐘視訊了解你的業務需求、現有設備環境與資安現況，提供初步建議。</p>
+          </div>
+          <div class="step reveal">
+            <div class="step-num">STEP 02</div>
+            <h3 class="step-title">方案規劃</h3>
+            <p class="step-desc">針對你的行業設計客製化的 AI Agent 工作流，並提供透明報價。</p>
+          </div>
+          <div class="step reveal">
+            <div class="step-num">STEP 03</div>
+            <h3 class="step-title">安全部署</h3>
+            <p class="step-desc">遠端協助安裝與設定，完整落實五大資安防護，並進行功能驗收。</p>
+          </div>
+          <div class="step reveal">
+            <div class="step-num">STEP 04</div>
+            <h3 class="step-title">陪跑支援</h3>
+            <p class="step-desc">提供使用教學、員工培訓，以及後續維運優化，確保 AI 真正落地。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="about" id="about">
+      <div class="wrap">
+        <div class="about-grid">
+          <div class="about-portrait reveal">
+            <img src="https://user-gen-media-assets.s3.amazonaws.com/seedream_images/9133f74a-f38a-4b58-b484-46a4c9719c5d.png"
+              alt="CindyFlower 創辦人" width="680" height="900" loading="lazy">
+          </div>
+          <div class="reveal">
+            <div class="sec-eyebrow">about</div>
+            <h2 class="sec-title">設計人的 AI 顧問</h2>
+            <p class="about-tagline">用設計思維，解決企業 AI 導入的「最後一哩路」</p>
+            <p class="about-body">CindyFlower 由一位擁有 30 年視覺傳達設計資歷的獨立顧問創立，畢業於國立雲林科技大學視覺傳達設計系，深耕於品牌設計、UI/UX 與數位產品開發。</p>
+            <p class="about-body">近年深度鑽研 AI 工具應用——OpenClaw、Zeabur 雲端部署、n8n 自動化、LINE Bot 整合、本地 LLM 部署——專注協助台灣中小企業以最安全、最適切的方式導入各類 AI 工具。</p>
+            <p class="about-body">工作室基地位於高雄左營，提供遠端與在地服務——不只讓 AI 工具「跑起來」，更讓它符合你的品牌語言、業務邏輯與使用習慣。</p>
+            <div class="about-chips">
+              <span class="chip">30yr design</span>
+              <span class="chip">AI tools</span>
+              <span class="chip">security</span>
+              <span class="chip">Figma / AI</span>
+              <span class="chip">Docker</span>
+              <span class="chip">LINE</span>
+              <span class="chip">高雄在地</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="testimonials" id="testimonials">
+      <div class="wrap">
+        <div class="sec-header center reveal">
+          <div class="sec-eyebrow">testimonials</div>
+          <h2 class="sec-title">他們說的</h2>
+          <p class="sec-sub">早期客戶的真實使用心得——從「不知道怎麼開始」到「AI 每天幫我工作」。</p>
+        </div>
+        <div class="testi-grid">
+          <div class="testi reveal">
+            <div class="testi-stars">★★★★★</div>
+            <p class="testi-quote">「自己裝了三天都失敗，Ingrid 兩小時就搞定，而且還教我為什麼那樣設定比較安全。現在 AI 幫我每天整理詢單、回覆客戶，省下至少兩小時。」</p>
+            <div class="testi-author">
+              <div class="testi-av">陳</div>
+              <div><div class="testi-name">陳老闆</div><div class="testi-role">高雄室內設計工作室</div></div>
+            </div>
+          </div>
+          <div class="testi reveal">
+            <div class="testi-stars">★★★★★</div>
+            <p class="testi-quote">「以前擔心 AI 工具會外洩客戶資料，聽完資安說明才放心。現在 n8n 幫我自動整理每週庫存報表並寄 LINE 通知，老闆娘說這才叫導入成功。」</p>
+            <div class="testi-author">
+              <div class="testi-av">林</div>
+              <div><div class="testi-name">林先生</div><div class="testi-role">台南連鎖餐飲業主</div></div>
+            </div>
+          </div>
+          <div class="testi reveal">
+            <div class="testi-stars">★★★★★</div>
+            <p class="testi-quote">「工作坊非常實用，不是講理論而是直接做。上完課隔天就自己加了一個 LINE 通知 Agent，員工都覺得很神奇。」</p>
+            <div class="testi-author">
+              <div class="testi-av">王</div>
+              <div><div class="testi-name">王小姐</div><div class="testi-role">電商品牌行銷總監</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section class="pricing" id="pricing">
+      <div class="wrap">
+        <div class="sec-header center reveal">
+          <div class="sec-eyebrow">pricing</div>
+          <h2 class="sec-title">透明定價，按需選擇</h2>
+          <p class="sec-sub">所有方案均可申請政府補助。歡迎先預約免費診斷，確認需求後再決定。</p>
+        </div>
+        <div class="pricing-grid">
+          <div class="plan reveal">
+            <span class="plan-badge">starter</span>
+            <div class="plan-name">安全安裝包</div>
+            <div class="plan-price">NT$6,000 <span>起</span></div>
+            <p class="plan-desc">安全的 AI 工具環境從這裡開始——適合想先嘗試單一工具、預算有限的業主。</p>
+            <div class="plan-divider"></div>
+            <ul class="plan-feats">
+              <li class="plan-feat"><span class="plan-check">✓</span>遠端安裝與設定</li>
+              <li class="plan-feat"><span class="plan-check">✓</span>資安署五大防護落實</li>
+              <li class="plan-feat"><span class="plan-check">✓</span>基本使用教學（1 小時）</li>
+              <li class="plan-feat"><span class="plan-check">✓</span>2 週後續問題回覆</li>
+            </ul>
+            <a href="javascript:void(0)" data-scroll="contact" class="plan-cta">預約諮詢</a>
+          </div>
+          <div class="plan plan--pop reveal">
+            <span class="plan-badge">recommended</span>
+            <div class="plan-name">企業導入包</div>
+            <div class="plan-price">NT$20,000 <span>起</span></div>
+            <p class="plan-desc">從評估到落地，完整陪伴企業完成 AI 轉型——適合認真想讓 AI 幫你工作的業主。</p>
+            <div class="plan-divider"></div>
+            <ul class="plan-feats">
+              <li class="plan-feat"><span class="plan-check">✓</span>環境評估 + 安全部署</li>
+              <li class="plan-feat"><span class="plan-check">✓</span>客製化 Agent 工作流設計</li>
+              <li class="plan-feat"><span class="plan-check">✓</span>員工培訓（半天）</li>
+              <li class="plan-feat"><span class="plan-check">✓</span>1 個月後續支援</li>
+              <li class="plan-feat"><span class="plan-check">✓</span>補助申請協助</li>
+            </ul>
+            <a href="javascript:void(0)" data-scroll="contact" class="plan-cta">預約諮詢</a>
+          </div>
+          <div class="plan reveal">
+            <span class="plan-badge">ongoing</span>
+            <div class="plan-name">月費代管</div>
+            <div class="plan-price">NT$3,000 <span>/ 月起</span></div>
+            <p class="plan-desc">導入後持續進化——版本更新、安全稽核、Skills 優化，讓 AI 越用越好。</p>
+            <div class="plan-divider"></div>
+            <ul class="plan-feats">
+              <li class="plan-feat"><span class="plan-check">✓</span>每月安全版本更新</li>
+              <li class="plan-feat"><span class="plan-check">✓</span>稽核日誌回顧</li>
+              <li class="plan-feat"><span class="plan-check">✓</span>Skills 優化建議</li>
+              <li class="plan-feat"><span class="plan-check">✓</span>優先技術支援</li>
+            </ul>
+            <a href="javascript:void(0)" data-scroll="contact" class="plan-cta">預約諮詢</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA BANNER -->
+    <section class="cta-banner" id="contact">
+      <div class="wrap">
+        <h2>準備好讓 AI<br>幫你工作了嗎？</h2>
+        <p>不需要技術背景。30 分鐘免費診斷，告訴我你的業務需求，我來推薦最適合的 AI 工具組合並安全導入。</p>
+        <div class="cta-btns">
+          <a href="/cdn-cgi/l/email-protection#5e363b3232311e3d37303a27383231293b2c702a29" class="btn-white">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            發送預約 Email
+          </a>
+          <a href="https://line.me/ti/p/@ingridcat" target="_blank" rel="noopener noreferrer" class="btn-ghost-dark">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            LINE 聯絡我們
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="wrap">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">
+            <svg width="22" height="22" viewBox="0 0 36 36" fill="none" aria-hidden="true" style="color:rgba(185,185,249,0.7)">
+              <circle cx="18" cy="20" r="12" stroke="currentColor" stroke-width="2"/>
+              <polyline points="6,14 10,6 14,14" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/>
+              <polyline points="22,14 26,6 30,14" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/>
+              <circle cx="14" cy="19" r="2" fill="currentColor"/>
+              <circle cx="22" cy="19" r="2" fill="currentColor"/>
+            </svg>
+            <span class="footer-brand-name">CindyFlower 智能顧問工作室</span>
+          </div>
+          <p class="footer-tagline">台灣中小企業的 AI 一站式導入夥伴。安全、有效、在地。</p>
+        </div>
+        <div>
+          <h3 class="footer-h">services</h3>
+          <ul class="footer-links">
+            <li><a href="javascript:void(0)" data-scroll="services">AI Agent 安全部署</a></li>
+            <li><a href="javascript:void(0)" data-scroll="services">企業 AI 導入包</a></li>
+            <li><a href="javascript:void(0)" data-scroll="services">AI 工作坊</a></li>
+            <li><a href="javascript:void(0)" data-scroll="services">代管維運服務</a></li>
+            <li><a href="javascript:void(0)" data-scroll="services">LINE Agent 開發</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="footer-h">contact</h3>
+          <ul class="footer-links">
+            <li><a href="/cdn-cgi/l/email-protection#d7bfb2bbbbb897b4beb9b3aeb1bbb8a0b2a5f9a3a0"><span class="__cf_email__" data-cfemail="dbb3beb7b7b49bb8b2b5bfa2bdb7b4acbea9f5afac">[email&#160;protected]</span></a></li>
+            <li><a href="javascript:void(0)" data-scroll="about">關於工作室</a></li>
+            <li><a href="javascript:void(0)" data-scroll="pricing">服務方案</a></li>
+            <li><a href="javascript:void(0)" data-scroll="contact">預約診斷</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 CindyFlower 智能顧問工作室 · 高雄左營</span>
+        <span>台灣中小企業 AI 一站式導入夥伴</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const NAV_H = 64;
+
+      // ── Intercept ALL data-scroll clicks ──
+      document.addEventListener('click', function (e) {
+        const anchor = e.target.closest('[data-scroll]');
+        if (!anchor) return;
+        e.preventDefault();
+        const id = anchor.getAttribute('data-scroll');
+        const target = document.getElementById(id);
+        if (!target) return;
+        const top = target.getBoundingClientRect().top + window.scrollY - NAV_H;
+        window.scrollTo({ top, behavior: 'smooth' });
+      });
+
+      // ── Active nav highlight on scroll ──
+      const links = document.querySelectorAll('.nav-link[data-scroll]');
+      const sections = Array.from(links).map(l => {
+        const id = l.getAttribute('data-scroll');
+        return { link: l, section: document.getElementById(id) };
+      }).filter(x => x.section);
+
+      function setActive() {
+        const scrollY = window.scrollY + NAV_H + 40;
+        let current = null;
+        sections.forEach(({ section }) => {
+          if (section.offsetTop <= scrollY) current = section.id;
+        });
+        links.forEach(l => {
+          const id = l.getAttribute('data-scroll');
+          l.classList.toggle('active', id === current);
+        });
+      }
+
+      window.addEventListener('scroll', setActive, { passive: true });
+      setActive();
+    })();
+  </script>
+
+</body>
+</html>
