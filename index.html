@@ -425,6 +425,19 @@
     .plan-cta:hover { background: var(--stripe-purple-h); box-shadow: rgba(83,58,253,0.3) 0px 8px 20px -8px; }
     .plan--pop .plan-cta { background: var(--white); color: var(--stripe-purple); }
     .plan--pop .plan-cta:hover { background: #f0f0ff; }
+    .pricing-note {
+      margin-top: 18px;
+      padding: 18px 20px;
+      border-radius: var(--r-md);
+      border: 1px solid var(--border);
+      background: var(--white);
+      box-shadow: var(--shadow-ambient);
+      text-align: center;
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--body);
+      line-height: 1.75;
+    }
 
     @media (min-width: 768px) {
       .svc, .plan { height: 100%; }
@@ -721,54 +734,56 @@
       <div class="wrap">
         <div class="sec-header center reveal">
           <div class="sec-eyebrow">pricing</div>
-          <h2 class="sec-title">透明定價，按需選擇</h2>
-          <p class="sec-sub">所有方案均可申請政府補助。歡迎先預約免費診斷，確認需求後再決定。</p>
+          <h2 class="sec-title">方案與費用說明</h2>
+          <p class="sec-sub">每家公司的系統環境與導入成熟度都不同，因此本工作室採客製化報價。先透過 30 分鐘免費診斷，了解你的實際情況後，再提供清楚的項目與費用明細；若你覺得不適合，診斷本身不收任何費用。</p>
         </div>
         <div class="pricing-grid">
           <div class="plan reveal">
             <span class="plan-badge">starter</span>
-            <div class="plan-name">AI Agent 安全部署與 LINE 串接</div>
-            <div class="plan-price">NT$6,000 <span>起</span></div>
-            <p class="plan-desc">為中小企業建立可用又安全的 AI 基礎環境，並打通 LINE 入口，讓第一個自動化流程快速上線。</p>
+            <div class="plan-name">AI Agent 安全部署起步方案</div>
+            <div class="plan-price">客製報價 <span>依環境複雜度與串接項目</span></div>
+            <p class="plan-desc">適合第一次導入 AI、想先從一個明確場景開始嘗試的中小企業。由單一 AI Agent 或單一路徑流程起步，先把安全性、穩定性與基本維運架好。</p>
             <div class="plan-divider"></div>
             <ul class="plan-feats">
-              <li class="plan-feat"><span class="plan-check">✓</span>OpenClaw / Dify / n8n / Flowise 遠端安裝設定</li>
-              <li class="plan-feat"><span class="plan-check">✓</span>Docker 沙箱、最低權限、網路隔離防護</li>
-              <li class="plan-feat"><span class="plan-check">✓</span>LINE 官方帳號基礎串接與指令流程設定</li>
-              <li class="plan-feat"><span class="plan-check">✓</span>交付後基本操作教學與上線檢查</li>
+              <li class="plan-feat"><span class="plan-check">✓</span>OpenClaw、Dify、n8n 或 Flowise 遠端安裝與基本資安設定</li>
+              <li class="plan-feat"><span class="plan-check">✓</span>串接 1-2 個關鍵資料來源或 API（網站表單、客服信箱、簡易資料庫）</li>
+              <li class="plan-feat"><span class="plan-check">✓</span>建立一個可實際上線運作的 AI 流程或 Agent</li>
+              <li class="plan-feat"><span class="plan-check">✓</span>提供操作教學與簡單使用手冊，便於團隊日常維護</li>
             </ul>
             <a href="javascript:void(0)" data-scroll="contact" class="plan-cta">預約諮詢</a>
           </div>
           <div class="plan plan--pop reveal">
             <span class="plan-badge">recommended</span>
             <div class="plan-name">企業 AI 導入與維運</div>
-            <div class="plan-price">NT$20,000 <span>起</span></div>
-            <p class="plan-desc">從評估、導入到長期維運的一站式方案，讓 AI 代理真正整合進日常業務流程並穩定運作。</p>
+            <div class="plan-price">客製報價 <span>依規模、範圍與維運方式</span></div>
+            <p class="plan-desc">適合已確認要導入 AI、希望由專人協助設計路線圖、實作與持續優化的公司，讓 AI 能長期穩定地支援營運。</p>
             <div class="plan-divider"></div>
             <ul class="plan-feats">
-              <li class="plan-feat"><span class="plan-check">✓</span>完整環境盤點與資安風險評估</li>
-              <li class="plan-feat"><span class="plan-check">✓</span>客製 Agent 工作流規劃與落地</li>
-              <li class="plan-feat"><span class="plan-check">✓</span>員工實作培訓與導入 SOP 建立</li>
-              <li class="plan-feat"><span class="plan-check">✓</span>月度維運：安全更新、稽核日誌、優先支援</li>
-              <li class="plan-feat"><span class="plan-check">✓</span>依需求提供補助申請文件協助</li>
+              <li class="plan-feat"><span class="plan-check">✓</span>企業現況盤點與導入路線圖規劃（從起步到擴充）</li>
+              <li class="plan-feat"><span class="plan-check">✓</span>多個 AI Agent / 工作流程規劃與實作（客服、知識庫、自動報表）</li>
+              <li class="plan-feat"><span class="plan-check">✓</span>內部系統與資料庫串接（依實際狀況評估可行範圍）</li>
+              <li class="plan-feat"><span class="plan-check">✓</span>週期性優化與維運（專案制或月費制）</li>
+              <li class="plan-feat"><span class="plan-check">✓</span>可協助搭配政府或相關補助資源申請（符合資格時）</li>
             </ul>
             <a href="javascript:void(0)" data-scroll="contact" class="plan-cta">預約諮詢</a>
           </div>
           <div class="plan reveal">
             <span class="plan-badge">ongoing</span>
             <div class="plan-name">AI 工作坊與品牌自動化</div>
-            <div class="plan-price">NT$20,000 <span>起 / 場</span></div>
-            <p class="plan-desc">透過企業內訓與品牌內容流程設計，讓團隊學會把 AI 變成可複製、可維持品質的日常工作能力。</p>
+            <div class="plan-price">客製報價 <span>依場次長度、人數與客製程度</span></div>
+            <p class="plan-desc">適合希望先讓團隊理解 AI 能做什麼，並配合品牌日常營運（社群、內容產出、行銷自動化）的企業。</p>
             <div class="plan-divider"></div>
             <ul class="plan-feats">
-              <li class="plan-feat"><span class="plan-check">✓</span>2-4 小時企業內訓（工具觀念 + 資安實務）</li>
-              <li class="plan-feat"><span class="plan-check">✓</span>帶領完成第一個自動化流程實作</li>
-              <li class="plan-feat"><span class="plan-check">✓</span>品牌語調一致的內容生產流程設計</li>
-              <li class="plan-feat"><span class="plan-check">✓</span>社群、廣告、EDM 批量產出規劃</li>
+              <li class="plan-feat"><span class="plan-check">✓</span>企業內訓工作坊（實作為主，可依部門客製內容）</li>
+              <li class="plan-feat"><span class="plan-check">✓</span>盤點品牌素材與內容流程，找出可自動化節點</li>
+              <li class="plan-feat"><span class="plan-check">✓</span>設計 1-2 條品牌自動化實際流程（草稿、排程、素材整理）</li>
+              <li class="plan-feat"><span class="plan-check">✓</span>提供簡單 SOP 與操作指南，沿用現有工具持續運作</li>
+              <li class="plan-feat"><span class="plan-check">✓</span>可配合政府或產業數位轉型補助專案調整內容</li>
             </ul>
             <a href="javascript:void(0)" data-scroll="contact" class="plan-cta">預約諮詢</a>
           </div>
         </div>
+        <p class="pricing-note reveal">不確定自己適合哪一種方案？可以先預約 30 分鐘線上免費診斷，聊聊你目前的系統與困擾，我會給你一份可行的起步建議，之後要不要合作再由你決定。</p>
       </div>
     </section>
 
@@ -778,7 +793,7 @@
         <h2>準備好讓 AI<br>幫你工作了嗎？</h2>
         <p>不需要技術背景。30 分鐘免費診斷，告訴我你的業務需求，我來推薦最適合的 AI 工具組合並安全導入。</p>
         <div class="cta-btns">
-          <a href="/cdn-cgi/l/email-protection#5e363b3232311e3d37303a27383231293b2c702a29" class="btn-white">
+          <a href="mailto:cindyflower@gmail.com" class="btn-white">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
             發送預約 Email
           </a>
@@ -822,7 +837,7 @@
         <div>
           <h3 class="footer-h">contact</h3>
           <ul class="footer-links">
-            <li><a href="/cdn-cgi/l/email-protection#d7bfb2bbbbb897b4beb9b3aeb1bbb8a0b2a5f9a3a0"><span class="__cf_email__" data-cfemail="dbb3beb7b7b49bb8b2b5bfa2bdb7b4acbea9f5afac">[email&#160;protected]</span></a></li>
+            <li><a href="mailto:cindyflower@gmail.com">發送預約 Email</a></li>
             <li><a href="javascript:void(0)" data-scroll="about">關於工作室</a></li>
             <li><a href="javascript:void(0)" data-scroll="pricing">服務方案</a></li>
             <li><a href="javascript:void(0)" data-scroll="contact">預約診斷</a></li>
