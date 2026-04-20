@@ -478,8 +478,9 @@
     .footer-grid { display: grid; gap: 40px; }
     @media (min-width: 768px) { .footer-grid { grid-template-columns: 1fr 1fr 1fr; } }
     .footer-brand { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-    .footer-brand-name { font-size: 15px; font-weight: 400; color: rgba(255,255,255,0.85); }
-    .footer-tagline { font-size: 13px; font-weight: 300; color: rgba(255,255,255,0.4); line-height: 1.65; max-width: 26ch; }
+    .footer-grid > div:first-child { width: 100%; }
+    .footer-brand-name { font-size: 15px; font-weight: 400; color: rgba(255,255,255,0.85); width: 100%; }
+    .footer-tagline { font-size: 13px; font-weight: 300; color: rgba(255,255,255,0.4); line-height: 1.65; width: 100%; display: flex; flex-wrap: wrap; max-width: none; }
     .footer-h {
       font-family: var(--mono); font-size: 10px; font-weight: 700;
       letter-spacing: .14em; text-transform: uppercase;
@@ -528,7 +529,7 @@
         </svg>
         <div>
           <div class="nav-logo-name">CindyFlower</div>
-          <div class="nav-logo-sub">智能顧問工作室</div>
+          <div class="nav-logo-sub">AI智動代理陪跑夥伴</div>
         </div>
       </a>
       <div class="nav-links">
@@ -838,9 +839,9 @@
               <circle cx="14" cy="19" r="2" fill="currentColor"/>
               <circle cx="22" cy="19" r="2" fill="currentColor"/>
             </svg>
-            <span class="footer-brand-name">CindyFlower 智能顧問工作室</span>
+          <span class="footer-brand-name">辛蒂花 - AI智動代理陪跑夥伴</span>
           </div>
-          <p class="footer-tagline">台灣中小企業的 AI 一站式導入夥伴。安全、有效、在地。</p>
+          <p class="footer-tagline">為中小企業提供「產能外包」：超級使用者（Super User） / 智動化代理商（Agency）</p>
         </div>
         <div>
           <h3 class="footer-h">services</h3>
@@ -863,8 +864,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <span>© 2026 CindyFlower 智能顧問工作室 · 高雄左營</span>
-        <span>台灣中小企業AI 導入陪跑夥伴</span>
+        <span>© 2026 AI智動代理陪跑夥伴 · 高雄左營</span>
       </div>
     </div>
   </footer>
