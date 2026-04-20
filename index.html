@@ -212,8 +212,7 @@
       grid-template-columns: repeat(3, 1fr);
       gap: 16px;
     }
-    @media (max-width: 960px) { .services-grid { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 550px) { .services-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 768px) { .services-grid { grid-template-columns: 1fr; } }
 
     .svc {
       background: var(--white);
@@ -370,7 +369,7 @@
     /* ── PRICING ── */
     .pricing { background: var(--bg-subtle); border-top: 1px solid var(--border); }
     .pricing-grid { display: grid; gap: 16px; }
-    @media (min-width: 768px) { .pricing-grid { grid-template-columns: repeat(3,1fr); align-items: start; } }
+    @media (min-width: 768px) { .pricing-grid { grid-template-columns: repeat(3,1fr); align-items: stretch; } }
     .plan {
       background: var(--white);
       border: 1px solid var(--border);
@@ -426,6 +425,10 @@
     .plan-cta:hover { background: var(--stripe-purple-h); box-shadow: rgba(83,58,253,0.3) 0px 8px 20px -8px; }
     .plan--pop .plan-cta { background: var(--white); color: var(--stripe-purple); }
     .plan--pop .plan-cta:hover { background: #f0f0ff; }
+
+    @media (min-width: 768px) {
+      .svc, .plan { height: 100%; }
+    }
 
     /* ── CTA BANNER (deep brand dark) ── */
     .cta-banner { background: var(--brand-dark); padding-block: clamp(56px, 8vw, 96px); text-align: center; }
@@ -724,44 +727,44 @@
         <div class="pricing-grid">
           <div class="plan reveal">
             <span class="plan-badge">starter</span>
-            <div class="plan-name">安全安裝包</div>
+            <div class="plan-name">AI Agent 安全部署與 LINE 串接</div>
             <div class="plan-price">NT$6,000 <span>起</span></div>
-            <p class="plan-desc">安全的 AI 工具環境從這裡開始——適合想先嘗試單一工具、預算有限的業主。</p>
+            <p class="plan-desc">為中小企業建立可用又安全的 AI 基礎環境，並打通 LINE 入口，讓第一個自動化流程快速上線。</p>
             <div class="plan-divider"></div>
             <ul class="plan-feats">
-              <li class="plan-feat"><span class="plan-check">✓</span>遠端安裝與設定</li>
-              <li class="plan-feat"><span class="plan-check">✓</span>資安署五大防護落實</li>
-              <li class="plan-feat"><span class="plan-check">✓</span>基本使用教學（1 小時）</li>
-              <li class="plan-feat"><span class="plan-check">✓</span>2 週後續問題回覆</li>
+              <li class="plan-feat"><span class="plan-check">✓</span>OpenClaw / Dify / n8n / Flowise 遠端安裝設定</li>
+              <li class="plan-feat"><span class="plan-check">✓</span>Docker 沙箱、最低權限、網路隔離防護</li>
+              <li class="plan-feat"><span class="plan-check">✓</span>LINE 官方帳號基礎串接與指令流程設定</li>
+              <li class="plan-feat"><span class="plan-check">✓</span>交付後基本操作教學與上線檢查</li>
             </ul>
             <a href="javascript:void(0)" data-scroll="contact" class="plan-cta">預約諮詢</a>
           </div>
           <div class="plan plan--pop reveal">
             <span class="plan-badge">recommended</span>
-            <div class="plan-name">企業導入包</div>
+            <div class="plan-name">企業 AI 導入與維運</div>
             <div class="plan-price">NT$20,000 <span>起</span></div>
-            <p class="plan-desc">從評估到落地，完整陪伴企業完成 AI 轉型——適合認真想讓 AI 幫你工作的業主。</p>
+            <p class="plan-desc">從評估、導入到長期維運的一站式方案，讓 AI 代理真正整合進日常業務流程並穩定運作。</p>
             <div class="plan-divider"></div>
             <ul class="plan-feats">
-              <li class="plan-feat"><span class="plan-check">✓</span>環境評估 + 安全部署</li>
-              <li class="plan-feat"><span class="plan-check">✓</span>客製化 Agent 工作流設計</li>
-              <li class="plan-feat"><span class="plan-check">✓</span>員工培訓（半天）</li>
-              <li class="plan-feat"><span class="plan-check">✓</span>1 個月後續支援</li>
-              <li class="plan-feat"><span class="plan-check">✓</span>補助申請協助</li>
+              <li class="plan-feat"><span class="plan-check">✓</span>完整環境盤點與資安風險評估</li>
+              <li class="plan-feat"><span class="plan-check">✓</span>客製 Agent 工作流規劃與落地</li>
+              <li class="plan-feat"><span class="plan-check">✓</span>員工實作培訓與導入 SOP 建立</li>
+              <li class="plan-feat"><span class="plan-check">✓</span>月度維運：安全更新、稽核日誌、優先支援</li>
+              <li class="plan-feat"><span class="plan-check">✓</span>依需求提供補助申請文件協助</li>
             </ul>
             <a href="javascript:void(0)" data-scroll="contact" class="plan-cta">預約諮詢</a>
           </div>
           <div class="plan reveal">
             <span class="plan-badge">ongoing</span>
-            <div class="plan-name">月費代管</div>
-            <div class="plan-price">NT$3,000 <span>/ 月起</span></div>
-            <p class="plan-desc">導入後持續進化——版本更新、安全稽核、Skills 優化，讓 AI 越用越好。</p>
+            <div class="plan-name">AI 工作坊與品牌自動化</div>
+            <div class="plan-price">NT$20,000 <span>起 / 場</span></div>
+            <p class="plan-desc">透過企業內訓與品牌內容流程設計，讓團隊學會把 AI 變成可複製、可維持品質的日常工作能力。</p>
             <div class="plan-divider"></div>
             <ul class="plan-feats">
-              <li class="plan-feat"><span class="plan-check">✓</span>每月安全版本更新</li>
-              <li class="plan-feat"><span class="plan-check">✓</span>稽核日誌回顧</li>
-              <li class="plan-feat"><span class="plan-check">✓</span>Skills 優化建議</li>
-              <li class="plan-feat"><span class="plan-check">✓</span>優先技術支援</li>
+              <li class="plan-feat"><span class="plan-check">✓</span>2-4 小時企業內訓（工具觀念 + 資安實務）</li>
+              <li class="plan-feat"><span class="plan-check">✓</span>帶領完成第一個自動化流程實作</li>
+              <li class="plan-feat"><span class="plan-check">✓</span>品牌語調一致的內容生產流程設計</li>
+              <li class="plan-feat"><span class="plan-check">✓</span>社群、廣告、EDM 批量產出規劃</li>
             </ul>
             <a href="javascript:void(0)" data-scroll="contact" class="plan-cta">預約諮詢</a>
           </div>
