@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>周報自動化教學｜CindyFlower AI 智動顧問工作室</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  :root {
+    --bg: #0f1117;
+    --bg2: #161b27;
+    --bg3: #1e2536;
+    --border: #2a3348;
+    --accent: #4f8ef7;
+    --accent2: #7c5cbf;
+    --green: #3dba7a;
+    --amber: #f0a830;
+    --red: #e05555;
+    --text: #e8eaf0;
+    --text2: #8892a4;
+    --text3: #4a5568;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Noto Sans TC', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── Header ── */
+  header {
+    padding: 64px 0 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    top: -80px; left: 50%;
+    transform: translateX(-50%);
+    width: 600px; height: 300px;
+    background: radial-gradient(ellipse, rgba(79,142,247,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(79,142,247,0.3);
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+  h1 {
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  h1 span { color: var(--accent); }
+  .subtitle {
+    color: var(--text2);
+    font-size: 15px;
+    max-width: 480px;
+    margin: 0 auto 40px;
+  }
+  .header-meta {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text2);
+  }
+  .meta-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  /* ── Layout ── */
+  .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+
+  /* ── Section Headers ── */
+  .section { margin-bottom: 64px; }
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .section-num {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: var(--accent);
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .section-num.green { background: var(--green); }
+  .section-num.purple { background: var(--accent2); }
+  .section-num.amber { background: var(--amber); color: #1a1a1a; }
+  .section-title {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+  .card-title {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text2);
+    margin-bottom: 12px;
+  }
+
+  /* ── Steps ── */
+  .steps { display: flex; flex-direction: column; gap: 0; }
+  .step {
+    display: flex;
+    gap: 16px;
+    position: relative;
+  }
+  .step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 15px; top: 36px;
+    width: 2px;
+    bottom: 0;
+    background: var(--border);
+  }
+  .step-icon {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--bg3);
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent);
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .step-body { padding-bottom: 28px; flex: 1; }
+  .step-heading {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    padding-top: 4px;
+  }
+  .step-desc { font-size: 14px; color: var(--text2); line-height: 1.6; }
+
+  /* ── Code blocks ── */
+  .code-block {
+    background: #0a0d14;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 16px 0;
+  }
+  .code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg3);
+  }
+  .code-lang {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .code-dots { display: flex; gap: 6px; }
+  .code-dots span {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+  }
+  .code-dots span:nth-child(1) { background: #ff5f57; }
+  .code-dots span:nth-child(2) { background: #febc2e; }
+  .code-dots span:nth-child(3) { background: #28c840; }
+  pre {
+    padding: 20px;
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.7;
+    overflow-x: auto;
+    color: #c9d1e0;
+  }
+  .kw { color: #7c9ef5; }
+  .fn { color: #f0c86a; }
+  .str { color: #7ec89a; }
+  .cm { color: #4a5568; font-style: italic; }
+  .num { color: #f0a830; }
+
+  /* ── Alert / Tip ── */
+  .tip {
+    display: flex;
+    gap: 12px;
+    padding: 14px 18px;
+    border-radius: 10px;
+    font-size: 14px;
+    margin: 16px 0;
+  }
+  .tip.blue { background: rgba(79,142,247,0.08); border: 1px solid rgba(79,142,247,0.2); }
+  .tip.green { background: rgba(61,186,122,0.08); border: 1px solid rgba(61,186,122,0.2); }
+  .tip.amber { background: rgba(240,168,48,0.08); border: 1px solid rgba(240,168,48,0.2); }
+  .tip.red { background: rgba(224,85,85,0.08); border: 1px solid rgba(224,85,85,0.2); }
+  .tip-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .tip-text { color: var(--text2); line-height: 1.6; }
+  .tip-text strong { color: var(--text); }
+
+  /* ── Table ── */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin: 16px 0;
+  }
+  .data-table th {
+    background: var(--bg3);
+    color: var(--text2);
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .data-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(42,51,72,0.5);
+    color: var(--text2);
+    vertical-align: top;
+  }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 11px;
+    background: rgba(79,142,247,0.1);
+    color: var(--accent);
+    border: 1px solid rgba(79,142,247,0.2);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+
+  /* ── Status badges ── */
+  .status-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 16px 0;
+  }
+  .status-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    border: 1px solid transparent;
+  }
+  .status-badge .dot {
+    width: 10px; height: 10px;
+    border-radius: 3px;
+  }
+
+  /* ── Flow diagram ── */
+  .flow {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 20px 0;
+    padding: 20px;
+    background: var(--bg3);
+    border-radius: 10px;
+    border: 1px solid var(--border);
+  }
+  .flow-item {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .flow-arrow {
+    color: var(--text3);
+    font-size: 18px;
+  }
+
+  /* ── Divider ── */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 48px 0;
+  }
+
+  /* ── Footer ── */
+  footer {
+    text-align: center;
+    padding: 48px 24px;
+    color: var(--text3);
+    font-size: 13px;
+    border-top: 1px solid var(--border);
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+
+  /* ── Inline code ── */
+  code {
+    font-family: var(--mono);
+    font-size: 12px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    padding: 2px 7px;
+    border-radius: 4px;
+    color: var(--accent);
+  }
+
+  /* ── Checklist ── */
+  .checklist { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--text2);
+  }
+  .checklist li::before {
+    content: '✓';
+    color: var(--green);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* ── Two col ── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 600px) {
+    .two-col { grid-template-columns: 1fr; }
+    .flow { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <div class="badge">CindyFlower AI 智動顧問工作室</div>
+    <h1>周報自動化<span>完整教學</span></h1>
+    <p class="subtitle">從 Google Spreadsheet 到 Google Slides，一鍵產出公司規定格式的周報</p>
+    <div class="header-meta">
+      <div class="meta-item"><div class="meta-dot"></div>Google Sheets + Apps Script</div>
+      <div class="meta-item"><div class="meta-dot" style="background:var(--accent)"></div>Google Slides 自動產出</div>
+      <div class="meta-item"><div class="meta-dot" style="background:var(--accent2)"></div>HW / SW 自動判斷</div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- ── 系統概覽 ── -->
+  <div class="section">
+    <div class="section-label">
+      <div class="section-num">①</div>
+      <div class="section-title">系統概覽</div>
+    </div>
+
+    <div class="flow">
+      <div class="flow-item">📊 Google Spreadsheet</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">⚙️ Apps Script</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">📋 Google Slides 模板</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">✅ 完整周報</div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title">你需要準備</div>
+        <ul class="checklist">
+          <li>Google Spreadsheet（填報用）</li>
+          <li>Google Slides 模板（含 <code>&#123;&#123;標籤&#125;&#125;</code>）</li>
+          <li>Apps Script 程式碼（本教學提供）</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title">系統能做到</div>
+        <ul class="checklist">
+          <li>依 Category 自動分組排序</li>
+          <li>HW / SW 自動判斷版型</li>
+          <li>Health Status 自動套色</li>
+          <li>Milestone 動態新增列</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Spreadsheet 欄位說明 ── -->
+  <div class="section">
+    <div class="section-label">
+      <div class="section-num green">②</div>
+      <div class="section-title">Spreadsheet 欄位說明</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Hardware 工作表欄位</div>
+      <table class="data-table">
+        <thead>
+          <tr><th>欄位</th><th>說明</th><th>範例值</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>A - Category</td><td>專案分類</td><td>Category 1</td></tr>
+          <tr><td>B - Project Name</td><td>專案名稱</td><td>Hardware Project Name 1</td></tr>
+          <tr><td>C - STO</td><td>負責人</td><td>May</td></tr>
+          <tr><td>D - Health</td><td>健康狀態（下拉選單）</td><td>BLOCKED</td></tr>
+          <tr><td>E~M - 進度欄</td><td>Concept / Definition / Design / Proto 1 / Proto 2 / EVT / DVT / PVT / Availability</td><td>Comp 或日期</td></tr>
+          <tr><td>N~P - SW欄</td><td>Alpha / Beta / GA</td><td>Q3 / Q4</td></tr>
+          <tr><td>Q - Progress</td><td>本週進度（- 項目一\n- 項目二）</td><td>- 完成設計評審</td></tr>
+          <tr><td>R - Plan</td><td>下週計畫</td><td>- 開始 Proto 製作</td></tr>
+          <tr><td>S - Problem</td><td>阻礙與風險</td><td>- 供應商延遲</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Software 工作表欄位</div>
+      <table class="data-table">
+        <thead>
+          <tr><th>欄位</th><th>說明</th><th>範例值</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>A - Category</td><td>專案分類</td><td>Category 1</td></tr>
+          <tr><td>B - Project Name</td><td>專案名稱</td><td>Software Project Name 1</td></tr>
+          <tr><td>C - MVP</td><td>MVP 說明</td><td>Software Project MVP 1</td></tr>
+          <tr><td>D - STO</td><td>負責人</td><td>Larry</td></tr>
+          <tr><td>E - Health</td><td>健康狀態</td><td>ON-TRACK</td></tr>
+          <tr><td>F - Progress</td><td>本週進度</td><td>- 完成 API 串接</td></tr>
+          <tr><td>G - Problem</td><td>問題與風險</td><td>- 測試環境不穩定</td></tr>
+          <tr><td>H - Plan</td><td>下週計畫</td><td>- 開始 UAT</td></tr>
+          <tr><td>I - Check</td><td>Milestone 完成狀態</td><td>Check 或空白</td></tr>
+          <tr><td>J - Milestone</td><td>里程碑名稱</td><td>Milestone 1</td></tr>
+          <tr><td>K - Version</td><td>版本號</td><td>v.1.0.0</td></tr>
+          <tr><td>L - Date</td><td>預計日期</td><td>4/20</td></tr>
+        </tbody>
+      </table>
+      <div class="tip amber">
+        <div class="tip-icon">⚠</div>
+        <div class="tip-text"><strong>多筆 Milestone 的填法：</strong>第一列填完整資料（A~L），後續 Milestone 只需填 I~L 欄，A~H 欄留空，程式會自動歸屬到同一個專案。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Health Status 顏色 ── -->
+  <div class="section">
+    <div class="section-label">
+      <div class="section-num purple">③</div>
+      <div class="section-title">Health Status 顏色對照</div>
+    </div>
+
+    <div class="status-grid">
+      <div class="status-badge" style="background:rgba(244,204,204,0.15);border-color:rgba(244,204,204,0.3)">
+        <div class="dot" style="background:#f4cccc"></div>
+        <span style="color:#f4cccc">BLOCKED</span>
+        <span style="color:var(--text3);font-size:11px;font-weight:400">#f4cccc</span>
+      </div>
+      <div class="status-badge" style="background:rgba(255,229,153,0.15);border-color:rgba(255,229,153,0.3)">
+        <div class="dot" style="background:#ffe599"></div>
+        <span style="color:#ffe599">AT-RISK</span>
+        <span style="color:var(--text3);font-size:11px;font-weight:400">#ffe599</span>
+      </div>
+      <div class="status-badge" style="background:rgba(182,215,168,0.15);border-color:rgba(182,215,168,0.3)">
+        <div class="dot" style="background:#b6d7a8"></div>
+        <span style="color:#b6d7a8">ON-TRACK</span>
+        <span style="color:var(--text3);font-size:11px;font-weight:400">#b6d7a8</span>
+      </div>
+      <div class="status-badge" style="background:rgba(164,194,244,0.15);border-color:rgba(164,194,244,0.3)">
+        <div class="dot" style="background:#a4c2f4"></div>
+        <span style="color:#a4c2f4">COMPLETE</span>
+        <span style="color:var(--text3);font-size:11px;font-weight:400">#a4c2f4</span>
+      </div>
+      <div class="status-badge" style="background:rgba(217,217,217,0.1);border-color:rgba(217,217,217,0.2)">
+        <div class="dot" style="background:#d9d9d9"></div>
+        <span style="color:#d9d9d9">PLANNING</span>
+        <span style="color:var(--text3);font-size:11px;font-weight:400">#d9d9d9</span>
+      </div>
+    </div>
+
+    <div class="tip blue">
+      <div class="tip-icon">ℹ</div>
+      <div class="tip-text">Health 欄位請使用 Google Sheets <strong>下拉選單</strong>，確保輸入值完全符合上方五種文字（全大寫），程式才能正確對應顏色。</div>
+    </div>
+  </div>
+
+  <!-- ── 模板設定 ── -->
+  <div class="section">
+    <div class="section-label">
+      <div class="section-num amber">④</div>
+      <div class="section-title">Google Slides 模板設定</div>
+    </div>
+
+    <div class="tip green">
+      <div class="tip-icon">✓</div>
+      <div class="tip-text"><strong>模板只需設定一次。</strong>之後每週執行程式時，模板不會被修改，每次產出的都是全新的獨立檔案。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">模板投影片結構（前3張為範本頁）</div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-icon">1</div>
+          <div class="step-body">
+            <div class="step-heading">Category 標題頁</div>
+            <div class="step-desc">新增一張空白投影片，中央放文字框，輸入 <code>&#123;&#123;CATEGORY_NAME&#125;&#125;</code></div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-icon">2</div>
+          <div class="step-body">
+            <div class="step-heading">HW 範本頁</div>
+            <div class="step-desc">複製現有 Hardware 投影片，把所有範例資料替換成對應的 <code>&#123;&#123;HW_*&#125;&#125;</code> 標籤（見下方對照表）</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-icon">3</div>
+          <div class="step-body">
+            <div class="step-heading">SW 範本頁</div>
+            <div class="step-desc">複製現有 Software 投影片，替換成 <code>&#123;&#123;SW_*&#125;&#125;</code> 標籤。Health Status 色塊內輸入 <code>&#123;&#123;SW_HEALTH&#125;&#125;</code>（字體改白色）。Milestone 表格保留 1 列資料列即可，程式會動態新增。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">HW 範本標籤對照表</div>
+      <table class="data-table">
+        <thead><tr><th>位置</th><th>標籤</th></tr></thead>
+        <tbody>
+          <tr><td>專案名稱</td><td><span class="tag">&#123;&#123;HW_PROJECT_NAME&#125;&#125;</span></td></tr>
+          <tr><td>STO（負責人）</td><td><span class="tag">&#123;&#123;HW_STO&#125;&#125;</span></td></tr>
+          <tr><td>Health Status 色塊</td><td><span class="tag">&#123;&#123;HW_HEALTH&#125;&#125;</span></td></tr>
+          <tr><td>Concept / Definition / Design</td><td><span class="tag">&#123;&#123;HW_CONCEPT&#125;&#125;</span> <span class="tag">&#123;&#123;HW_DEFINITION&#125;&#125;</span> <span class="tag">&#123;&#123;HW_DESIGN&#125;&#125;</span></td></tr>
+          <tr><td>Proto 1 / Proto 2 / EVT</td><td><span class="tag">&#123;&#123;HW_PROTO1&#125;&#125;</span> <span class="tag">&#123;&#123;HW_PROTO2&#125;&#125;</span> <span class="tag">&#123;&#123;HW_EVT&#125;&#125;</span></td></tr>
+          <tr><td>DVT / PVT / Availability</td><td><span class="tag">&#123;&#123;HW_DVT&#125;&#125;</span> <span class="tag">&#123;&#123;HW_PVT&#125;&#125;</span> <span class="tag">&#123;&#123;HW_AVAILABILITY&#125;&#125;</span></td></tr>
+          <tr><td>Alpha / Beta / GA</td><td><span class="tag">&#123;&#123;HW_ALPHA&#125;&#125;</span> <span class="tag">&#123;&#123;HW_BETA&#125;&#125;</span> <span class="tag">&#123;&#123;HW_GA&#125;&#125;</span></td></tr>
+          <tr><td>Progress 內容區塊</td><td><span class="tag">&#123;&#123;HW_PROGRESS&#125;&#125;</span></td></tr>
+          <tr><td>Plan 內容區塊</td><td><span class="tag">&#123;&#123;HW_PLAN&#125;&#125;</span></td></tr>
+          <tr><td>Problem 內容區塊</td><td><span class="tag">&#123;&#123;HW_PROBLEM&#125;&#125;</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">SW 範本標籤對照表</div>
+      <table class="data-table">
+        <thead><tr><th>位置</th><th>標籤</th></tr></thead>
+        <tbody>
+          <tr><td>專案名稱（標題）</td><td><span class="tag">&#123;&#123;SW_PROJECT_NAME&#125;&#125;</span></td></tr>
+          <tr><td>MVP</td><td><span class="tag">&#123;&#123;SW_MVP&#125;&#125;</span></td></tr>
+          <tr><td>STO 框格</td><td><span class="tag">&#123;&#123;SW_STO&#125;&#125;</span></td></tr>
+          <tr><td>Health Status 色塊（白色文字）</td><td><span class="tag">&#123;&#123;SW_HEALTH&#125;&#125;</span></td></tr>
+          <tr><td>Progress / Problem / Plan</td><td><span class="tag">&#123;&#123;SW_PROGRESS&#125;&#125;</span> <span class="tag">&#123;&#123;SW_PROBLEM&#125;&#125;</span> <span class="tag">&#123;&#123;SW_PLAN&#125;&#125;</span></td></tr>
+          <tr><td>Milestone 第1列</td><td><span class="tag">&#123;&#123;SW_MS1_NAME&#125;&#125;</span> <span class="tag">&#123;&#123;SW_MS1_VER&#125;&#125;</span> <span class="tag">&#123;&#123;SW_MS1_DATE&#125;&#125;</span></td></tr>
+        </tbody>
+      </table>
+      <div class="tip amber">
+        <div class="tip-icon">⚠</div>
+        <div class="tip-text"><strong>Milestone 表格只需保留 1 列資料列</strong>（表頭 + 1 列，check 欄放 ✓）。程式會根據實際筆數動態新增，最多支援不限筆數。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Apps Script 安裝 ── -->
+  <div class="section">
+    <div class="section-label">
+      <div class="section-num">⑤</div>
+      <div class="section-title">Apps Script 安裝與設定</div>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-icon">1</div>
+        <div class="step-body">
+          <div class="step-heading">開啟 Apps Script 編輯器</div>
+          <div class="step-desc">在 Google Spreadsheet 點上方選單「延伸功能」→「Apps Script」</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-icon">2</div>
+        <div class="step-body">
+          <div class="step-heading">貼上程式碼</div>
+          <div class="step-desc">把編輯器裡的預設內容全部清除，貼上提供的 Apps Script 程式碼</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-icon">3</div>
+        <div class="step-body">
+          <div class="step-heading">確認模板 ID</div>
+          <div class="step-desc">程式碼第一行有 <code>TEMPLATE_ID</code>，確認已填入正確的 Google Slides 模板 ID（從模板網址取得）</div>
+          <div class="code-block" style="margin-top:12px">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <div class="code-lang">Apps Script</div>
+            </div>
+            <pre><span class="cm">// 從模板網址取得 ID：</span>
+<span class="cm">// https://docs.google.com/presentation/d/【這裡就是ID】/edit</span>
+<span class="kw">const</span> <span class="fn">TEMPLATE_ID</span> = <span class="str">'13RrTgv8Ptr2b_EmjG0iWazh8vmji04UEjU1UwrPgCgM'</span>;</pre>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-icon">4</div>
+        <div class="step-body">
+          <div class="step-heading">儲存並重新整理</div>
+          <div class="step-desc">按 Ctrl+S 儲存，關閉 Apps Script 頁籤，回到 Spreadsheet 重新整理（F5），上方會出現「📊 產生周報」選單</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-icon">5</div>
+        <div class="step-body">
+          <div class="step-heading">第一次授權（只需做一次）</div>
+          <div class="step-desc">執行時 Google 會跳出安全警告，這是正常的。點「Advanced」→「Go to... (unsafe)」→「Allow」完成授權，之後不會再跳出。</div>
+          <div class="tip amber" style="margin-top:10px">
+            <div class="tip-icon">⚠</div>
+            <div class="tip-text"><strong>為什麼會出現警告？</strong>因為這是你自己寫的程式，不是 Google 官方上架的應用。授權對象是你自己的 Google 帳號，完全安全。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 每週操作流程 ── -->
+  <div class="section">
+    <div class="section-label">
+      <div class="section-num green">⑥</div>
+      <div class="section-title">每週操作流程</div>
+    </div>
+
+    <div class="tip green">
+      <div class="tip-icon">✓</div>
+      <div class="tip-text">設定完成後，每週只需要以下 <strong>2 個步驟</strong>即可產出完整周報。</div>
+    </div>
+
+    <div class="two-col" style="margin-top:16px">
+      <div class="card">
+        <div class="card-title">Step 1 — 填寫資料</div>
+        <div class="step-desc" style="font-size:14px">
+          團隊成員照常在 Google Spreadsheet 填入當週資料，Hardware 填 Hardware 工作表，Software 填 Software 工作表。
+        </div>
+        <div class="tip blue" style="margin-top:12px">
+          <div class="tip-icon">ℹ</div>
+          <div class="tip-text">Progress / Plan / Problem 欄位，每個項目用「<strong>- </strong>」（減號 + 空格）開頭，程式會自動轉成條列格式。</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Step 2 — 產生 Slides</div>
+        <div class="step-desc" style="font-size:14px">
+          點 Spreadsheet 上方選單「📊 產生周報」→「產生本週 Slides」，等幾秒鐘，畫面會彈出今天日期命名的新 Slides 連結。
+        </div>
+        <div class="tip green" style="margin-top:12px">
+          <div class="tip-icon">✓</div>
+          <div class="tip-text">每次產出都是<strong>全新獨立檔案</strong>，不會覆蓋上週的周報，可在 Google Drive 找到。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 常見問題 ── -->
+  <div class="section">
+    <div class="section-label">
+      <div class="section-num purple">⑦</div>
+      <div class="section-title">常見問題排除</div>
+    </div>
+
+    <div class="card" style="margin-bottom:12px">
+      <div class="card-title">❌ 錯誤：Source page could not be found</div>
+      <div class="step-desc" style="font-size:14px">模板 ID 設定錯誤，或模板分享權限不足。請確認 <code>TEMPLATE_ID</code> 正確，並確認模板已設為「知道連結的人可以編輯」。</div>
+    </div>
+
+    <div class="card" style="margin-bottom:12px">
+      <div class="card-title">❌ 錯誤：The object has no text</div>
+      <div class="step-desc" style="font-size:14px">模板裡有空白的文字框。請確認所有預期有內容的欄位都已填入對應的 <code>&#123;&#123;標籤&#125;&#125;</code>，不能留空白。</div>
+    </div>
+
+    <div class="card" style="margin-bottom:12px">
+      <div class="card-title">❌ 標籤沒有被替換（投影片還顯示 &#123;&#123;HW_STO&#125;&#125;）</div>
+      <div class="step-desc" style="font-size:14px">Spreadsheet 的工作表名稱必須是 <code>Hardware</code> 和 <code>Software</code>（大小寫須一致）。或檢查欄位順序是否與程式設定的一致。</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">❌ Health Status 色塊沒有變色</div>
+      <div class="step-desc" style="font-size:14px">Health 欄位的值必須完全符合五種狀態之一：<code>BLOCKED</code> / <code>AT-RISK</code> / <code>ON-TRACK</code> / <code>COMPLETE</code> / <code>PLANNING</code>（全大寫，包含中間的連字號）。建議使用下拉選單避免拼字錯誤。</div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="container">
+    <p style="margin-bottom:8px">© 2026 <a href="https://cindyflower.github.io/ai-consultant-studio/">CindyFlower AI 智動顧問工作室</a> · 高雄左營</p>
+    <p>如需技術支援，請聯絡 <a href="mailto:cindyflower@gmail.com">cindyflower@gmail.com</a> 或 <a href="https://line.me/ti/p/@ingridcat">LINE</a></p>
+  </div>
+</footer>
+
+</body>
+</html>

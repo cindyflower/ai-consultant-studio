@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>如何跟 Claude 溝通｜AI 協作實戰教學</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  :root {
+    --bg: #f7f6f2;
+    --bg2: #ffffff;
+    --bg3: #f0ede6;
+    --border: #e2ddd4;
+    --accent: #2952cc;
+    --accent2: #7c3aed;
+    --green: #166534;
+    --green-bg: #dcfce7;
+    --amber: #92400e;
+    --amber-bg: #fef3c7;
+    --red: #991b1b;
+    --red-bg: #fee2e2;
+    --blue-bg: #dbeafe;
+    --blue: #1e40af;
+    --text: #1a1a2e;
+    --text2: #4a4a6a;
+    --text3: #9090a8;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Noto Sans TC', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 100px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+  }
+
+  /* ── Top bar ── */
+  .topbar {
+    background: var(--text);
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+  }
+  .topbar a { color: #a5b4fc; text-decoration: none; }
+
+  /* ── Hero ── */
+  .hero {
+    background: var(--text);
+    color: white;
+    padding: 72px 24px 80px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 40px,
+      rgba(255,255,255,0.02) 40px,
+      rgba(255,255,255,0.02) 41px
+    );
+  }
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #a5b4fc;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .hero h1 {
+    font-size: clamp(26px, 5vw, 52px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .hero h1 em {
+    font-style: normal;
+    background: linear-gradient(135deg, #818cf8, #c084fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-sub {
+    color: #94a3b8;
+    font-size: 16px;
+    max-width: 520px;
+    margin: 0 auto 40px;
+    position: relative;
+  }
+  .hero-tags {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    position: relative;
+  }
+  .hero-tag {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: #cbd5e1;
+    font-size: 12px;
+    padding: 5px 14px;
+    border-radius: 20px;
+  }
+
+  /* ── Container ── */
+  .container { max-width: 800px; margin: 0 auto; padding: 0 24px; }
+
+  /* ── Nav pills ── */
+  .nav-pills {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 56px;
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    z-index: 10;
+  }
+  .pill {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--bg2);
+    color: var(--text2);
+    text-decoration: none;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .pill:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── Chapter ── */
+  .chapter { margin-bottom: 72px; scroll-margin-top: 100px; }
+  .chapter-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .chapter-num {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text3);
+    padding-top: 6px;
+    flex-shrink: 0;
+    width: 32px;
+  }
+  .chapter-titles { flex: 1; }
+  .chapter-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+  }
+  .chapter-tag.blue { background: var(--blue-bg); color: var(--blue); }
+  .chapter-tag.green { background: var(--green-bg); color: var(--green); }
+  .chapter-tag.amber { background: var(--amber-bg); color: var(--amber); }
+  .chapter-tag.purple { background: #ede9fe; color: #5b21b6; }
+  .chapter-tag.red { background: var(--red-bg); color: var(--red); }
+  .chapter-h2 {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+  }
+
+  /* ── Prose ── */
+  .prose { color: var(--text2); font-size: 15px; line-height: 1.8; margin-bottom: 20px; }
+  .prose strong { color: var(--text); font-weight: 700; }
+
+  /* ── Chat bubbles ── */
+  .chat { display: flex; flex-direction: column; gap: 12px; margin: 24px 0; }
+  .bubble-wrap {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .bubble-wrap.user { flex-direction: row-reverse; }
+  .avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+    font-weight: 700;
+  }
+  .avatar.user-av { background: var(--accent); color: white; font-size: 12px; }
+  .avatar.ai-av { background: #f0a500; color: white; font-size: 14px; }
+  .bubble {
+    max-width: 78%;
+    padding: 12px 16px;
+    border-radius: 14px;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+  .bubble.user {
+    background: var(--accent);
+    color: white;
+    border-bottom-right-radius: 4px;
+  }
+  .bubble.ai {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    color: var(--text2);
+    border-bottom-left-radius: 4px;
+  }
+  .bubble.ai strong { color: var(--text); }
+  .bubble-label {
+    font-size: 11px;
+    color: var(--text3);
+    margin-bottom: 4px;
+    padding: 0 4px;
+  }
+  .bubble-wrap.user .bubble-label { text-align: right; }
+
+  /* ── Tip box ── */
+  .tip {
+    display: flex;
+    gap: 12px;
+    padding: 14px 18px;
+    border-radius: 10px;
+    font-size: 14px;
+    margin: 16px 0;
+    line-height: 1.65;
+  }
+  .tip.blue { background: var(--blue-bg); border-left: 3px solid var(--accent); }
+  .tip.green { background: var(--green-bg); border-left: 3px solid var(--green); }
+  .tip.amber { background: var(--amber-bg); border-left: 3px solid var(--amber); }
+  .tip.red { background: var(--red-bg); border-left: 3px solid var(--red); }
+  .tip.purple { background: #ede9fe; border-left: 3px solid #7c3aed; }
+  .tip-icon { font-size: 16px; flex-shrink: 0; }
+  .tip-body { color: var(--text2); }
+  .tip-body strong { color: var(--text); }
+
+  /* ── Key point ── */
+  .keypoint {
+    background: var(--text);
+    color: white;
+    border-radius: 12px;
+    padding: 24px 28px;
+    margin: 24px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .keypoint::before {
+    content: '"';
+    position: absolute;
+    right: 20px; top: -10px;
+    font-size: 120px;
+    color: rgba(255,255,255,0.05);
+    font-family: Georgia, serif;
+    line-height: 1;
+  }
+  .keypoint-label {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #a5b4fc;
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+  .keypoint-text {
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 1.6;
+    color: #e2e8f0;
+    position: relative;
+  }
+
+  /* ── Formula ── */
+  .formula {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 20px 0;
+    font-size: 14px;
+  }
+  .formula-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 12px;
+  }
+  .formula-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    font-weight: 500;
+    color: var(--text);
+  }
+  .formula-item {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 13px;
+  }
+  .formula-plus { color: var(--text3); font-size: 18px; font-weight: 300; }
+
+  /* ── Checklist ── */
+  .checklist { list-style: none; display: flex; flex-direction: column; gap: 10px; margin: 16px 0; }
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--text2);
+  }
+  .checklist li .ck {
+    width: 20px; height: 20px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .ck.done { background: var(--green-bg); color: var(--green); }
+  .ck.warn { background: var(--amber-bg); color: var(--amber); }
+
+  /* ── Problem / Solution ── */
+  .ps-card {
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 20px 0;
+    border: 1px solid var(--border);
+  }
+  .ps-problem {
+    background: var(--red-bg);
+    padding: 16px 20px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .ps-solution {
+    background: var(--green-bg);
+    padding: 16px 20px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    border-top: 1px solid var(--border);
+  }
+  .ps-icon { font-size: 16px; flex-shrink: 0; margin-top: 2px; }
+  .ps-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .ps-problem .ps-label { color: var(--red); }
+  .ps-solution .ps-label { color: var(--green); }
+  .ps-text { font-size: 14px; color: var(--text2); line-height: 1.65; }
+  .ps-text strong { color: var(--text); }
+
+  /* ── Divider ── */
+  hr { border: none; border-top: 1px solid var(--border); margin: 56px 0; }
+
+  /* ── Lesson box ── */
+  .lesson {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin: 20px 0;
+  }
+  .lesson-title {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+  .lesson-text { font-size: 14px; color: var(--text2); line-height: 1.7; }
+  .lesson-text strong { color: var(--text); }
+
+  /* ── Summary table ── */
+  .summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin: 20px 0;
+    background: var(--bg2);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .summary-table th {
+    background: var(--bg3);
+    color: var(--text3);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 10px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    font-weight: 700;
+  }
+  .summary-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(226,221,212,0.6);
+    color: var(--text2);
+    vertical-align: top;
+    line-height: 1.6;
+  }
+  .summary-table tr:last-child td { border-bottom: none; }
+  .summary-table td:first-child { font-weight: 600; color: var(--text); white-space: nowrap; }
+
+  /* ── CTA ── */
+  .cta {
+    background: var(--text);
+    color: white;
+    border-radius: 16px;
+    padding: 48px 40px;
+    text-align: center;
+    margin: 56px 0;
+  }
+  .cta h3 { font-size: 22px; font-weight: 700; margin-bottom: 12px; }
+  .cta p { color: #94a3b8; font-size: 15px; margin-bottom: 24px; }
+  .cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .btn {
+    display: inline-block;
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: opacity 0.15s;
+  }
+  .btn:hover { opacity: 0.85; }
+  .btn-primary { background: var(--accent); color: white; }
+  .btn-ghost { background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); }
+
+  /* ── Footer ── */
+  footer {
+    text-align: center;
+    padding: 40px 24px;
+    color: var(--text3);
+    font-size: 13px;
+    border-top: 1px solid var(--border);
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+
+  code {
+    font-family: var(--mono);
+    font-size: 12px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    padding: 2px 7px;
+    border-radius: 4px;
+    color: var(--accent);
+  }
+
+  @media (max-width: 600px) {
+    .hero { padding: 48px 20px 56px; }
+    .nav-pills { gap: 6px; }
+    .bubble { max-width: 90%; }
+    .cta { padding: 32px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  CindyFlower AI 智動顧問工作室 · <a href="https://cindyflower.github.io/ai-consultant-studio/">cindyflower.github.io</a>
+</div>
+
+<div class="hero">
+  <div class="container">
+    <div class="hero-eyebrow">🤖 AI 協作實戰教學</div>
+    <h1>如何跟 Claude<br>從零開始溝通</h1>
+    <p class="hero-sub">一個 PM 的真實案例：從提出需求、收集資訊、確認方向，到解決問題，完整記錄如何與 AI 協作完成自動化任務。</p>
+    <div class="hero-tags">
+      <span class="hero-tag">角色定位</span>
+      <span class="hero-tag">需求評估</span>
+      <span class="hero-tag">資訊收集</span>
+      <span class="hero-tag">方向確認</span>
+      <span class="hero-tag">問題排除</span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <nav class="nav-pills" aria-label="章節導航">
+    <a href="#ch1" class="pill">① 角色定位</a>
+    <a href="#ch2" class="pill">② 開會前準備</a>
+    <a href="#ch3" class="pill">③ 收集資訊</a>
+    <a href="#ch4" class="pill">④ 確認方向</a>
+    <a href="#ch5" class="pill">⑤ 遇到的問題</a>
+    <a href="#ch6" class="pill">⑥ 問題解決</a>
+  </nav>
+
+  <!-- ══ Chapter 1 ══ -->
+  <div class="chapter" id="ch1">
+    <div class="chapter-header">
+      <div class="chapter-num">01</div>
+      <div class="chapter-titles">
+        <div class="chapter-tag blue">起點</div>
+        <h2 class="chapter-h2">用角色定位讓 AI 站在對的位置</h2>
+      </div>
+    </div>
+
+    <p class="prose">跟 AI 溝通最常見的錯誤，是直接說「幫我做 XXX」，沒有交代背景。AI 雖然會回答，但給出的方案往往太泛，不符合你的實際情況。</p>
+    <p class="prose">正確的起手式是：<strong>先說你是誰、任務是什麼、目標是什麼</strong>，讓 AI 一開始就站在你的角度思考。</p>
+
+    <div class="keypoint">
+      <div class="keypoint-label">核心公式</div>
+      <div class="keypoint-text">我的身份 ＋ 任務背景 ＋ 最終目標 ＋ 請幫我評估</div>
+    </div>
+
+    <div class="formula">
+      <div class="formula-title">實際用的開場白</div>
+      <div class="formula-row">
+        <div class="formula-item">我是一位 PM</div>
+        <div class="formula-plus">+</div>
+        <div class="formula-item">公司交付任務要產出周報 PPT</div>
+        <div class="formula-plus">+</div>
+        <div class="formula-item">想用 Claude AI 協助</div>
+        <div class="formula-plus">+</div>
+        <div class="formula-item">請幫我評估</div>
+      </div>
+    </div>
+
+    <div class="chat">
+      <div class="bubble-wrap user">
+        <div>
+          <div class="bubble-label">Cindy Flower 換位思考客戶的角色</div>
+          <div class="bubble user">我是一位 PM，公司交付任務請我用 Claude AI 產出周報的 Raw Data，生成公司規定的 PPT，請幫我評估</div>
+        </div>
+        <div class="avatar user-av">CF</div>
+      </div>
+      <div class="bubble-wrap">
+        <div class="avatar ai-av">✦</div>
+        <div>
+          <div class="bubble-label">Claude 的反應</div>
+          <div class="bubble ai">Claude 收到角色定位後，會主動問你關鍵問題：<strong>工作流程是什麼？PPT 格式規範？你希望的解決方案？</strong>——這正是你想要的，AI 開始替你想事情。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tip blue">
+      <div class="tip-icon">💡</div>
+      <div class="tip-body"><strong>為什麼說「請幫我評估」而不是「請幫我做」？</strong>先評估，代表你讓 AI 先分析可行性、提出選項，而不是直接跳進去做。這樣你有機會選擇最適合的方向，不會走冤枉路。</div>
+    </div>
+
+    <div class="lesson">
+      <div class="lesson-title">這一步的重點</div>
+      <div class="lesson-text">角色定位不是在「騙」AI，而是讓它更準確地理解你的處境。<strong>背景越具體，AI 給的建議越實用。</strong>一句「我是 PM，公司要求...」，比「幫我做周報」多傳遞了幾倍的資訊。</div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- ══ Chapter 2 ══ -->
+  <div class="chapter" id="ch2">
+    <div class="chapter-header">
+      <div class="chapter-num">02</div>
+      <div class="chapter-titles">
+        <div class="chapter-tag green">準備</div>
+        <h2 class="chapter-h2">第一次開會前：讓 Claude 幫你準備問題清單</h2>
+      </div>
+    </div>
+
+    <p class="prose">這裡的角色是 <strong>CindyFlower AI 智動顧問工作室（接案方）</strong>。接到客戶需求後，在第一次正式開會前，先請 Claude 根據任務性質產出一份完整的問題清單——確保 30 分鐘的會議問到所有關鍵資訊，不遺漏任何影響技術方案的細節。</p>
+
+    <div class="tip blue">
+      <div class="tip-icon">💡</div>
+      <div class="tip-body"><strong>為什麼要讓 Claude 來準備問題清單？</strong>顧問在接案初期很容易因為「感覺大概知道」就跳過重要問題。讓 Claude 事先列出清單，可以逼自己系統性地問完，避免開完會才發現少拿了關鍵素材。</div>
+    </div>
+
+    <div class="chat">
+      <div class="bubble-wrap user">
+        <div>
+          <div class="bubble-label">請Claude協助評估重要的問題清單</div>
+          <div class="bubble user">幫我準備第一次開會的問題清單（確保 30 分鐘問到關鍵資訊）</div>
+        </div>
+        <div class="avatar user-av">CF</div>
+      </div>
+      <div class="bubble-wrap">
+        <div class="avatar ai-av">✦</div>
+        <div>
+          <div class="bubble-label">Claude 的反應</div>
+          <div class="bubble ai">Claude 產出了分四階段共 15 個問題的清單：<strong>了解現況 → 確認資料來源 → 確認 PPT 規格 → 確認交付與學習期望</strong>，並製作成可下載的 Word 文件，開會時直接帶去填寫。</div>
+        </div>
+      </div>
+    </div>
+
+    <p class="prose" style="margin-top:20px">四個必問面向（站在顧問角度，每個問題背後都有技術判斷）：</p>
+
+    <ul class="checklist">
+      <li><div class="ck done">✓</div><div><strong>現況：</strong>誰在做、幾個人 → 判斷是個人工具還是需要多人協作方案</div></li>
+      <li><div class="ck done">✓</div><div><strong>資料來源：</strong>Raw Data 格式、欄位是否固定、有沒有保密需求 → 決定技術方案與能否使用 Claude.ai</div></li>
+      <li><div class="ck done">✓</div><div><strong>PPT 規格：</strong>有無模板、張數結構、格式限制 → 影響成品的建置方式</div></li>
+      <li><div class="ck done">✓</div><div><strong>交付期望：</strong>用什麼工具操作、想學到哪一步 → 決定第三次教學的範圍</div></li>
+    </ul>
+
+    <div class="tip amber">
+      <div class="tip-icon">⚠️</div>
+      <div class="tip-body"><strong>開會結束前三件最重要的事（顧問必做）：</strong>① 取得客戶的模板檔案 ② 取得一份 Raw Data 樣本 ③ 約定成品回傳時間。沒有前兩樣，後面無法動工；沒有第三樣，容易讓客戶等待期望落空。</div>
+    </div>
+
+    <div class="lesson">
+      <div class="lesson-title">這一步的重點</div>
+      <div class="lesson-text">問題清單不只是備忘錄，而是<strong>顧問的專業展現</strong>。問對問題，客戶才會信任你真的懂他的需求。這份清單也讓會議節奏更清晰，30 分鐘內完成，對客戶也是尊重。</div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- ══ Chapter 3 ══ -->
+  <div class="chapter" id="ch3">
+    <div class="chapter-header">
+      <div class="chapter-num">03</div>
+      <div class="chapter-titles">
+        <div class="chapter-tag purple">執行</div>
+        <h2 class="chapter-h2">收集到完整資訊後，請 AI 開始協助</h2>
+      </div>
+    </div>
+
+    <p class="prose">開完會、拿到模板和資料後，你需要把這些資訊<strong>完整地交給 AI</strong>，讓它真正「看到」你的素材，才能給出貼合實際的解法。</p>
+
+    <p class="prose">這個案例實際提供給 AI 的資料：</p>
+
+    <ul class="checklist">
+      <li><div class="ck done">✓</div><div>Google Spreadsheet 連結（含 HW 和 SW 兩個工作表）</div></li>
+      <li><div class="ck done">✓</div><div>五種 Health Status 的 Hex Color Code</div></li>
+      <li><div class="ck done">✓</div><div>Google Slides 模板連結</div></li>
+      <li><div class="ck done">✓</div><div>會議記錄（Q1~Q15 的答案）</div></li>
+    </ul>
+
+    <div class="tip blue">
+      <div class="tip-icon">💡</div>
+      <div class="tip-body"><strong>為什麼要給 AI 真實的連結和檔案？</strong>AI 讀取你的真實資料後，能分析實際的欄位結構、判斷哪些欄位是日期、哪些是文字，程式碼才能精準對應，不用你事後一直修正。</div>
+    </div>
+
+    <div class="chat">
+      <div class="bubble-wrap user">
+        <div>
+          <div class="bubble-label">CindyFlower做的事</div>
+          <div class="bubble user">直接貼上 Spreadsheet 連結、Slides 模板連結、五種顏色的 Hex Code，以及會議記錄文件</div>
+        </div>
+        <div class="avatar user-av">CF</div>
+      </div>
+      <div class="bubble-wrap">
+        <div class="avatar ai-av">✦</div>
+        <div>
+          <div class="bubble-label">Claude 的反應</div>
+          <div class="bubble ai">Claude 讀取 Spreadsheet 後，分析出欄位結構：HW 有 19 個欄位、SW 有多筆 Milestone 需要動態處理，然後直接輸出第一版 Apps Script 程式碼。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lesson">
+      <div class="lesson-title">這一步的重點</div>
+      <div class="lesson-text">資訊給得越完整，AI 越能「一次到位」。<strong>不要讓 AI 猜測</strong>——猜測會造成誤差，誤差要花時間修正。這個案例從給資料到第一版程式碼，只花了一輪對話。</div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- ══ Chapter 4 ══ -->
+  <div class="chapter" id="ch4">
+    <div class="chapter-header">
+      <div class="chapter-num">04</div>
+      <div class="chapter-titles">
+        <div class="chapter-tag amber">決策</div>
+        <h2 class="chapter-h2">如何確定製作方向</h2>
+      </div>
+    </div>
+
+    <p class="prose">這個專案在確定方向前，來回討論了幾個關鍵決策點。每一個都是 AI 先提出選項、說明優缺點，再由你拍板。</p>
+
+    <div class="ps-card">
+      <div class="ps-problem">
+        <div class="ps-icon">🤔</div>
+        <div>
+          <div class="ps-label">決策點 1：輸出格式</div>
+          <div class="ps-text">Claude.ai 無法直接輸出 Google Slides，怎麼辦？</div>
+        </div>
+      </div>
+      <div class="ps-solution">
+        <div class="ps-icon">✅</div>
+        <div>
+          <div class="ps-label">選擇的方向</div>
+          <div class="ps-text"><strong>使用 Google Apps Script</strong>，在 Google Sheets 裡按一個按鈕，直接呼叫 Slides API 產出檔案，全程在 Google 生態內完成，排版 100% 精準。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ps-card">
+      <div class="ps-problem">
+        <div class="ps-icon">🤔</div>
+        <div>
+          <div class="ps-label">決策點 2：模板策略</div>
+          <div class="ps-text">程式要怎麼套用公司的 Slides 模板？從頭重建 vs 複製模板？</div>
+        </div>
+      </div>
+      <div class="ps-solution">
+        <div class="ps-icon">✅</div>
+        <div>
+          <div class="ps-label">選擇的方向</div>
+          <div class="ps-text"><strong>模板 + 標籤替換</strong>：在模板裡的每個欄位放 <code>&#123;&#123;標籤&#125;&#125;</code>，程式複製模板後把標籤換成真實資料。模板永遠不被修改，排版完全保留。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ps-card">
+      <div class="ps-problem">
+        <div class="ps-icon">🤔</div>
+        <div>
+          <div class="ps-label">決策點 3：模板範本頁策略</div>
+          <div class="ps-text">要在模板新增隱藏範本頁，還是每次重建？</div>
+        </div>
+      </div>
+      <div class="ps-solution">
+        <div class="ps-icon">✅</div>
+        <div>
+          <div class="ps-label">選擇的方向</div>
+          <div class="ps-text"><strong>新增 3 張範本頁</strong>（Category / HW / SW），程式從這裡複製、填入資料、輸出新檔案。模板和資料完全分離，每週產出獨立檔案不互蓋。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tip blue">
+      <div class="tip-icon">💡</div>
+      <div class="tip-body"><strong>如何讓 AI 幫你做決策分析？</strong>直接說「評估 A 方案 vs B 方案，列出優缺點」，AI 會從技術可行性、維護成本、使用者體驗等角度分析，你再根據自己的情況選擇。</div>
+    </div>
+
+    <div class="lesson">
+      <div class="lesson-title">這一步的重點</div>
+      <div class="lesson-text">AI 提供選項、你做決策。<strong>不要讓 AI 幫你決定所有事</strong>——你才是最了解公司環境、客戶需求和資源限制的人。AI 的角色是讓你的決策更有資訊依據。</div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- ══ Chapter 5 ══ -->
+  <div class="chapter" id="ch5">
+    <div class="chapter-header">
+      <div class="chapter-num">05</div>
+      <div class="chapter-titles">
+        <div class="chapter-tag red">挑戰</div>
+        <h2 class="chapter-h2">中間遇到了哪些問題</h2>
+      </div>
+    </div>
+
+    <p class="prose">這個專案從開始到完成，遇到了好幾個預料之外的問題。這些問題不是「失敗」，而是 AI 協作過程中很正常的迭代。</p>
+
+    <div class="ps-card">
+      <div class="ps-problem">
+        <div class="ps-icon">❌</div>
+        <div>
+          <div class="ps-label">問題 1：投影片全黑</div>
+          <div class="ps-text">v2 版本產出的投影片全部是黑色，什麼都看不到。</div>
+        </div>
+      </div>
+      <div class="ps-solution">
+        <div class="ps-icon">🔍</div>
+        <div>
+          <div class="ps-label">根本原因</div>
+          <div class="ps-text">程式碼裡的 <code>pt()</code> 函式把座標乘以 12700（EMU 單位換算），但 Apps Script 的座標是直接用 points，所有元素被放到超出畫面的位置。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ps-card">
+      <div class="ps-problem">
+        <div class="ps-icon">❌</div>
+        <div>
+          <div class="ps-label">問題 2：版面與模板不符</div>
+          <div class="ps-text">v1 產出的格式和公司模板截圖差很多，三欄排版、日期格式都不對。</div>
+        </div>
+      </div>
+      <div class="ps-solution">
+        <div class="ps-icon">🔍</div>
+        <div>
+          <div class="ps-label">根本原因</div>
+          <div class="ps-text">AI 是根據文字描述「猜測」版面，沒有看到實際的模板截圖。解法是<strong>上傳模板截圖</strong>給 AI，讓它直接對照圖片重建版面。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ps-card">
+      <div class="ps-problem">
+        <div class="ps-icon">❌</div>
+        <div>
+          <div class="ps-label">問題 3：Milestone ✓ 符號疊加</div>
+          <div class="ps-text">Milestone 表格第一欄出現兩個 ✓，而且位置跑掉。</div>
+        </div>
+      </div>
+      <div class="ps-solution">
+        <div class="ps-icon">🔍</div>
+        <div>
+          <div class="ps-label">根本原因</div>
+          <div class="ps-text">模板的 check 欄本來就有 ✓，程式又用 <code>setCellText()</code> 額外寫入一次，造成疊加。後來改成只有「Empty」狀態才替換符號，「Check」狀態保持模板原有的 ✓。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ps-card">
+      <div class="ps-problem">
+        <div class="ps-icon">❌</div>
+        <div>
+          <div class="ps-label">問題 4：appendRow() 新增列跑版</div>
+          <div class="ps-text">動態新增 Milestone 列時，check 欄的符號跑到 Milestone 欄左側，不在自己的格子裡。</div>
+        </div>
+      </div>
+      <div class="ps-solution">
+        <div class="ps-icon">🔍</div>
+        <div>
+          <div class="ps-label">根本原因</div>
+          <div class="ps-text"><code>appendRow()</code> 新增的列無法繼承模板的欄寬設定。嘗試了固定列數方案後，最終重建乾淨的模板表格，讓 <code>appendRow()</code> 從穩定的基礎開始動作。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tip amber">
+      <div class="tip-icon">⚠️</div>
+      <div class="tip-body"><strong>遇到問題時，最有效的做法是：</strong>截圖給 AI 看，說明「這裡錯了，我預期應該是這樣」。文字描述往往不夠精確，截圖讓 AI 直接看到問題所在，修正速度快很多。</div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- ══ Chapter 6 ══ -->
+  <div class="chapter" id="ch6">
+    <div class="chapter-header">
+      <div class="chapter-num">06</div>
+      <div class="chapter-titles">
+        <div class="chapter-tag green">成果</div>
+        <h2 class="chapter-h2">問題是怎麼解決的</h2>
+      </div>
+    </div>
+
+    <p class="prose">每一個問題的解決，都遵循同一個模式：<strong>描述現象 → AI 分析原因 → 確認修正方向 → AI 更新程式碼 → 你測試驗證</strong>。</p>
+
+    <table class="summary-table">
+      <thead>
+        <tr><th>問題</th><th>解決方式</th><th>誰做了什麼</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>投影片全黑</td>
+          <td>移除 pt() 換算，直接用 points 座標</td>
+          <td>AI 修改程式碼</td>
+        </tr>
+        <tr>
+          <td>版面不符</td>
+          <td>上傳截圖讓 AI 對照模板重建</td>
+          <td>你提供截圖，AI 重寫版面</td>
+        </tr>
+        <tr>
+          <td>Health 色塊無法替換</td>
+          <td>在色塊裡輸入白色文字 {{SW_HEALTH}}</td>
+          <td>你修改模板，AI 掃描文字框套色</td>
+        </tr>
+        <tr>
+          <td>✓ 符號疊加</td>
+          <td>改用 replaceAllText，不直接寫入 check 欄</td>
+          <td>AI 修改邏輯</td>
+        </tr>
+        <tr>
+          <td>Milestone 跑版</td>
+          <td>重建乾淨的模板表格，只保留 1 列範本</td>
+          <td>你重建模板，AI 調整程式</td>
+        </tr>
+        <tr>
+          <td>Source page not found</td>
+          <td>改為模板不動，另建新檔複製範本頁</td>
+          <td>AI 修改架構邏輯</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="keypoint">
+      <div class="keypoint-label">這個專案最重要的一課</div>
+      <div class="keypoint-text">每次出錯，不是 AI 很爛，而是「資訊還不夠完整」。補上截圖、補上真實資料、說清楚預期結果——AI 就能修正。<br><br>和 AI 協作就像帶一個很聰明但不了解你公司的新人：你給的情境越完整，它做出來的東西越接近你要的。</div>
+    </div>
+
+    <div class="lesson">
+      <div class="lesson-title">與 AI 協作的心態</div>
+      <div class="lesson-text">
+        <strong>不要期待一次到位。</strong>這個專案從 v1 到 v4，改了很多次，但每一次都更接近目標。AI 的優勢是「改得快」——你說哪裡不對，它幾秒鐘就能輸出修正版本。<br><br>
+        <strong>你的角色是驗收和決策，不是寫程式。</strong>你負責測試、截圖、告訴 AI 哪裡不對；AI 負責分析和修改。分工清楚，整個流程才順。
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CTA ── -->
+  <div class="cta">
+    <h3>準備好開始你自己的 AI 自動化了嗎？</h3>
+    <p>從一個小任務開始，用本教學的方法跟 Claude 溝通，你也可以做到。</p>
+    <div class="cta-btns">
+      <a href="https://cindyflower.github.io/ai-consultant-studio/" class="btn btn-primary">預約免費診斷</a>
+      <a href="mailto:cindyflower@gmail.com" class="btn btn-ghost">寫信給我們</a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p style="margin-bottom:6px">© 2026 <a href="https://cindyflower.github.io/ai-consultant-studio/">CindyFlower AI 智動顧問工作室</a> · 高雄左營</p>
+  <p>聯絡方式：<a href="mailto:cindyflower@gmail.com">cindyflower@gmail.com</a></p>
+</footer>
+
+<script>
+(function () {
+  var nav = document.querySelector('.nav-pills');
+  if (!nav) return;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  nav.addEventListener('click', function (e) {
+    var link = e.target.closest('a[href^="#"]');
+    if (!link || !nav.contains(link)) return;
+    var hash = link.getAttribute('href');
+    var id = hash.slice(1);
+    if (!id) return;
+    var el = document.getElementById(id);
+    if (!el) return;
+    e.preventDefault();
+    el.scrollIntoView({ behavior: reduce.matches ? 'auto' : 'smooth', block: 'start' });
+    if (window.history && window.history.pushState) {
+      history.pushState(null, '', hash);
+    } else {
+      location.hash = hash;
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
