@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>模組 1｜認識 AI 工具，建立工作思維</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Noto+Sans+TC:wght@300;400;500;600;700&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --clay-cream: #faf9f7;
+    --clay-black: #000000;
+    --clay-white: #ffffff;
+    --oat: #dad4c8;
+    --matcha-300: #84e7a5;
+    --matcha-600: #078a52;
+    --matcha-800: #02492a;
+    --slushie-500: #3bd3fd;
+    --lemon-400: #f8cc65;
+    --lemon-500: #fbbd41;
+    --pomegranate-400: #fc7981;
+    --ube-800: #43089f;
+    --warm-silver: #9f9b93;
+    --clay-shadow: rgba(0,0,0,0.1) 0px 1px 1px, rgba(0,0,0,0.04) 0px -1px 1px inset, rgba(0,0,0,0.05) 0px -0.5px 1px;
+    --cream: var(--clay-cream);
+    --warm-dark: var(--matcha-800);
+    --rose: var(--pomegranate-400);
+    --rose-light: rgba(252, 121, 129, 0.15);
+    --rose-mid: var(--lemon-400);
+    --text-body: var(--clay-black);
+    --text-muted: var(--warm-silver);
+    --border: var(--oat);
+    --topbar-h: 40px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--cream);
+    color: var(--text-body);
+    font-family: 'Noto Sans TC', 'DM Sans', system-ui, sans-serif;
+    font-weight: 400;
+    line-height: 1.7;
+    font-size: 16px;
+  }
+
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 500;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--clay-black);
+    background: var(--clay-white);
+    border-bottom: 1px solid var(--border);
+    padding: 9px 16px;
+    line-height: 1.4;
+    font-family: 'DM Sans', 'Noto Sans TC', sans-serif;
+    min-height: var(--topbar-h);
+    box-shadow: 0 1px 0 rgba(0,0,0,0.03);
+  }
+  .topbar a {
+    color: var(--matcha-600);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .topbar a:hover { text-decoration: underline; }
+
+  /* Header */
+  .site-header {
+    background: var(--warm-dark);
+    color: var(--cream);
+    padding: 14px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: var(--topbar-h);
+    z-index: 100;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+  }
+  .site-header .brand {
+    font-family: 'DM Sans', 'Noto Sans TC', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    opacity: 0.9;
+    color: inherit;
+    text-decoration: none;
+  }
+  .site-header .brand:hover { opacity: 1; }
+  .site-header .brand:focus-visible {
+    outline: rgb(20, 110, 245) solid 2px;
+    outline-offset: 4px;
+    border-radius: 4px;
+  }
+  .progress-bar {
+    height: 3px;
+    background: var(--pomegranate-400);
+    width: 33%;
+    border-radius: 2px;
+  }
+  .module-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.08px;
+    opacity: 0.55;
+    text-transform: uppercase;
+    font-family: 'DM Sans', 'Noto Sans TC', sans-serif;
+  }
+
+  /* Hero */
+  .hero {
+    background: var(--warm-dark);
+    color: var(--cream);
+    padding: 80px 40px 70px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: var(--slushie-500);
+    opacity: 0.12;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; left: 30%;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: var(--lemon-500);
+    opacity: 0.1;
+  }
+  .hero-inner { max-width: 680px; margin: 0 auto; position: relative; }
+  .hero-tag {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.08px;
+    color: var(--matcha-300);
+    border: 1px solid var(--oat);
+    padding: 6px 16px;
+    border-radius: 999px;
+    margin-bottom: 24px;
+    text-transform: uppercase;
+    background: rgba(255,255,255,0.06);
+  }
+  .hero h1 {
+    font-family: 'DM Sans', 'Noto Sans TC', sans-serif;
+    font-size: clamp(26px, 5vw, 40px);
+    font-weight: 600;
+    line-height: 1.12;
+    margin-bottom: 16px;
+    letter-spacing: -0.04em;
+  }
+  .hero p {
+    font-size: 14px;
+    opacity: 0.65;
+    max-width: 480px;
+    line-height: 1.9;
+  }
+  .hero-meta {
+    margin-top: 32px;
+    display: flex;
+    gap: 28px;
+    flex-wrap: wrap;
+  }
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    opacity: 0.55;
+    letter-spacing: 0.05em;
+  }
+  .meta-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--rose);
+  }
+
+  /* Content */
+  .content { max-width: 680px; margin: 0 auto; padding: 60px 24px 100px; }
+
+  /* Unit cards */
+  .unit {
+    margin-bottom: 60px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.5s ease forwards;
+  }
+  .unit:nth-child(1) { animation-delay: 0.1s; }
+  .unit:nth-child(2) { animation-delay: 0.2s; }
+  .unit:nth-child(3) { animation-delay: 0.3s; }
+  .unit:nth-child(4) { animation-delay: 0.4s; }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .unit-number {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.08px;
+    color: var(--matcha-600);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .unit h2 {
+    font-family: 'DM Sans', 'Noto Sans TC', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: var(--clay-black);
+    letter-spacing: -0.03em;
+  }
+  .unit p {
+    margin-bottom: 16px;
+    color: var(--text-body);
+    font-size: 14.5px;
+  }
+
+  /* Before/After showcase */
+  .showcase {
+    background: var(--warm-dark);
+    border-radius: 24px;
+    padding: 24px;
+    margin: 24px 0;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    border: 1px solid rgba(0,0,0,0.2);
+    box-shadow: var(--clay-shadow);
+  }
+  .showcase-label {
+    color: var(--cream);
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    opacity: 0.5;
+    text-align: center;
+    margin-top: 8px;
+    text-transform: uppercase;
+  }
+  .showcase-col { flex: 1; }
+  .showcase-img {
+    width: 100%;
+    aspect-ratio: 3/4;
+    border-radius: 12px;
+    object-fit: cover;
+    display: block;
+  }
+  .showcase-arrow {
+    color: var(--lemon-400);
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+
+  /* Highlight box */
+  .highlight {
+    background: rgba(252, 121, 129, 0.1);
+    border-left: 4px solid var(--pomegranate-400);
+    border-radius: 0 12px 12px 0;
+    padding: 18px 20px;
+    margin: 20px 0;
+    font-size: 15px;
+    color: var(--text-body);
+  }
+  .highlight strong {
+    color: var(--clay-black);
+    font-weight: 600;
+  }
+
+  /* Divider */
+  .divider {
+    border: none;
+    border-top: 0.5px solid var(--border);
+    margin: 40px 0;
+  }
+
+  /* Comparison */
+  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
+  .compare-box {
+    border-radius: 16px;
+    padding: 16px 18px;
+    font-size: 14px;
+    line-height: 1.7;
+    box-shadow: var(--clay-shadow);
+  }
+  .compare-bad {
+    background: rgba(252, 121, 129, 0.08);
+    border: 1px dashed var(--pomegranate-400);
+    border-radius: 16px;
+  }
+  .compare-good {
+    background: rgba(132, 231, 165, 0.12);
+    border: 1px solid var(--matcha-600);
+    border-radius: 16px;
+  }
+  .compare-tag {
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+    margin-bottom: 10px;
+    display: block;
+  }
+  .compare-bad .compare-tag { color: #991b1b; }
+  .compare-good .compare-tag { color: var(--matcha-800); }
+  .compare-box p { color: var(--text-body); font-style: italic; margin: 0; }
+
+  /* 3 elements */
+  .three-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0; }
+  .grid-card {
+    background: var(--clay-white);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 18px 14px;
+    text-align: center;
+    box-shadow: var(--clay-shadow);
+  }
+  .grid-card .icon {
+    width: 36px; height: 36px;
+    background: rgba(59, 211, 253, 0.2);
+    border-radius: 50%;
+    margin: 0 auto 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+  }
+  .grid-card h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--clay-black);
+    margin-bottom: 6px;
+    letter-spacing: -0.02em;
+  }
+  .grid-card p { font-size: 12px; color: var(--text-muted); margin: 0; line-height: 1.6; }
+
+  /* Prompt box */
+  .prompt-box {
+    background: var(--warm-dark);
+    border-radius: 24px;
+    padding: 24px 24px 16px;
+    margin: 24px 0;
+    position: relative;
+    border: 1px solid rgba(0,0,0,0.15);
+  }
+  .prompt-box-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.08px;
+    color: var(--matcha-300);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .prompt-text {
+    color: var(--cream);
+    font-size: 14px;
+    line-height: 1.7;
+    opacity: 0.95;
+    font-family: 'Space Mono', 'Noto Sans TC', monospace;
+  }
+  .copy-btn {
+    display: block;
+    width: 100%;
+    margin-top: 16px;
+    background: var(--clay-white);
+    color: var(--clay-black);
+    border: 2px solid #000;
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-size: 15px;
+    font-weight: 500;
+    font-family: 'Noto Sans TC', 'DM Sans', sans-serif;
+    letter-spacing: -0.02em;
+    cursor: pointer;
+    box-shadow: var(--clay-shadow);
+    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+  }
+  .copy-btn:hover {
+    background: var(--lemon-500);
+    transform: rotateZ(-3deg) translateY(-3px);
+    box-shadow: 5px 5px 0 0 #000;
+  }
+  .copy-btn:active { transform: rotateZ(0) translateY(0); }
+  .copy-btn:focus-visible { outline: rgb(20, 110, 245) solid 2px; outline-offset: 2px; }
+
+  /* Follow-up tips */
+  .tip-list { margin: 16px 0; }
+  .tip-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 0.5px solid var(--border);
+    font-size: 13.5px;
+  }
+  .tip-item:last-child { border-bottom: none; }
+  .tip-quote {
+    flex: 1;
+    font-style: italic;
+    color: var(--text-body);
+    background: white;
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+  }
+
+  /* Summary */
+  .summary-box {
+    background: var(--warm-dark);
+    color: var(--cream);
+    border-radius: 32px;
+    padding: 32px 28px;
+    margin-top: 50px;
+    border: 1px solid rgba(0,0,0,0.1);
+  }
+  .summary-box h3 {
+    font-family: 'DM Sans', 'Noto Sans TC', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    letter-spacing: -0.02em;
+    opacity: 0.95;
+  }
+  .summary-list { list-style: none; }
+  .summary-list li {
+    font-size: 13.5px;
+    padding: 8px 0;
+    border-bottom: 0.5px solid rgba(255,255,255,0.08);
+    display: flex;
+    gap: 10px;
+    opacity: 0.8;
+    line-height: 1.7;
+  }
+  .summary-list li:last-child { border-bottom: none; }
+  .check { color: var(--lemon-400); flex-shrink: 0; }
+
+  .next-btn {
+    display: block;
+    margin-top: 24px;
+    background: var(--clay-white);
+    color: var(--clay-black);
+    border: 2px solid #000;
+    border-radius: 16px;
+    padding: 16px 24px;
+    font-size: 16px;
+    font-weight: 500;
+    font-family: 'Noto Sans TC', 'DM Sans', sans-serif;
+    letter-spacing: -0.02em;
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+    text-decoration: none;
+    box-sizing: border-box;
+    box-shadow: var(--clay-shadow);
+    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+  }
+  .next-btn:hover {
+    background: var(--lemon-500);
+    transform: rotateZ(-2deg) translateY(-3px);
+    box-shadow: 6px 6px 0 0 #000;
+  }
+  .next-btn:focus-visible { outline: rgb(20, 110, 245) solid 2px; outline-offset: 2px; }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 28px 40px;
+    text-align: center;
+    font-size: 14px;
+    color: var(--text-muted);
+    background: var(--clay-cream);
+    line-height: 1.6;
+  }
+  footer p { margin: 0; }
+  footer p + p { margin-top: 8px; }
+  footer a {
+    color: var(--matcha-600);
+    text-decoration: none;
+  }
+  footer a:hover { text-decoration: underline; }
+  footer .footer-course {
+    margin-top: 14px;
+    font-size: 13px;
+    opacity: 0.92;
+  }
+
+  @media (max-width: 520px) {
+    .hero { padding: 60px 20px 50px; }
+    .compare { grid-template-columns: 1fr; }
+    .three-grid { grid-template-columns: 1fr; }
+    .showcase { flex-direction: column; }
+    .showcase-arrow { transform: rotate(90deg); }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">CindyFlower AI 智動顧問工作室 · <a href="https://cindyflower.github.io/ai-consultant-studio/" target="_blank" rel="noopener noreferrer">cindyflower.github.io</a></div>
+
+<header class="site-header">
+  <a class="brand" href="index.html" aria-label="回到課程首頁">化妝師 AI 課程</a>
+  <div class="progress-bar" title="進度 1/3"></div>
+  <span class="module-label">Module 01</span>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <span class="hero-tag">模組 1 of 3</span>
+    <h1>認識 AI 工具<br>建立工作思維</h1>
+    <p>學會跟 AI 溝通，是這門課最重要的第一步。你不需要懂技術，只需要學會「說清楚你要什麼」。</p>
+    <div class="hero-meta">
+      <div class="meta-item"><div class="meta-dot"></div>3 個單元</div>
+      <div class="meta-item"><div class="meta-dot"></div>約 20 分鐘</div>
+      <div class="meta-item"><div class="meta-dot"></div>圖文教學</div>
+    </div>
+  </div>
+</section>
+
+<div class="content">
+
+  <!-- Unit 1-1 -->
+  <div class="unit">
+    <div class="unit-number">單元 1-1</div>
+    <h2>什麼是 Claude？化妝師可以怎麼用它</h2>
+
+    <p>先看看這組 Before & After：</p>
+
+    <div class="showcase">
+      <div class="showcase-col">
+        <div style="background:var(--matcha-800);border-radius:12px;aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;border:1px dashed var(--matcha-300);">
+          <span style="color:var(--warm-silver);font-size:12px;letter-spacing:0.1em;">BEFORE</span>
+        </div>
+        <div class="showcase-label">素顏</div>
+      </div>
+      <div class="showcase-arrow">→</div>
+      <div class="showcase-col">
+        <div style="background:var(--matcha-800);border-radius:12px;aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;border:1px dashed var(--lemon-400);">
+          <span style="color:var(--pomegranate-400);font-size:12px;letter-spacing:0.1em;">AFTER</span>
+        </div>
+        <div class="showcase-label">完妝</div>
+      </div>
+    </div>
+
+    <p>這支影片從腳本規劃、拍攝流程到發文文案，全部都有 AI 協助完成。</p>
+
+    <div class="highlight">
+      <strong>Claude 是什麼？</strong><br>
+      把它想成一個隨時待命的助手。它不會化妝，但它會幫你把腦子裡的想法，變成有條理的腳本、吸引人的文案、清楚的拍攝步驟。
+    </div>
+
+    <p>Claude 可以幫化妝師做的事：</p>
+
+    <div class="three-grid">
+      <div class="grid-card">
+        <div class="icon">📝</div>
+        <h4>寫腳本</h4>
+        <p>把你的妝容概念整理成完整的拍攝腳本</p>
+      </div>
+      <div class="grid-card">
+        <div class="icon">✍️</div>
+        <h4>寫文案</h4>
+        <p>Facebook、小紅書不同平台的發文文案</p>
+      </div>
+      <div class="grid-card">
+        <div class="icon">📋</div>
+        <h4>規劃流程</h4>
+        <p>拍攝清單、工作流，讓每次拍攝不遺漏</p>
+      </div>
+    </div>
+
+    <p style="margin-top:20px;">使用方式很簡單：打開瀏覽器，進入 <strong style="color:var(--rose);">claude.ai</strong>，免費註冊帳號就可以開始。</p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Unit 1-2 -->
+  <div class="unit">
+    <div class="unit-number">單元 1-2</div>
+    <h2>如何下指令，讓 AI 懂你的需求</h2>
+
+    <p>很多人第一次用 AI 會覺得「它給的答案不是我要的」，原因通常只有一個：</p>
+
+    <div class="highlight">
+      <strong>指令太模糊。</strong><br>
+      把 AI 想成一個剛入職的新助理——你給的資訊越清楚，它做出來的東西越符合你的期待。
+    </div>
+
+    <p>來看看同樣的需求，模糊和清楚的差別：</p>
+
+    <div class="compare">
+      <div class="compare-box compare-bad">
+        <span class="compare-tag">❌ 模糊的指令</span>
+        <p>「幫我寫一個化妝影片的腳本」</p>
+      </div>
+      <div class="compare-box compare-good">
+        <span class="compare-tag">✅ 清楚的指令</span>
+        <p>「我是化妝師，做鵝蛋臉 Before & After，60秒，Facebook 用，請寫腳本含字幕」</p>
+      </div>
+    </div>
+
+    <p>清楚的指令只需要記住三個要素：</p>
+
+    <div class="three-grid">
+      <div class="grid-card">
+        <div class="icon">👤</div>
+        <h4>你是誰</h4>
+        <p>「我是化妝師」讓 AI 知道你的背景</p>
+      </div>
+      <div class="grid-card">
+        <div class="icon">🎯</div>
+        <h4>要做什麼</h4>
+        <p>具體說明任務，例如「寫60秒腳本」</p>
+      </div>
+      <div class="grid-card">
+        <div class="icon">📐</div>
+        <h4>條件限制</h4>
+        <p>臉型、平台、風格、長度，越具體越好</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Unit 1-3 -->
+  <div class="unit">
+    <div class="unit-number">單元 1-3｜實作</div>
+    <h2>請 AI 幫你生成鵝蛋臉腳本</h2>
+
+    <p>現在跟著做。打開 claude.ai，把下面這段指令複製貼上：</p>
+
+    <div class="prompt-box">
+      <div class="prompt-box-label">複製這段指令 →</div>
+      <div class="prompt-text" id="prompt-text">
+        我是一位化妝師，想做一支 Facebook 短影片，主題是鵝蛋臉的 Before &amp; After 妝容改造，影片長度約 30 秒。請幫我寫完整的拍攝腳本，格式包含：鏡號、時間點、畫面內容、字幕文案。結尾要有預約私訊的 CTA。
+      </div>
+      <button class="copy-btn" onclick="copyPrompt()">複製指令</button>
+    </div>
+
+    <p>貼上之後按送出，你會得到一份完整腳本。如果哪裡不夠滿意，可以繼續說：</p>
+
+    <div class="tip-list">
+      <div class="tip-item">
+        <div class="tip-quote">「結尾改成更活潑的語氣」</div>
+      </div>
+      <div class="tip-item">
+        <div class="tip-quote">「步驟部分再詳細一點」</div>
+      </div>
+      <div class="tip-item">
+        <div class="tip-quote">「字幕每句不超過 10 個字」</div>
+      </div>
+    </div>
+
+    <div class="highlight" style="margin-top:20px;">
+      <strong>重點：</strong>不用重新開始。直接在同一個對話繼續說，AI 會根據你的要求修改。
+    </div>
+  </div>
+
+  <!-- Summary -->
+  <div class="summary-box unit">
+    <h3>模組 1 完成 ✦</h3>
+    <ul class="summary-list">
+      <li><span class="check">✓</span>了解 Claude 是什麼，以及化妝師可以怎麼用它</li>
+      <li><span class="check">✓</span>學會寫清楚的指令（你是誰、要做什麼、條件限制）</li>
+      <li><span class="check">✓</span>實際用 AI 生成一份鵝蛋臉拍攝腳本</li>
+    </ul>
+    <a class="next-btn" href="module2.html">繼續 → 模組 2：用 AI 規劃腳本與文案</a>
+  </div>
+
+</div>
+
+<footer>
+  <p>© 2026 CindyFlower AI 智動顧問工作室 · 高雄左營</p>
+  <p>聯絡方式：<a href="mailto:cindyflower@gmail.com">cindyflower@gmail.com</a></p>
+  <p class="footer-course">化妝師 AI 影片課程 · 課程內容僅供個人學習使用</p>
+</footer>
+
+<script>
+function copyPrompt() {
+  const text = "我是一位化妝師，想做一支 Facebook 短影片，主題是鵝蛋臉的 Before & After 妝容改造，影片長度約 30 秒。請幫我寫完整的拍攝腳本，格式包含：鏡號、時間點、畫面內容、字幕文案。結尾要有預約私訊的 CTA。";
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = '已複製 ✓';
+    setTimeout(() => btn.textContent = '複製指令', 2000);
+  });
+}
+</script>
+
+</body>
+</html>

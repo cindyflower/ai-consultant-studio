@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>化妝師 AI 影片課程</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Noto+Sans+TC:wght@300;400;500;600;700&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  /* Clay design tokens — see DESIGN.md (Roobert ≈ DM Sans for web) */
+  :root {
+    --clay-cream: #faf9f7;
+    --clay-black: #000000;
+    --clay-white: #ffffff;
+    --oat: #dad4c8;
+    --oat-light: #eee9df;
+    --matcha-300: #84e7a5;
+    --matcha-600: #078a52;
+    --matcha-800: #02492a;
+    --slushie-500: #3bd3fd;
+    --lemon-400: #f8cc65;
+    --lemon-500: #fbbd41;
+    --pomegranate-400: #fc7981;
+    --ube-800: #43089f;
+    --warm-silver: #9f9b93;
+    --clay-shadow: rgba(0,0,0,0.1) 0px 1px 1px, rgba(0,0,0,0.04) 0px -1px 1px inset, rgba(0,0,0,0.05) 0px -0.5px 1px;
+    /* semantic aliases (existing class names) */
+    --cream: var(--clay-cream);
+    --warm-dark: var(--matcha-800);
+    --rose: var(--pomegranate-400);
+    --rose-light: rgba(252, 121, 129, 0.12);
+    --rose-mid: var(--lemon-400);
+    --text-body: var(--clay-black);
+    --text-muted: var(--warm-silver);
+    --border: var(--oat);
+    --subnav-h: 56px;
+    --topbar-h: 40px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--cream);
+    color: var(--text-body);
+    font-family: 'Noto Sans TC', 'DM Sans', system-ui, sans-serif;
+    font-weight: 400;
+    line-height: 1.7;
+    font-size: 16px;
+  }
+
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 500;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--clay-black);
+    background: var(--clay-white);
+    border-bottom: 1px solid var(--border);
+    padding: 9px 16px;
+    line-height: 1.4;
+    font-family: 'DM Sans', 'Noto Sans TC', sans-serif;
+    min-height: var(--topbar-h);
+    box-shadow: 0 1px 0 rgba(0,0,0,0.03);
+  }
+  .topbar a {
+    color: var(--matcha-600);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .topbar a:hover { text-decoration: underline; }
+
+  /* Hero */
+  .hero {
+    background: var(--warm-dark);
+    color: var(--cream);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-circle1 {
+    position: absolute;
+    top: -100px; right: -80px;
+    width: 420px; height: 420px;
+    border-radius: 50%;
+    background: var(--slushie-500);
+    opacity: 0.12;
+  }
+  .hero-circle2 {
+    position: absolute;
+    bottom: -80px; left: -60px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: var(--lemon-500);
+    opacity: 0.1;
+  }
+  .hero-circle3 {
+    position: absolute;
+    top: 40%; left: 50%;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    border: 1px dashed rgba(255,255,255,0.25);
+    transform: translate(-50%, -50%);
+  }
+
+  .hero-inner {
+    max-width: 640px;
+    margin: 0 auto;
+    position: relative;
+    text-align: center;
+  }
+
+  .hero-eyebrow {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.08px;
+    color: var(--matcha-300);
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.2s ease forwards;
+    font-family: 'DM Sans', 'Noto Sans TC', sans-serif;
+  }
+
+  .hero h1 {
+    font-family: 'DM Sans', 'Noto Sans TC', sans-serif;
+    font-size: clamp(32px, 6vw, 52px);
+    font-weight: 600;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    letter-spacing: -0.04em;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.35s ease forwards;
+  }
+
+  .hero-desc {
+    font-size: 15px;
+    opacity: 0;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.72);
+    max-width: 420px;
+    margin: 0 auto 40px;
+    animation: fadeUp 0.6s 0.5s ease forwards;
+  }
+
+  .hero-tags {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.65s ease forwards;
+  }
+  .hero-tag {
+    font: inherit;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    font-family: 'Noto Sans TC', 'DM Sans', system-ui, sans-serif;
+    padding: 8px 18px;
+    border-radius: 999px;
+    border: 1px solid var(--oat);
+    color: var(--clay-cream);
+    background: rgba(255,255,255,0.06);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+  }
+  .hero-tag:hover {
+    background: rgba(255,255,255,0.12);
+    transform: rotateZ(-2deg) translateY(-2px);
+    box-shadow: 4px 4px 0 0 rgba(0,0,0,0.35);
+  }
+  .hero-tag:focus-visible {
+    outline: rgb(20, 110, 245) solid 2px;
+    outline-offset: 3px;
+  }
+
+  /* 捲出 hero 後置頂導覽 */
+  .course-subnav {
+    position: fixed;
+    top: var(--topbar-h);
+    left: 0;
+    right: 0;
+    z-index: 300;
+    min-height: var(--subnav-h);
+    padding: 8px 12px;
+    padding-top: calc(8px + env(safe-area-inset-top, 0px));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    background: rgba(250, 249, 247, 0.96);
+    border-bottom: 1px solid var(--oat);
+    box-shadow: var(--clay-shadow);
+    transform: translateY(-100%);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: transform 0.28s ease, opacity 0.28s ease, visibility 0.28s;
+  }
+  .course-subnav.is-visible {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .course-subnav {
+      transition: none;
+    }
+  }
+  .course-subnav .subnav-tag {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 14px;
+    color: var(--clay-black);
+    background: var(--clay-white);
+    border: 1px solid #000;
+    box-shadow: 2px 2px 0 0 rgba(0,0,0,0.12);
+  }
+  .course-subnav .subnav-tag:hover {
+    background: var(--lemon-500);
+    box-shadow: 3px 3px 0 0 #000;
+  }
+  @media (max-width: 520px) {
+    .course-subnav {
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .course-subnav::-webkit-scrollbar { display: none; }
+  }
+
+  #section-intro,
+  #section-modules,
+  #section-outcomes,
+  #section-cta {
+    scroll-margin-top: calc(var(--topbar-h) + var(--subnav-h) + 16px);
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.08px;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+    font-family: 'DM Sans', 'Noto Sans TC', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    animation: fadeUp 0.6s 1s ease forwards;
+    opacity: 0;
+  }
+  .scroll-line {
+    width: 1px;
+    height: 32px;
+    background: linear-gradient(to bottom, var(--lemon-400), transparent);
+    animation: scrollPulse 1.8s ease-in-out infinite;
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(1.15); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Intro strip */
+  .intro-strip {
+    background: var(--lemon-500);
+    color: var(--clay-black);
+    padding: 20px 40px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    border-top: 1px solid var(--clay-black);
+    border-bottom: 1px solid var(--clay-black);
+  }
+
+  /* Modules section */
+  .modules-section {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 80px 24px;
+  }
+
+  .section-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.08px;
+    color: var(--matcha-600);
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 12px;
+    font-family: 'DM Sans', 'Noto Sans TC', sans-serif;
+  }
+  .section-title {
+    font-family: 'DM Sans', 'Noto Sans TC', sans-serif;
+    font-size: clamp(22px, 4vw, 32px);
+    font-weight: 600;
+    text-align: center;
+    color: var(--clay-black);
+    margin-bottom: 48px;
+    letter-spacing: -0.03em;
+  }
+
+  /* Module cards */
+  .module-card {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    background: var(--clay-white);
+    text-decoration: none;
+    color: inherit;
+    box-shadow: var(--clay-shadow);
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    cursor: pointer;
+  }
+  .module-card:hover {
+    border-color: var(--clay-black);
+    transform: rotateZ(-1deg) translateY(-4px);
+    box-shadow: 6px 6px 0 0 #000;
+  }
+
+  .module-num-col {
+    background: var(--warm-dark);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 28px 0;
+    gap: 6px;
+  }
+  .module-num {
+    font-family: 'DM Sans', 'Noto Sans TC', sans-serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--clay-cream);
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+  .module-of {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: var(--matcha-300);
+    text-transform: uppercase;
+  }
+
+  .module-body {
+    padding: 24px 24px 20px;
+  }
+  .module-title {
+    font-family: 'DM Sans', 'Noto Sans TC', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--clay-black);
+    margin-bottom: 6px;
+    letter-spacing: -0.02em;
+  }
+  .module-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 14px;
+  }
+  .module-meta {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .module-meta-item {
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .meta-pip {
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--pomegranate-400);
+  }
+  .module-arrow {
+    font-size: 16px;
+    color: var(--pomegranate-400);
+    align-self: center;
+    margin-right: 20px;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .module-card:hover .module-arrow { opacity: 1; }
+
+  /* What you'll get */
+  .outcome-section {
+    background: var(--warm-dark);
+    color: var(--cream);
+    padding: 80px 40px;
+  }
+  .outcome-inner { max-width: 640px; margin: 0 auto; }
+  .outcome-section .section-label { color: var(--rose-mid); }
+  .outcome-section .section-title { color: var(--cream); }
+
+  .outcome-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-top: 40px;
+  }
+  .outcome-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px dashed var(--matcha-300);
+    border-radius: 24px;
+    padding: 22px 20px;
+  }
+  .outcome-num {
+    font-family: 'DM Sans', 'Noto Sans TC', sans-serif;
+    font-size: 32px;
+    font-weight: 600;
+    color: var(--lemon-400);
+    margin-bottom: 8px;
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+  .outcome-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--cream);
+    margin-bottom: 6px;
+    opacity: 0.9;
+  }
+  .outcome-desc {
+    font-size: 13px;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.65;
+  }
+
+  /* Start CTA */
+  .cta-section {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 80px 24px;
+    text-align: center;
+  }
+  .cta-section .section-label { margin-bottom: 16px; }
+  .cta-section p {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 36px;
+    line-height: 1.9;
+  }
+  .start-btn {
+    display: inline-block;
+    background: var(--clay-white);
+    color: var(--clay-black);
+    font-family: 'Noto Sans TC', 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    padding: 16px 40px;
+    border-radius: 999px;
+    border: 2px solid #000;
+    cursor: pointer;
+    box-shadow: var(--clay-shadow);
+    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+    text-decoration: none;
+  }
+  .start-btn:hover {
+    background: var(--lemon-500);
+    transform: rotateZ(-4deg) translateY(-4px);
+    box-shadow: 6px 6px 0 0 #000;
+  }
+  .start-btn:focus-visible { outline: rgb(20, 110, 245) solid 2px; outline-offset: 3px; }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 28px 40px;
+    text-align: center;
+    font-size: 14px;
+    color: var(--text-muted);
+    background: var(--clay-cream);
+    line-height: 1.6;
+  }
+  footer p { margin: 0; }
+  footer p + p { margin-top: 8px; }
+  footer a {
+    color: var(--matcha-600);
+    text-decoration: none;
+  }
+  footer a:hover { text-decoration: underline; }
+  footer .footer-course {
+    margin-top: 14px;
+    font-size: 13px;
+    opacity: 0.92;
+  }
+
+  @media (max-width: 560px) {
+    .hero { padding: 80px 24px; }
+    .modules-section { padding: 60px 16px; }
+    .module-card { grid-template-columns: 64px 1fr; }
+    .outcome-grid { grid-template-columns: 1fr; }
+    .outcome-section { padding: 60px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">CindyFlower AI 智動顧問工作室 · <a href="https://cindyflower.github.io/ai-consultant-studio/" target="_blank" rel="noopener noreferrer">cindyflower.github.io</a></div>
+
+<nav class="course-subnav" id="courseSubnav" aria-hidden="true" aria-label="本頁段落（捲動後顯示）" inert>
+  <button type="button" class="hero-tag subnav-tag" data-jump="section-modules" aria-label="前往：課程內容與三個模組">3 個模組</button>
+  <button type="button" class="hero-tag subnav-tag" data-jump="section-outcomes" aria-label="前往：學完之後可重複使用的工作流">可重複觀看</button>
+  <button type="button" class="hero-tag subnav-tag" data-jump="section-cta" aria-label="前往：從模組 1 開始、無需剪輯經驗">無需剪輯經驗</button>
+</nav>
+
+<!-- Hero -->
+<section class="hero" id="page-hero">
+  <div class="hero-circle1"></div>
+  <div class="hero-circle2"></div>
+  <div class="hero-circle3"></div>
+  <div class="hero-inner">
+    <span class="hero-eyebrow">化妝師專屬課程</span>
+    <h1>用 AI 做出你的<br>第一支改造影片</h1>
+    <p class="hero-desc">從腳本規劃、發文文案到 Canva 剪輯，學完這 3 個模組，未來每支影片你都能自己完成。</p>
+    <div class="hero-tags" role="group" aria-label="跳至各段落">
+      <button type="button" class="hero-tag" data-jump="section-modules" aria-label="前往：課程內容與三個模組">3 個模組</button>
+      <button type="button" class="hero-tag" data-jump="section-outcomes" aria-label="前往：學完之後可重複使用的工作流">可重複觀看</button>
+      <button type="button" class="hero-tag" data-jump="section-cta" aria-label="前往：從模組 1 開始、無需剪輯經驗">無需剪輯經驗</button>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <span>開始</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- Intro strip -->
+<div class="intro-strip" id="section-intro">
+  以鵝蛋臉 Before &amp; After 為示範，學完即可套用到圓臉、方臉、長臉，自行完成系列影片
+</div>
+
+<!-- Modules -->
+<section class="modules-section" id="section-modules">
+  <div class="section-label">課程內容</div>
+  <div class="section-title">三個模組，循序漸進</div>
+
+  <a class="module-card" href="module1.html">
+    <div class="module-num-col">
+      <div class="module-num">01</div>
+      <div class="module-of">Module</div>
+    </div>
+    <div class="module-body">
+      <div class="module-title">認識 AI 工具，建立工作思維</div>
+      <div class="module-desc">了解 Claude 是什麼、如何下指令，並實際請 AI 生成第一份拍攝腳本。</div>
+      <div class="module-meta">
+        <div class="module-meta-item"><div class="meta-pip"></div>3 個單元</div>
+        <div class="module-meta-item"><div class="meta-pip"></div>約 20 分鐘</div>
+        <div class="module-meta-item"><div class="meta-pip"></div>圖文教學</div>
+      </div>
+    </div>
+    <div class="module-arrow">→</div>
+  </a>
+
+  <a class="module-card" href="module2.html">
+    <div class="module-num-col">
+      <div class="module-num">02</div>
+      <div class="module-of">Module</div>
+    </div>
+    <div class="module-body">
+      <div class="module-title">用 AI 規劃腳本與發文文案</div>
+      <div class="module-desc">學會影片結構公式，用 AI 同時產出 Facebook 和小紅書兩份文案，再加上自己的風格。</div>
+      <div class="module-meta">
+        <div class="module-meta-item"><div class="meta-pip"></div>4 個單元</div>
+        <div class="module-meta-item"><div class="meta-pip"></div>約 25 分鐘</div>
+        <div class="module-meta-item"><div class="meta-pip"></div>圖文＋示範</div>
+      </div>
+    </div>
+    <div class="module-arrow">→</div>
+  </a>
+
+  <a class="module-card" href="module3.html">
+    <div class="module-num-col">
+      <div class="module-num">03</div>
+      <div class="module-of">Module</div>
+    </div>
+    <div class="module-body">
+      <div class="module-title">Canva 剪輯實作（鵝蛋臉示範）</div>
+      <div class="module-desc">從匯入素材、排列順序、加字幕音樂，到輸出影片和準備封面圖，完整跑一遍。</div>
+      <div class="module-meta">
+        <div class="module-meta-item"><div class="meta-pip"></div>4 個單元</div>
+        <div class="module-meta-item"><div class="meta-pip"></div>約 30 分鐘</div>
+        <div class="module-meta-item"><div class="meta-pip"></div>跟著操作</div>
+      </div>
+    </div>
+    <div class="module-arrow">→</div>
+  </a>
+</section>
+
+<!-- Outcomes -->
+<section class="outcome-section" id="section-outcomes">
+  <div class="outcome-inner">
+    <div class="section-label">學完之後</div>
+    <div class="section-title">你可以獨立完成的事</div>
+    <div class="outcome-grid">
+      <div class="outcome-card">
+        <div class="outcome-num">4x</div>
+        <div class="outcome-label">自行完成 4 種臉型系列</div>
+        <div class="outcome-desc">圓臉、方臉、長臉、鵝蛋臉，每一支你都能用同樣流程獨立製作。</div>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-num">AI</div>
+        <div class="outcome-label">隨時生成腳本與文案</div>
+        <div class="outcome-desc">不再對著空白頁面不知道寫什麼，用指令讓 AI 先給你草稿。</div>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-num">2</div>
+        <div class="outcome-label">雙平台同步發文</div>
+        <div class="outcome-desc">Facebook 和小紅書各有對應的文案和封面，一次搞定。</div>
+      </div>
+      <div class="outcome-card">
+        <div class="outcome-num">∞</div>
+        <div class="outcome-label">可重複使用的工作流</div>
+        <div class="outcome-desc">這套 AI 輔助流程不只適用於妝容影片，未來任何主題都能套用。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="section-cta">
+  <div class="section-label">準備好了嗎</div>
+  <p>從模組 1 開始，按照順序學習。<br>每個模組都可以隨時暫停，下次從同一個地方繼續。</p>
+  <a class="start-btn" href="module1.html">從模組 1 開始 →</a>
+</section>
+
+<footer>
+  <p>© 2026 CindyFlower AI 智動顧問工作室 · 高雄左營</p>
+  <p>聯絡方式：<a href="mailto:cindyflower@gmail.com">cindyflower@gmail.com</a></p>
+  <p class="footer-course">化妝師 AI 影片課程 · 課程內容僅供個人學習使用</p>
+</footer>
+
+<script>
+(function () {
+  function bindJumpButtons(root) {
+    (root || document).querySelectorAll('.hero-tag[data-jump]').forEach(function (btn) {
+      if (btn._jumpBound) return;
+      btn._jumpBound = true;
+      btn.addEventListener('click', function () {
+        var id = btn.getAttribute('data-jump');
+        var el = id ? document.getElementById(id) : null;
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  }
+  bindJumpButtons(document);
+
+  var subnav = document.getElementById('courseSubnav');
+  var hero = document.getElementById('page-hero') || document.querySelector('.hero');
+  if (subnav && hero && 'IntersectionObserver' in window) {
+    var subnavOn = function (show) {
+      subnav.classList.toggle('is-visible', show);
+      subnav.setAttribute('aria-hidden', show ? 'false' : 'true');
+      if (show) {
+        subnav.removeAttribute('inert');
+      } else {
+        subnav.setAttribute('inert', '');
+      }
+    };
+    var io = new IntersectionObserver(
+      function (entries) {
+        var e = entries[0];
+        subnavOn(!e.isIntersecting);
+      },
+      { root: null, rootMargin: '0px', threshold: 0 }
+    );
+    io.observe(hero);
+  } else if (subnav) {
+    subnav.setAttribute('aria-hidden', 'true');
+    subnav.setAttribute('inert', '');
+  }
+})();
+</script>
+
+</body>
+</html>

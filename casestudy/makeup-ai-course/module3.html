@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>模組 3｜Canva 剪輯實作</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Noto+Sans+TC:wght@300;400;500;600;700&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --clay-cream: #faf9f7;
+    --clay-black: #000000;
+    --clay-white: #ffffff;
+    --oat: #dad4c8;
+    --matcha-300: #84e7a5;
+    --matcha-600: #078a52;
+    --matcha-800: #02492a;
+    --slushie-500: #3bd3fd;
+    --lemon-400: #f8cc65;
+    --lemon-500: #fbbd41;
+    --pomegranate-400: #fc7981;
+    --ube-800: #43089f;
+    --warm-silver: #9f9b93;
+    --clay-shadow: rgba(0,0,0,0.1) 0px 1px 1px, rgba(0,0,0,0.04) 0px -1px 1px inset, rgba(0,0,0,0.05) 0px -0.5px 1px;
+    --cream: var(--clay-cream);
+    --warm-dark: var(--matcha-800);
+    --rose: var(--pomegranate-400);
+    --rose-light: rgba(252, 121, 129, 0.15);
+    --rose-mid: var(--lemon-400);
+    --text-body: var(--clay-black);
+    --text-muted: var(--warm-silver);
+    --border: var(--oat);
+    --topbar-h: 40px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--cream);
+    color: var(--text-body);
+    font-family: 'Noto Sans TC', 'DM Sans', system-ui, sans-serif;
+    font-weight: 400;
+    line-height: 1.7;
+    font-size: 16px;
+  }
+
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 500;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--clay-black);
+    background: var(--clay-white);
+    border-bottom: 1px solid var(--border);
+    padding: 9px 16px;
+    line-height: 1.4;
+    font-family: 'DM Sans', 'Noto Sans TC', sans-serif;
+    min-height: var(--topbar-h);
+    box-shadow: 0 1px 0 rgba(0,0,0,0.03);
+  }
+  .topbar a {
+    color: var(--matcha-600);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .topbar a:hover { text-decoration: underline; }
+
+  .site-header {
+    background: var(--warm-dark);
+    color: var(--cream);
+    padding: 14px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: var(--topbar-h);
+    z-index: 100;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+  }
+  .site-header .brand {
+    font-family: 'DM Sans', 'Noto Sans TC', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    opacity: 0.9;
+    color: inherit;
+    text-decoration: none;
+  }
+  .site-header .brand:hover { opacity: 1; }
+  .site-header .brand:focus-visible {
+    outline: rgb(20, 110, 245) solid 2px;
+    outline-offset: 4px;
+    border-radius: 4px;
+  }
+  .progress-bar { height: 3px; background: var(--pomegranate-400); width: 100%; border-radius: 2px; }
+  .module-label { font-size: 12px; font-weight: 600; letter-spacing: 1.08px; opacity: 0.55; text-transform: uppercase; font-family: 'DM Sans', 'Noto Sans TC', sans-serif; }
+
+  .hero {
+    background: var(--warm-dark);
+    color: var(--cream);
+    padding: 80px 40px 70px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -40px;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    background: var(--slushie-500);
+    opacity: 0.12;
+  }
+  .hero-inner { max-width: 680px; margin: 0 auto; position: relative; }
+  .hero-tag {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.08px;
+    color: var(--matcha-300);
+    border: 1px solid var(--oat);
+    padding: 6px 16px;
+    border-radius: 999px;
+    margin-bottom: 24px;
+    text-transform: uppercase;
+    background: rgba(255,255,255,0.06);
+  }
+  .hero h1 {
+    font-family: 'DM Sans', 'Noto Sans TC', sans-serif;
+    font-size: clamp(26px, 5vw, 40px);
+    font-weight: 600;
+    line-height: 1.12;
+    margin-bottom: 16px;
+    letter-spacing: -0.04em;
+  }
+  .hero p { font-size: 14px; opacity: 0.65; max-width: 480px; line-height: 1.9; }
+  .hero-meta { margin-top: 32px; display: flex; gap: 28px; flex-wrap: wrap; }
+  .meta-item { display: flex; align-items: center; gap: 8px; font-size: 12px; opacity: 0.55; letter-spacing: 0.05em; }
+  .meta-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--rose); }
+
+  .content { max-width: 680px; margin: 0 auto; padding: 60px 24px 100px; }
+
+  .unit {
+    margin-bottom: 60px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.5s ease forwards;
+  }
+  .unit:nth-child(1) { animation-delay: 0.1s; }
+  .unit:nth-child(2) { animation-delay: 0.2s; }
+  .unit:nth-child(3) { animation-delay: 0.3s; }
+  .unit:nth-child(4) { animation-delay: 0.4s; }
+  .unit:nth-child(5) { animation-delay: 0.5s; }
+  .unit:nth-child(6) { animation-delay: 0.6s; }
+
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+  .unit-number { font-size: 12px; font-weight: 600; letter-spacing: 1.08px; color: var(--matcha-600); text-transform: uppercase; margin-bottom: 8px; }
+  .unit h2 { font-family: 'DM Sans', 'Noto Sans TC', sans-serif; font-size: 22px; font-weight: 600; margin-bottom: 20px; color: var(--clay-black); letter-spacing: -0.03em; }
+  .unit p { margin-bottom: 16px; color: var(--text-body); font-size: 14.5px; }
+
+  .highlight {
+    background: rgba(252, 121, 129, 0.1);
+    border-left: 4px solid var(--pomegranate-400);
+    border-radius: 0 12px 12px 0;
+    padding: 18px 20px;
+    margin: 20px 0;
+    font-size: 15px;
+  }
+  .highlight strong { color: var(--clay-black); font-weight: 600; }
+
+  .divider { border: none; border-top: 0.5px solid var(--border); margin: 40px 0; }
+
+  /* Step-by-step */
+  .steps { margin: 20px 0; }
+  .step {
+    display: flex;
+    gap: 16px;
+    padding: 20px 0;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .step:last-child { border-bottom: none; }
+  .step-num {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--clay-white);
+    color: var(--clay-black);
+    border: 2px solid #000;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 3px 3px 0 0 #000;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .step-body { flex: 1; }
+  .step-title { font-size: 15px; font-weight: 600; color: var(--clay-black); margin-bottom: 6px; letter-spacing: -0.02em; }
+  .step-desc { font-size: 13.5px; color: var(--text-muted); line-height: 1.7; }
+  .step-tip {
+    margin-top: 10px;
+    background: var(--cream);
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 12.5px;
+    color: var(--text-body);
+    line-height: 1.7;
+  }
+  .step-tip b { color: var(--pomegranate-400); font-weight: 600; }
+
+  /* Screen mockup */
+  .screen-mock {
+    background: var(--matcha-800);
+    border-radius: 24px;
+    padding: 16px;
+    margin: 20px 0;
+    font-size: 12px;
+    color: var(--cream);
+    border: 1px solid rgba(0,0,0,0.2);
+  }
+  .screen-top {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+  .screen-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+  }
+  .screen-toolbar {
+    background: rgba(255,255,255,0.06);
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.05em;
+  }
+  .toolbar-btn {
+    background: rgba(255,255,255,0.1);
+    border-radius: 4px;
+    padding: 4px 10px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.7);
+  }
+  .screen-canvas {
+    background: rgba(255,255,255,0.04);
+    border-radius: 8px;
+    padding: 14px;
+    min-height: 80px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+  }
+  .clip-block {
+    border-radius: 6px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    flex: 1;
+    max-width: 100px;
+  }
+
+  /* Checklist */
+  .checklist { margin: 20px 0; }
+  .check-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 12px 0;
+    border-bottom: 0.5px solid var(--border);
+    cursor: pointer;
+  }
+  .check-item:last-child { border-bottom: none; }
+  .check-box {
+    width: 20px; height: 20px;
+    border-radius: 4px;
+    border: 1.5px solid var(--border);
+    flex-shrink: 0;
+    margin-top: 2px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+    background: white;
+  }
+  .check-box.done { background: var(--pomegranate-400); border-color: #000; }
+  .check-box.done::after { content: '✓'; color: white; font-size: 12px; }
+  .check-text { font-size: 13.5px; color: var(--text-body); line-height: 1.6; flex: 1; }
+  .check-text.done { text-decoration: line-through; color: var(--text-muted); }
+
+  /* Format cards */
+  .format-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
+  .format-card {
+    background: var(--clay-white);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 16px;
+    box-shadow: var(--clay-shadow);
+  }
+  .format-label { font-size: 11px; letter-spacing: 0.1em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; }
+  .format-value { font-size: 16px; font-weight: 600; color: var(--clay-black); margin-bottom: 4px; letter-spacing: -0.02em; }
+  .format-note { font-size: 12px; color: var(--text-muted); }
+
+  /* Summary */
+  .summary-box {
+    background: var(--warm-dark);
+    color: var(--cream);
+    border-radius: 32px;
+    padding: 32px 28px;
+    margin-top: 50px;
+    border: 1px solid rgba(0,0,0,0.1);
+  }
+  .summary-box h3 { font-family: 'DM Sans', 'Noto Sans TC', sans-serif; font-size: 20px; font-weight: 600; margin-bottom: 8px; letter-spacing: -0.02em; }
+  .summary-sub { font-size: 13px; opacity: 0.5; margin-bottom: 24px; }
+  .summary-list { list-style: none; }
+  .summary-list li {
+    font-size: 13.5px; padding: 8px 0;
+    border-bottom: 0.5px solid rgba(255,255,255,0.08);
+    display: flex; gap: 10px; opacity: 0.8; line-height: 1.7;
+  }
+  .summary-list li:last-child { border-bottom: none; }
+  .check-mark { color: var(--lemon-400); flex-shrink: 0; }
+
+  .complete-banner {
+    margin-top: 28px;
+    background: var(--lemon-500);
+    color: var(--clay-black);
+    border: 2px solid #000;
+    border-radius: 24px;
+    padding: 20px 24px;
+    text-align: center;
+    box-shadow: 6px 6px 0 0 #000;
+  }
+  .complete-banner p { font-size: 14px; opacity: 0.9; margin-bottom: 6px; font-weight: 500; }
+  .complete-banner h4 { font-family: 'DM Sans', 'Noto Sans TC', sans-serif; font-size: 18px; font-weight: 600; letter-spacing: -0.02em; }
+
+  .nav-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
+  .nav-btn {
+    border-radius: 16px; padding: 14px 16px;
+    font-size: 15px; font-weight: 500; font-family: 'Noto Sans TC', 'DM Sans', sans-serif;
+    letter-spacing: -0.02em; cursor: pointer;
+    text-align: center; border: 2px solid rgba(255,255,255,0.3);
+    box-shadow: var(--clay-shadow);
+    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+  }
+  .nav-btn.prev { background: rgba(255,255,255,0.1); color: var(--cream); }
+  .nav-btn.home { background: var(--clay-white); color: var(--clay-black); border-color: #000; }
+  .nav-btn:hover { transform: rotateZ(-2deg) translateY(-2px); box-shadow: 5px 5px 0 0 rgba(0,0,0,0.35); }
+  .nav-btn.home:hover { background: var(--lemon-500); box-shadow: 6px 6px 0 0 #000; }
+  .nav-btn:focus-visible { outline: rgb(20, 110, 245) solid 2px; outline-offset: 2px; }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 28px 40px;
+    text-align: center;
+    font-size: 14px;
+    color: var(--text-muted);
+    background: var(--clay-cream);
+    line-height: 1.6;
+  }
+  footer p { margin: 0; }
+  footer p + p { margin-top: 8px; }
+  footer a {
+    color: var(--matcha-600);
+    text-decoration: none;
+  }
+  footer a:hover { text-decoration: underline; }
+  footer .footer-course {
+    margin-top: 14px;
+    font-size: 13px;
+    opacity: 0.92;
+  }
+
+  @media (max-width: 520px) {
+    .hero { padding: 60px 20px 50px; }
+    .format-grid { grid-template-columns: 1fr; }
+    .nav-buttons { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">CindyFlower AI 智動顧問工作室 · <a href="https://cindyflower.github.io/ai-consultant-studio/" target="_blank" rel="noopener noreferrer">cindyflower.github.io</a></div>
+
+<header class="site-header">
+  <a class="brand" href="index.html" aria-label="回到課程首頁">化妝師 AI 課程</a>
+  <div class="progress-bar"></div>
+  <span class="module-label">Module 03</span>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <span class="hero-tag">模組 3 of 3</span>
+    <h1>Canva 剪輯實作<br>以鵝蛋臉為示範</h1>
+    <p>跟著這個模組一步一步操作，用你自己拍的素材，完成第一支 Before & After 影片。</p>
+    <div class="hero-meta">
+      <div class="meta-item"><div class="meta-dot"></div>4 個單元</div>
+      <div class="meta-item"><div class="meta-dot"></div>約 30 分鐘</div>
+      <div class="meta-item"><div class="meta-dot"></div>跟著操作</div>
+    </div>
+  </div>
+</section>
+
+<div class="content">
+
+  <!-- Unit 3-1 -->
+  <div class="unit">
+    <div class="unit-number">單元 3-1</div>
+    <h2>開始前的準備：素材整理</h2>
+
+    <p>在開啟 Canva 之前，先把素材整理好，剪輯會順很多。</p>
+
+    <div class="highlight">
+      <strong>建議的資料夾結構：</strong><br>
+      📁 鵝蛋臉影片<br>
+      &nbsp;&nbsp;├── 📁 Before（素顏片段）<br>
+      &nbsp;&nbsp;├── 📁 步驟（各妝容步驟片段）<br>
+      &nbsp;&nbsp;└── 📁 After（完妝片段）
+    </div>
+
+    <p>確認你有準備好這些素材：</p>
+
+    <div class="checklist" id="checklist1">
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box"></div>
+        <div class="check-text">Before 素顏正面影片（至少 5 秒）</div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box"></div>
+        <div class="check-text">底妝步驟片段</div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box"></div>
+        <div class="check-text">修容步驟片段</div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box"></div>
+        <div class="check-text">眼妝步驟片段（重點！）</div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box"></div>
+        <div class="check-text">腮紅＋唇妝步驟片段</div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box"></div>
+        <div class="check-text">After 完妝正面影片（至少 5 秒）</div>
+      </div>
+    </div>
+
+    <p style="margin-top:16px;">素材都準備好後，打開瀏覽器進入 <strong style="color:var(--pomegranate-400);">canva.com</strong>，登入帳號。</p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Unit 3-2 -->
+  <div class="unit">
+    <div class="unit-number">單元 3-2｜實作</div>
+    <h2>新增專案並匯入素材</h2>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">新增影片設計</div>
+          <div class="step-desc">進入 Canva 首頁，點選「建立設計」→ 搜尋「手機影片」→ 選擇 1080 × 1920（9:16 直式）。</div>
+          <div class="step-tip"><b>注意：</b>一定要選直式，Facebook 和小紅書的短影片都是 9:16。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">上傳所有素材</div>
+          <div class="step-desc">點左側「上傳」→「上傳檔案」，把 Before、步驟、After 的影片全部一次上傳。上傳需要一點時間，等全部出現後再繼續。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">依腳本順序加入時間軸</div>
+          <div class="step-desc">按照腳本的順序，依序把影片拖曳到下方的時間軸。順序是：After → Before → 步驟（底妝、修容、眼妝、腮紅唇妝）→ After 結尾。</div>
+          <div class="screen-mock">
+            <div class="screen-top">
+              <div class="screen-dot" style="background:#FF5F57"></div>
+              <div class="screen-dot" style="background:#FEBC2E"></div>
+              <div class="screen-dot" style="background:#28C840"></div>
+            </div>
+            <div class="screen-toolbar">
+              <span>檔案</span><span>編輯</span><span>檢視</span>
+              <div class="toolbar-btn">分享</div>
+            </div>
+            <div class="screen-canvas">
+              <div class="clip-block" style="background:rgba(251,189,65,0.35);color:#000;">After</div>
+              <div class="clip-block" style="background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.5);">Before</div>
+              <div class="clip-block" style="background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.5);">底妝</div>
+              <div class="clip-block" style="background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.5);">眼妝</div>
+              <div class="clip-block" style="background:rgba(252,121,129,0.3);color:#fff;">After</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">裁剪每段影片長度</div>
+          <div class="step-desc">點選時間軸上的影片片段，拖曳兩端來裁剪長度。每段控制在 5~8 秒，太長會讓節奏拖沉。</div>
+          <div class="step-tip"><b>目標總長：</b>60~90 秒。全部排完後看一下右下角的總時長。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Unit 3-3 -->
+  <div class="unit">
+    <div class="unit-number">單元 3-3｜實作</div>
+    <h2>Before & After 分割畫面＋字幕＋音樂</h2>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">製作 Before & After 左右對比畫面</div>
+          <div class="step-desc">在時間軸選一個空白頁面 → 點「元素」→ 搜尋「分割畫面」→ 選擇左右各半的版型。把 Before 和 After 的靜態截圖分別放入左右兩側。</div>
+          <div class="step-tip"><b>小技巧：</b>這個分割畫面放在影片結尾，Before 和 After 同時出現，視覺衝擊最強。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">加入字幕文案</div>
+          <div class="step-desc">點「文字」→「新增文字方塊」，把腳本裡每個步驟的字幕貼上。把文字方塊拖到畫面下方 1/3 處，字體大小建議 40~50px，顏色用白色加深色描邊，讓字幕在任何背景都清楚。</div>
+          <div class="step-tip">
+            <b>注意時間對齊：</b>在時間軸上，把字幕文字層的開始和結束時間，對準對應的影片片段。
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">加入轉場效果</div>
+          <div class="step-desc">在時間軸的兩個片段之間點「+」圖示 → 選擇轉場。建議用「淡入淡出」或「閃白」，簡單乾淨，不搶焦點。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">加入背景音樂</div>
+          <div class="step-desc">點左側「音頻」→「音頻庫」，搜尋「氛圍」「輕柔」「韓系」，試聽幾首找一首節奏穩定、不搶戲的。把音量調到約 60%，讓旁白或畫面聲音優先。</div>
+          <div class="step-tip"><b>Canva 音樂庫的音樂是免版稅的</b>，在 Facebook 和小紅書發文不會被下架。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- Unit 3-4 -->
+  <div class="unit">
+    <div class="unit-number">單元 3-4｜實作</div>
+    <h2>調色＋輸出＋封面圖準備</h2>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">整體調色</div>
+          <div class="step-desc">點選影片片段 → 上方工具列點「調整」→ 稍微提高「亮度」和「暖色調」，讓膚色更好看、整體氣氛更溫暖。不要調太大，微調就好。</div>
+          <div class="step-tip"><b>建議數值：</b>亮度 +5~10，暖色 +5~15。每個片段都要個別調整。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">輸出前最終檢查</div>
+          <div class="step-desc">從頭播放一遍，確認這幾件事：</div>
+          <div class="checklist" style="margin-top:12px;" id="checklist2">
+            <div class="check-item" onclick="toggleCheck(this)">
+              <div class="check-box"></div>
+              <div class="check-text">字幕沒有錯字</div>
+            </div>
+            <div class="check-item" onclick="toggleCheck(this)">
+              <div class="check-box"></div>
+              <div class="check-text">字幕時間和影片對齊</div>
+            </div>
+            <div class="check-item" onclick="toggleCheck(this)">
+              <div class="check-box"></div>
+              <div class="check-text">音樂音量不蓋過畫面</div>
+            </div>
+            <div class="check-item" onclick="toggleCheck(this)">
+              <div class="check-box"></div>
+              <div class="check-text">總長在 60~90 秒之間</div>
+            </div>
+            <div class="check-item" onclick="toggleCheck(this)">
+              <div class="check-box"></div>
+              <div class="check-text">結尾有預約 CTA</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">輸出影片</div>
+          <div class="step-desc">右上角「分享」→「下載」→ 格式選「MP4 影片」→ 點「下載」。等待 Canva 處理完成後儲存到手機或電腦。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">各平台封面圖另存</div>
+          <div class="step-desc">封面圖很重要，觀眾在滑動時第一眼看到的是封面，不是影片內容。</div>
+          <div class="format-grid" style="margin-top:12px;">
+            <div class="format-card">
+              <div class="format-label">Facebook</div>
+              <div class="format-value">9:16</div>
+              <div class="format-note">截取完妝 After 最好看的一格，在 Canva 加上標題文字後另存圖片</div>
+            </div>
+            <div class="format-card">
+              <div class="format-label">小紅書</div>
+              <div class="format-value">3:4</div>
+              <div class="format-note">建議用 Before & After 左右對比圖當封面，搭配吸引人的標題文字</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Summary -->
+  <div class="summary-box unit">
+    <h3>課程全部完成 ✦</h3>
+    <p class="summary-sub">你已經學完所有 3 個模組</p>
+    <ul class="summary-list">
+      <li><span class="check-mark">✓</span>模組 1：了解 AI 工具，學會下指令</li>
+      <li><span class="check-mark">✓</span>模組 2：用 AI 生成腳本和雙平台發文文案</li>
+      <li><span class="check-mark">✓</span>模組 3：用 Canva 完成 Before & After 影片剪輯</li>
+    </ul>
+
+    <div class="complete-banner">
+      <p>接下來的 3 種臉型</p>
+      <h4>用同樣的方法，你可以自己完成了</h4>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="nav-btn prev" onclick="window.location.href='module2.html'">← 回到模組 2</button>
+      <button class="nav-btn home" onclick="window.location.href='index.html'">回到課程首頁</button>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>© 2026 CindyFlower AI 智動顧問工作室 · 高雄左營</p>
+  <p>聯絡方式：<a href="mailto:cindyflower@gmail.com">cindyflower@gmail.com</a></p>
+  <p class="footer-course">化妝師 AI 影片課程 · 課程內容僅供個人學習使用</p>
+</footer>
+
+<script>
+function toggleCheck(item) {
+  const box = item.querySelector('.check-box');
+  const text = item.querySelector('.check-text');
+  box.classList.toggle('done');
+  text.classList.toggle('done');
+}
+</script>
+
+</body>
+</html>
