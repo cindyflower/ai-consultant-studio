@@ -273,6 +273,29 @@
   }
   .step-tip b { color: var(--matcha-600); font-weight: 600; }
 
+  .step-figure {
+    margin-top: 14px;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--clay-white);
+    box-shadow: var(--clay-shadow);
+  }
+  .step-figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+    vertical-align: middle;
+  }
+  .step-figure figcaption {
+    font-size: 12px;
+    color: var(--text-muted);
+    padding: 10px 14px 12px;
+    line-height: 1.5;
+    border-top: 1px solid var(--border);
+    background: var(--clay-cream);
+  }
+
   /* Prompt box */
   .prompt-box {
     background: var(--warm-dark);
@@ -459,7 +482,7 @@
     <div class="flow-overview">
       <div class="flow-item">
         <div class="flow-num">01</div>
-        <div class="flow-box">開啟 Video Studio</div>
+        <div class="flow-box">開啟影片工作室</div>
       </div>
       <div class="flow-arrow">→</div>
       <div class="flow-item">
@@ -493,26 +516,30 @@
   <!-- 步驟 1 -->
   <div class="unit">
     <div class="unit-number">步驟 1</div>
-    <h2>開啟 CapCut Video Studio</h2>
+    <h2>開啟 CapCut 影片工作室</h2>
 
     <div class="steps">
       <div class="step">
         <div class="step-num">1</div>
         <div class="step-body">
           <div class="step-title">進入網頁版</div>
-          <div class="step-desc">打開瀏覽器，前往 <strong style="color:var(--matcha-600);">capcut.com</strong>，登入帳號後點選「Video Studio」。</div>
-          <div class="step-tip"><b>注意：</b>Video Studio 在網頁版（電腦瀏覽器）操作，手機版介面不同。</div>
+          <div class="step-desc">打開瀏覽器，前往 <strong style="color:var(--matcha-600);">capcut.com</strong>，登入帳號後，在左側選單「用 AI 來創作」底下點選「<strong style="color:var(--warm-dark);">影片工作室</strong>」。</div>
+          <figure class="step-figure">
+            <img src="images/capcut-step1-video-studio.png" width="1024" height="625" alt="CapCut 網頁版：左側已選取「影片工作室」，主區為影片 AI 與靈感／畫布專案／故事畫板專案分頁" loading="lazy" decoding="async">
+            <figcaption>登入後於左側點「影片工作室」；下一步請點右側「畫布專案」分頁以建立畫布專案。</figcaption>
+          </figure>
+          <div class="step-tip"><b>注意：</b>影片工作室在網頁版（電腦瀏覽器）操作，手機版介面不同。</div>
         </div>
       </div>
       <div class="step">
         <div class="step-num">2</div>
         <div class="step-body">
-          <div class="step-title">選擇 Canvas Project</div>
+          <div class="step-title">選擇 畫布專案</div>
           <div class="step-desc">進入後會看到三種模式，選第一個：</div>
           <div class="type-grid" style="margin-top:14px;">
             <div class="type-card recommended">
               <div class="recommended-badge">選這個</div>
-              <div class="type-name">Canvas Project</div>
+              <div class="type-name">畫布專案</div>
               <div class="type-desc">無限畫布，貼入腳本後 AI 自動生成分鏡板</div>
             </div>
             <div class="type-card">
