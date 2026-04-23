@@ -193,13 +193,15 @@
     box-shadow: var(--clay-shadow);
     margin-bottom: 8px;
   }
-  .player-wrap iframe {
+  .player-wrap .demo-video {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    border: 0;
+    object-fit: contain;
+    background: #000;
+    display: block;
   }
 
   .demo-card {
@@ -333,20 +335,16 @@
 <div class="content">
   <div class="section-label">示範成品</div>
   <h2 class="section-title">跟著課程做完的影片</h2>
-  <p class="lede lede--tight">以下嵌入 CapCut 專案預覽，可先播放再往下看各模組。</p>
-  <div class="player-wrap" role="region" aria-label="CapCut 示範影片">
-    <iframe
-      title="化妝師 AI 影片課程示範（CapCut）"
-      src="https://www.capcut.com/player/7632082910769676309?workspaceId=7631997035973132296"
-      allow="clipboard-write"
-      allowfullscreen
-      width="100%"
-      height="100%"
-      frameborder="0"
-      loading="lazy"
-      webkitallowfullscreen
-      mozallowfullscreen
-    ></iframe>
+  <p class="lede lede--tight">以下為本課程示範影片，可直接播放，再往下瀏覽各模組。CapCut 線上預覽無法在他站嵌入，故改以課程附檔呈現。</p>
+  <div class="player-wrap" role="region" aria-label="課程示範影片">
+    <video
+      class="demo-video"
+      src="images/demo-final.mp4"
+      controls
+      playsinline
+      preload="metadata"
+      title="化妝師 AI 影片課程示範"
+    >您的瀏覽器不支援 HTML5 影片播放。</video>
   </div>
 
   <div class="path-section">
