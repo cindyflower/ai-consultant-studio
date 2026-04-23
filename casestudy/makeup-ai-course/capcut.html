@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>模組 3｜CapCut 剪輯實作</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Noto+Sans+TC:wght@300;400;500;600;700&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --clay-cream: #faf9f7;
+    --clay-black: #000000;
+    --clay-white: #ffffff;
+    --oat: #dad4c8;
+    --matcha-300: #84e7a5;
+    --matcha-600: #078a52;
+    --matcha-800: #02492a;
+    --slushie-500: #3bd3fd;
+    --lemon-400: #f8cc65;
+    --lemon-500: #fbbd41;
+    --pomegranate-400: #fc7981;
+    --ube-800: #43089f;
+    --warm-silver: #9f9b93;
+    --clay-shadow: rgba(0,0,0,0.1) 0px 1px 1px, rgba(0,0,0,0.04) 0px -1px 1px inset, rgba(0,0,0,0.05) 0px -0.5px 1px;
+    --cream: var(--clay-cream);
+    --warm-dark: var(--matcha-800);
+    --rose: var(--pomegranate-400);
+    --rose-light: rgba(252, 121, 129, 0.12);
+    --rose-mid: var(--lemon-400);
+    --text-body: var(--clay-black);
+    --text-muted: var(--warm-silver);
+    --border: var(--oat);
+    --topbar-h: 40px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--cream);
+    color: var(--text-body);
+    font-family: 'Noto Sans TC', 'DM Sans', system-ui, sans-serif;
+    font-weight: 400;
+    line-height: 1.7;
+    font-size: 16px;
+  }
+
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 500;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--clay-black);
+    background: var(--clay-white);
+    border-bottom: 1px solid var(--border);
+    padding: 9px 16px;
+    line-height: 1.4;
+    font-family: 'DM Sans', 'Noto Sans TC', sans-serif;
+    min-height: var(--topbar-h);
+    box-shadow: 0 1px 0 rgba(0,0,0,0.03);
+  }
+  .topbar a {
+    color: var(--matcha-600);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .topbar a:hover { text-decoration: underline; }
+
+  .site-header {
+    background: var(--warm-dark);
+    color: var(--cream);
+    padding: 14px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: var(--topbar-h);
+    z-index: 100;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+  }
+  .site-header .brand {
+    font-family: 'DM Sans', 'Noto Sans TC', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    opacity: 0.9;
+    color: inherit;
+    text-decoration: none;
+  }
+  .site-header .brand:hover { opacity: 1; }
+  .site-header .brand:focus-visible {
+    outline: rgb(20, 110, 245) solid 2px;
+    outline-offset: 4px;
+    border-radius: 4px;
+  }
+  .progress-bar { height: 3px; background: var(--pomegranate-400); width: 100%; border-radius: 2px; }
+  .module-label { font-size: 12px; font-weight: 600; letter-spacing: 1.08px; opacity: 0.55; text-transform: uppercase; font-family: 'DM Sans', 'Noto Sans TC', sans-serif; }
+
+  .hero {
+    background: var(--warm-dark);
+    color: var(--cream);
+    padding: 80px 40px 70px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -40px;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    background: var(--slushie-500);
+    opacity: 0.12;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -50px; left: 20%;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: var(--lemon-500);
+    opacity: 0.1;
+  }
+  .hero-inner { max-width: 680px; margin: 0 auto; position: relative; }
+  .hero-tag {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.08px;
+    color: var(--matcha-300);
+    border: 1px solid var(--oat);
+    padding: 6px 16px;
+    border-radius: 999px;
+    margin-bottom: 24px;
+    text-transform: uppercase;
+    background: rgba(255,255,255,0.06);
+  }
+  .hero h1 {
+    font-family: 'DM Sans', 'Noto Sans TC', sans-serif;
+    font-size: clamp(26px, 5vw, 40px);
+    font-weight: 600;
+    line-height: 1.12;
+    margin-bottom: 16px;
+    letter-spacing: -0.04em;
+  }
+  .hero p { font-size: 14px; opacity: 0.65; max-width: 480px; line-height: 1.9; }
+  .hero-meta { margin-top: 32px; display: flex; gap: 28px; flex-wrap: wrap; }
+  .meta-item { display: flex; align-items: center; gap: 8px; font-size: 12px; opacity: 0.55; letter-spacing: 0.05em; }
+  .meta-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--rose); }
+
+  .content { max-width: 680px; margin: 0 auto; padding: 60px 24px 100px; }
+
+  .unit {
+    margin-bottom: 60px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeUp 0.5s ease forwards;
+  }
+  /* .unit 與 <hr> 交錯：奇數子節點為區塊 */
+  .unit:nth-child(1) { animation-delay: 0.1s; }
+  .unit:nth-child(3) { animation-delay: 0.2s; }
+  .unit:nth-child(5) { animation-delay: 0.3s; }
+  .unit:nth-child(7) { animation-delay: 0.4s; }
+  .unit:nth-child(9) { animation-delay: 0.5s; }
+  .unit:nth-child(11) { animation-delay: 0.6s; }
+  /* 步驟 5 與 summary 之間無 <hr>，summary 為第 12 個子節點 */
+  .unit:nth-child(12) { animation-delay: 0.7s; }
+
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+  .unit-number { font-size: 12px; font-weight: 600; letter-spacing: 1.08px; color: var(--matcha-600); text-transform: uppercase; margin-bottom: 8px; }
+  .unit h2 { font-family: 'DM Sans', 'Noto Sans TC', sans-serif; font-size: 22px; font-weight: 600; margin-bottom: 20px; color: var(--clay-black); letter-spacing: -0.03em; }
+  .unit p { margin-bottom: 16px; color: var(--text-body); font-size: 14.5px; }
+
+  .highlight {
+    background: rgba(252, 121, 129, 0.1);
+    border-left: 4px solid var(--pomegranate-400);
+    border-radius: 0 12px 12px 0;
+    padding: 18px 20px;
+    margin: 20px 0;
+    font-size: 15px;
+  }
+  .highlight strong { color: var(--clay-black); font-weight: 600; }
+
+  .divider { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+
+  /* Flow overview */
+  .flow-overview {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin: 24px 0;
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+  .flow-item { display: flex; flex-direction: column; align-items: center; gap: 6px; flex-shrink: 0; }
+  .flow-box {
+    background: var(--warm-dark);
+    color: var(--cream);
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    text-align: center;
+    white-space: nowrap;
+    opacity: 0.72;
+    border: 1px solid rgba(255,255,255,0.12);
+    box-shadow: var(--clay-shadow);
+  }
+  .flow-box.active { background: var(--pomegranate-400); color: var(--clay-black); opacity: 1; border-color: #000; }
+  .flow-num { font-size: 10px; color: var(--text-muted); letter-spacing: 0.1em; font-weight: 600; }
+  .flow-arrow { color: var(--border); font-size: 14px; padding: 0 4px; flex-shrink: 0; margin-top: -18px; }
+
+  /* Project type cards */
+  .type-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 16px 0; }
+  .type-card {
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 18px 16px;
+    background: var(--clay-white);
+    position: relative;
+    box-shadow: var(--clay-shadow);
+  }
+  .type-card.recommended { border-color: var(--matcha-600); border-width: 2px; }
+  .recommended-badge {
+    position: absolute;
+    top: -10px; left: 50%;
+    transform: translateX(-50%);
+    background: var(--lemon-500);
+    color: var(--clay-black);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    padding: 3px 12px;
+    border-radius: 999px;
+    white-space: nowrap;
+    border: 1px solid #000;
+    box-shadow: 2px 2px 0 0 #000;
+  }
+  .type-name { font-size: 13px; font-weight: 600; color: var(--warm-dark); margin-bottom: 6px; }
+  .type-desc { font-size: 12px; color: var(--text-muted); line-height: 1.6; }
+
+  /* Steps */
+  .steps { margin: 20px 0; }
+  .step { display: flex; gap: 16px; padding: 20px 0; border-bottom: 1px solid var(--border); }
+  .step:last-child { border-bottom: none; }
+  .step-num {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: rgba(59, 211, 253, 0.22);
+    color: var(--clay-black);
+    border: 1px solid var(--border);
+    font-size: 13px;
+    font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .step-body { flex: 1; }
+  .step-title { font-size: 14.5px; font-weight: 600; color: var(--warm-dark); margin-bottom: 6px; }
+  .step-desc { font-size: 13.5px; color: var(--text-muted); line-height: 1.7; }
+  .step-tip {
+    margin-top: 10px;
+    background: var(--cream);
+    border: 1px dashed var(--border);
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-size: 12.5px;
+    color: var(--text-body);
+    line-height: 1.7;
+  }
+  .step-tip b { color: var(--matcha-600); font-weight: 600; }
+
+  /* Prompt box */
+  .prompt-box {
+    background: var(--warm-dark);
+    border-radius: 24px;
+    padding: 24px 24px 16px;
+    margin: 20px 0;
+    border: 1px solid rgba(0,0,0,0.15);
+  }
+  .prompt-box-label { font-size: 11px; font-weight: 600; letter-spacing: 1.08px; color: var(--matcha-300); text-transform: uppercase; margin-bottom: 12px; }
+  .prompt-text { color: var(--cream); font-size: 13.5px; line-height: 1.8; opacity: 0.95; font-family: 'Space Mono', 'Noto Sans TC', monospace; }
+  .copy-btn {
+    display: block; width: 100%; margin-top: 16px;
+    background: var(--clay-white); color: var(--clay-black);
+    border: 2px solid #000; border-radius: 12px; padding: 12px 14px;
+    font-size: 15px; font-weight: 500; font-family: 'Noto Sans TC', 'DM Sans', sans-serif;
+    letter-spacing: -0.02em; cursor: pointer;
+    box-shadow: var(--clay-shadow);
+    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+  }
+  .copy-btn:hover { background: var(--lemon-500); transform: rotateZ(-3deg) translateY(-3px); box-shadow: 5px 5px 0 0 #000; }
+  .copy-btn:focus-visible { outline: rgb(20, 110, 245) solid 2px; outline-offset: 2px; }
+
+  /* Output cards */
+  .output-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin: 20px 0; }
+  .output-card {
+    background: var(--clay-white);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 20px 18px;
+    box-shadow: var(--clay-shadow);
+  }
+  .output-icon { font-size: 20px; margin-bottom: 8px; display: block; }
+  .output-title { font-size: 13.5px; font-weight: 600; color: var(--warm-dark); margin-bottom: 5px; }
+  .output-desc { font-size: 12.5px; color: var(--text-muted); line-height: 1.6; }
+
+  /* Checklist */
+  .checklist { margin: 16px 0; }
+  .check-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 11px 0;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+  }
+  .check-item:last-child { border-bottom: none; }
+  .check-box {
+    width: 22px; height: 22px;
+    border-radius: 6px;
+    border: 2px solid var(--border);
+    flex-shrink: 0;
+    margin-top: 2px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+    background: var(--clay-white);
+    box-shadow: var(--clay-shadow);
+  }
+  .check-box.done { background: var(--matcha-600); border-color: var(--matcha-800); }
+  .check-box.done::after { content: '✓'; color: var(--cream); font-size: 12px; font-weight: 700; }
+  .check-text { font-size: 13.5px; color: var(--text-body); line-height: 1.6; flex: 1; }
+  .check-text.done { text-decoration: line-through; color: var(--text-muted); }
+
+  /* Format cards */
+  .format-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+  .format-card { background: var(--clay-white); border: 1px solid var(--border); border-radius: 24px; padding: 20px; box-shadow: var(--clay-shadow); }
+  .format-label { font-size: 11px; font-weight: 600; letter-spacing: 1.08px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; }
+  .format-value { font-size: 15px; font-weight: 600; color: var(--warm-dark); margin-bottom: 4px; }
+  .format-note { font-size: 12px; color: var(--text-muted); line-height: 1.6; }
+
+  /* Summary */
+  .summary-box {
+    background: var(--warm-dark);
+    color: var(--cream);
+    border-radius: 32px;
+    padding: 32px 28px;
+    margin-top: 50px;
+    border: 1px solid rgba(0,0,0,0.1);
+  }
+  .summary-box h3 { font-family: 'DM Sans', 'Noto Sans TC', sans-serif; font-size: 20px; font-weight: 600; margin-bottom: 8px; letter-spacing: -0.02em; opacity: 0.95; }
+  .summary-sub { font-size: 13px; opacity: 0.55; margin-bottom: 24px; }
+  .summary-list { list-style: none; }
+  .summary-list li {
+    font-size: 13.5px; padding: 8px 0;
+    border-bottom: 0.5px solid rgba(255,255,255,0.08);
+    display: flex; gap: 10px; opacity: 0.85; line-height: 1.7;
+  }
+  .summary-list li:last-child { border-bottom: none; }
+  .check { color: var(--lemon-400); flex-shrink: 0; }
+
+  .complete-banner {
+    margin-top: 28px;
+    background: var(--lemon-500);
+    color: var(--clay-black);
+    border-radius: 24px;
+    padding: 22px 24px;
+    text-align: center;
+    border: 2px solid #000;
+    box-shadow: var(--clay-shadow);
+  }
+  .complete-banner p { font-size: 13px; opacity: 0.75; margin-bottom: 6px; font-weight: 500; }
+  .complete-banner h4 { font-family: 'DM Sans', 'Noto Sans TC', sans-serif; font-size: 18px; font-weight: 600; letter-spacing: -0.02em; }
+
+  .nav-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 24px; }
+  .nav-btn {
+    display: block;
+    border-radius: 16px; padding: 14px 16px;
+    font-size: 15px; font-weight: 500; font-family: 'Noto Sans TC', 'DM Sans', sans-serif;
+    letter-spacing: -0.02em; cursor: pointer;
+    text-align: center; border: 2px solid transparent;
+    text-decoration: none;
+    box-sizing: border-box;
+    box-shadow: var(--clay-shadow);
+    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+  }
+  .nav-btn.prev { background: rgba(255,255,255,0.1); color: var(--cream); border-color: rgba(255,255,255,0.25); }
+  .nav-btn.home { background: var(--clay-white); color: var(--clay-black); border-color: #000; }
+  .nav-btn:hover { transform: rotateZ(-2deg) translateY(-2px); box-shadow: 5px 5px 0 0 rgba(0,0,0,0.4); }
+  .nav-btn.home:hover { background: var(--lemon-500); box-shadow: 6px 6px 0 0 #000; }
+  .nav-btn:focus-visible { outline: rgb(20, 110, 245) solid 2px; outline-offset: 2px; }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 28px 40px;
+    text-align: center;
+    font-size: 14px;
+    color: var(--text-muted);
+    background: var(--clay-cream);
+    line-height: 1.6;
+  }
+  footer p { margin: 0; }
+  footer p + p { margin-top: 8px; }
+  footer a {
+    color: var(--matcha-600);
+    text-decoration: none;
+  }
+  footer a:hover { text-decoration: underline; }
+  footer .footer-course {
+    margin-top: 14px;
+    font-size: 13px;
+    opacity: 0.92;
+  }
+
+  @media (max-width: 520px) {
+    .hero { padding: 60px 20px 50px; }
+    .type-grid { grid-template-columns: 1fr; }
+    .output-grid { grid-template-columns: 1fr; }
+    .format-grid { grid-template-columns: 1fr; }
+    .nav-buttons { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">CindyFlower AI 智動顧問工作室 · <a href="https://cindyflower.github.io/ai-consultant-studio/" target="_blank" rel="noopener noreferrer">cindyflower.github.io</a></div>
+
+<header class="site-header">
+  <a class="brand" href="index.html" aria-label="回到課程首頁">化妝師 AI 課程</a>
+  <div class="progress-bar"></div>
+  <span class="module-label">Module 03</span>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <span class="hero-tag">模組 3 of 3</span>
+    <h1>CapCut 剪輯實作<br>以鵝蛋臉為示範</h1>
+    <p>把 Claude 寫好的腳本直接貼入 CapCut Canvas，讓 AI 自動生成分鏡板，換上自己拍的素材，完成第一支 Before & After 影片。</p>
+    <div class="hero-meta">
+      <div class="meta-item"><div class="meta-dot"></div>5 個步驟</div>
+      <div class="meta-item"><div class="meta-dot"></div>約 30 分鐘</div>
+      <div class="meta-item"><div class="meta-dot"></div>網頁版操作</div>
+    </div>
+  </div>
+</section>
+
+<div class="content">
+
+  <!-- 流程總覽 -->
+  <div class="unit">
+    <div class="unit-number">流程總覽</div>
+    <h2>Claude → CapCut，五步完成影片</h2>
+
+    <p>這個模組的核心是把模組 2 用 Claude 生成的腳本，直接送進 CapCut Canvas，讓 AI 自動拆解成分鏡板，再換上你自己拍的真實素材。</p>
+
+    <div class="flow-overview">
+      <div class="flow-item">
+        <div class="flow-num">01</div>
+        <div class="flow-box">開啟 Video Studio</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">
+        <div class="flow-num">02</div>
+        <div class="flow-box active">Canvas 貼入腳本</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">
+        <div class="flow-num">03</div>
+        <div class="flow-box">換入真實素材</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">
+        <div class="flow-num">04</div>
+        <div class="flow-box">影片工作室精剪</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-item">
+        <div class="flow-num">05</div>
+        <div class="flow-box">輸出</div>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <strong>開始前確認：</strong>模組 2 的腳本已經準備好，手邊有 Before 素顏和 After 完妝的影片素材。
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 步驟 1 -->
+  <div class="unit">
+    <div class="unit-number">步驟 1</div>
+    <h2>開啟 CapCut Video Studio</h2>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">進入網頁版</div>
+          <div class="step-desc">打開瀏覽器，前往 <strong style="color:var(--matcha-600);">capcut.com</strong>，登入帳號後點選「Video Studio」。</div>
+          <div class="step-tip"><b>注意：</b>Video Studio 在網頁版（電腦瀏覽器）操作，手機版介面不同。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">選擇 Canvas Project</div>
+          <div class="step-desc">進入後會看到三種模式，選第一個：</div>
+          <div class="type-grid" style="margin-top:14px;">
+            <div class="type-card recommended">
+              <div class="recommended-badge">選這個</div>
+              <div class="type-name">Canvas Project</div>
+              <div class="type-desc">無限畫布，貼入腳本後 AI 自動生成分鏡板</div>
+            </div>
+            <div class="type-card">
+              <div class="type-name">Storyboard Project</div>
+              <div class="type-desc">直接從分鏡板開始，彈性較少</div>
+            </div>
+            <div class="type-card">
+              <div class="type-name">Auto-Generated</div>
+              <div class="type-desc">全自動生成，無法自訂</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 步驟 2 -->
+  <div class="unit">
+    <div class="unit-number">步驟 2</div>
+    <h2>Canvas — 貼入 Claude 腳本</h2>
+
+    <p>進入 Canvas 後，找到 AI 對話框，把模組 2 生成的腳本複製貼入：</p>
+
+    <div class="prompt-box">
+      <div class="prompt-box-label">貼入這段腳本 →</div>
+      <div class="prompt-text" id="capcut-prompt">我是一位化妝師，想做一支 Facebook 短影片，主題是鵝蛋臉的 Before &amp; After 妝容改造，影片長度約 30 秒。請幫我寫完整的拍攝腳本，格式包含：鏡號、時間點、畫面內容、字幕文案。結尾要有預約私訊的 CTA。</div>
+      <button type="button" class="copy-btn" onclick="copyPrompt('capcut-prompt', this)">複製腳本</button>
+    </div>
+
+    <p>送出後，CapCut AI 會自動產出：</p>
+
+    <div class="output-grid">
+      <div class="output-card">
+        <span class="output-icon">📋</span>
+        <div class="output-title">製作企劃書</div>
+        <div class="output-desc">影片的整體規劃，包含主題、風格、目標受眾，可以手動修改</div>
+      </div>
+      <div class="output-card">
+        <span class="output-icon">🎞</span>
+        <div class="output-title">Storyboard 分鏡板</div>
+        <div class="output-desc">腳本自動拆解成一張張鏡頭卡片，每張可以個別調整內容和字幕</div>
+      </div>
+    </div>
+
+    <div class="highlight">
+      <strong>分鏡板出來後，先花 5 分鐘檢查。</strong><br>
+      看看每張鏡頭卡片的畫面描述和字幕文案，有不符合需求的地方直接在卡片上修改，確認沒問題再進下一步。
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 步驟 3 -->
+  <div class="unit">
+    <div class="unit-number">步驟 3</div>
+    <h2>把 AI 示意圖換成你自己的素材</h2>
+
+    <p>分鏡板的每張卡片預設是 AI 生成的示意畫面。<strong style="color:var(--warm-dark);">一定要換成你自己拍的真實素材</strong>——觀眾要看到真實的妝容效果，不是 AI 生成的臉。</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">點選鏡頭卡片替換</div>
+          <div class="step-desc">在 Storyboard 上點選要替換的鏡頭卡片，找到「上傳素材」或「替換」按鈕，上傳對應的影片片段。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">依順序替換所有卡片</div>
+          <div class="step-desc">按照腳本順序逐一替換：</div>
+          <div class="checklist" style="margin-top:12px;">
+            <div class="check-item" onclick="toggleCheck(this)">
+              <div class="check-box"></div>
+              <div class="check-text">Hook 鏡頭 → After 完妝正面（最吸睛的畫面）</div>
+            </div>
+            <div class="check-item" onclick="toggleCheck(this)">
+              <div class="check-box"></div>
+              <div class="check-text">Before 鏡頭 → 素顏正面影片</div>
+            </div>
+            <div class="check-item" onclick="toggleCheck(this)">
+              <div class="check-box"></div>
+              <div class="check-text">步驟鏡頭 → 各妝容步驟片段</div>
+            </div>
+            <div class="check-item" onclick="toggleCheck(this)">
+              <div class="check-box"></div>
+              <div class="check-text">結尾鏡頭 → After 完妝 + CTA 文字</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">調整每段片段長度</div>
+          <div class="step-desc">每張卡片上設定這個鏡頭的秒數，對照腳本時間分配調整，總長控制在 30 秒以內。</div>
+          <div class="step-tip"><b>建議：</b>Hook 2~3 秒、Before 3 秒、每個步驟 3~4 秒、After + CTA 4 秒</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 步驟 4 -->
+  <div class="unit">
+    <div class="unit-number">步驟 4</div>
+    <h2>進入影片工作室精剪</h2>
+
+    <p>素材替換完成後，點「前往影片工作室」，進入時間軸編輯介面做最後精修。</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">確認字幕時間對齊</div>
+          <div class="step-desc">Canvas 已自動生成字幕，在時間軸上確認每句字幕出現的時間，和對應畫面是否吻合，不對的地方手動調整。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">加入轉場效果</div>
+          <div class="step-desc">片段與片段之間加入轉場，建議用「淡入淡出」或「閃白」，簡單乾淨不搶焦點。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">加入背景音樂</div>
+          <div class="step-desc">點「音頻」→ CapCut 音樂庫，搜尋「氛圍」「輕柔」「韓系」，選一首節奏穩定的，音量調到約 60%。</div>
+          <div class="step-tip"><b>CapCut 音樂庫是免版稅的</b>，在 Facebook 和小紅書發文不會被下架。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">整體調色</div>
+          <div class="step-desc">點選片段 → 「調整」，稍微提高亮度和暖色調，讓膚色更好看。微調就好，不要過度。</div>
+          <div class="step-tip"><b>建議數值：</b>亮度 +5~10，暖色 +5~15</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 步驟 5 -->
+  <div class="unit">
+    <div class="unit-number">步驟 5</div>
+    <h2>輸出前檢查＋輸出</h2>
+
+    <p>輸出之前，從頭播放一遍，逐一確認：</p>
+
+    <div class="checklist">
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box"></div>
+        <div class="check-text">字幕沒有錯字</div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box"></div>
+        <div class="check-text">字幕時間和影片畫面對齊</div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box"></div>
+        <div class="check-text">音樂音量不蓋過畫面</div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box"></div>
+        <div class="check-text">總長在 30 秒以內</div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box"></div>
+        <div class="check-text">結尾有預約 CTA</div>
+      </div>
+    </div>
+
+    <p style="margin-top:20px;">確認沒問題後：右上角「匯出」→ 格式選 MP4、解析度 1080×1920（9:16）→ 下載。</p>
+
+    <p>封面圖各平台尺寸不同，要另外準備：</p>
+
+    <div class="format-grid">
+      <div class="format-card">
+        <div class="format-label">Facebook</div>
+        <div class="format-value">9:16</div>
+        <div class="format-note">截取 After 完妝最好看的一格，加上標題文字後另存圖片</div>
+      </div>
+      <div class="format-card">
+        <div class="format-label">小紅書</div>
+        <div class="format-value">3:4</div>
+        <div class="format-note">用 Before & After 左右對比圖當封面，搭配吸引人的標題文字</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Summary -->
+  <div class="summary-box unit">
+    <h3>課程全部完成 ✦</h3>
+    <p class="summary-sub">你已經學完所有 3 個模組</p>
+    <ul class="summary-list">
+      <li><span class="check">✓</span>模組 1：了解 AI 工具，學會下指令</li>
+      <li><span class="check">✓</span>模組 2：用 AI 生成腳本和雙平台發文文案</li>
+      <li><span class="check">✓</span>模組 3：Claude 腳本串聯 CapCut Canvas，完成影片剪輯輸出</li>
+    </ul>
+
+    <div class="complete-banner">
+      <p>接下來的 3 種臉型</p>
+      <h4>用同樣的方法，你可以自己完成了</h4>
+    </div>
+
+    <div class="nav-buttons">
+      <a class="nav-btn prev" href="module2.html">← 回到模組 2</a>
+      <a class="nav-btn home" href="index.html">回到課程首頁</a>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <p>© 2026 CindyFlower AI 智動顧問工作室 · 高雄左營</p>
+  <p>聯絡方式：<a href="https://line.me/ti/p/bDxCbAXPm5" target="_blank" rel="noopener noreferrer">LINE</a></p>
+  <p class="footer-course">化妝師 AI 影片課程 · 課程內容僅供個人學習使用</p>
+</footer>
+
+<script>
+function toggleCheck(item) {
+  const box = item.querySelector('.check-box');
+  const text = item.querySelector('.check-text');
+  box.classList.toggle('done');
+  text.classList.toggle('done');
+}
+function copyPrompt(id, btn) {
+  const el = document.getElementById(id);
+  navigator.clipboard.writeText(el.innerText).then(() => {
+    btn.textContent = '已複製 ✓';
+    setTimeout(() => btn.textContent = '複製腳本', 2000);
+  });
+}
+</script>
+
+</body>
+</html>
