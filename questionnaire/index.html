@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 導入需求問卷｜CindyFlower 智能顧問工作室</title>
+<meta name="description" content="協助中小企業在 Google Workspace 生態系內導入 AI,規劃自動化工作流程">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --stripe-purple: #533afd;
+  --stripe-purple-hover: #4527e0;
+  --stripe-purple-light: #ede9ff;
+  --heading: #061b31;
+  --body: #3c4257;
+  --muted: #687385;
+  --hint: #8792a2;
+  --brand-dark: #1c1e54;
+  --bg: #ffffff;
+  --bg-soft: #f7fafc;
+  --bg-stripe: linear-gradient(180deg, #f7fafc 0%, #ffffff 100%);
+  --border: #e3e8ee;
+  --border-strong: #c1c9d2;
+  --success: #15845d;
+  --success-bg: #e6f4ee;
+  --danger: #cd3500;
+  --danger-bg: #ffeae5;
+  --shadow-sm: 0 1px 2px 0 rgba(6, 27, 49, 0.05);
+  --shadow-md: 0 2px 5px -1px rgba(50, 50, 93, 0.25), 0 1px 3px -1px rgba(0, 0, 0, 0.30);
+  --shadow-lg: 0 13px 27px -5px rgba(50, 50, 93, 0.25), 0 8px 16px -8px rgba(0, 0, 0, 0.30);
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 400;
+  color: var(--body);
+  background: var(--bg-stripe);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.container {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+header.site-header {
+  padding: 32px 0 24px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 48px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--heading);
+}
+
+.brand-mark {
+  width: 32px;
+  height: 32px;
+  background: var(--stripe-purple);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -0.02em;
+}
+
+.brand-text {
+  font-weight: 500;
+  font-size: 15px;
+  color: var(--heading);
+}
+
+.brand-text small {
+  display: block;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+main { padding-bottom: 80px; }
+
+.hero {
+  margin-bottom: 32px;
+}
+
+.eyebrow {
+  display: inline-block;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--stripe-purple);
+  letter-spacing: 0.02em;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+}
+
+h1 {
+  font-family: 'DM Sans', 'Noto Sans TC', sans-serif;
+  font-weight: 300;
+  font-size: 44px;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--heading);
+  margin-bottom: 20px;
+}
+
+.lede {
+  font-size: 18px;
+  line-height: 1.55;
+  color: var(--body);
+  max-width: 620px;
+}
+
+.lede strong { color: var(--heading); font-weight: 500; }
+
+.why-fill {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--stripe-purple);
+  border-radius: var(--radius-md);
+  padding: 20px 24px;
+  margin-top: 24px;
+  font-size: 14px;
+  color: var(--body);
+  line-height: 1.7;
+}
+
+.why-fill h3 {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--heading);
+  margin-bottom: 8px;
+  letter-spacing: -0.005em;
+}
+
+.why-fill ol {
+  margin: 8px 0 0 20px;
+  padding: 0;
+}
+
+.why-fill ol li {
+  padding: 2px 0;
+  font-size: 13px;
+}
+
+.progress-track {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 40px 0 32px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.progress-step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.progress-dot {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+  transition: all 0.2s;
+}
+
+.progress-step.active .progress-dot {
+  background: var(--stripe-purple);
+  border-color: var(--stripe-purple);
+  color: white;
+}
+
+.progress-step.complete .progress-dot {
+  background: var(--success);
+  border-color: var(--success);
+  color: white;
+}
+
+.progress-step.active .progress-label {
+  color: var(--heading);
+  font-weight: 500;
+}
+
+.progress-line {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 40px;
+  margin-bottom: 24px;
+}
+
+.card-section {
+  margin-bottom: 32px;
+}
+.card-section:last-child { margin-bottom: 0; }
+
+.section-title {
+  font-family: 'DM Sans', 'Noto Sans TC', sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--heading);
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+
+.section-hint {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 24px;
+  line-height: 1.55;
+}
+
+.field-group { margin-bottom: 20px; }
+.field-group:last-child { margin-bottom: 0; }
+
+label.field-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--heading);
+  margin-bottom: 6px;
+}
+
+label.field-label .required {
+  color: var(--danger);
+  margin-left: 2px;
+}
+
+.field-help {
+  font-size: 12px;
+  color: var(--hint);
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+textarea,
+select {
+  width: 100%;
+  padding: 10px 12px;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--heading);
+  background: var(--bg);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  transition: border-color 0.15s, box-shadow 0.15s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+input[type="text"]:hover,
+input[type="email"]:hover,
+input[type="tel"]:hover,
+textarea:hover,
+select:hover {
+  border-color: var(--hint);
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="tel"]:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--stripe-purple);
+  box-shadow: 0 0 0 3px rgba(83, 58, 253, 0.15);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 80px;
+  font-family: inherit;
+  line-height: 1.55;
+}
+
+select {
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='none' stroke='%23687385' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 12px;
+  padding-right: 36px;
+  cursor: pointer;
+}
+
+.radio-group, .checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.radio-group.horizontal, .checkbox-group.horizontal {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.option-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.15s;
+  font-size: 14px;
+  color: var(--body);
+  user-select: none;
+}
+
+.option-label:hover {
+  border-color: var(--hint);
+  background: var(--bg-soft);
+}
+
+.option-label input[type="radio"],
+.option-label input[type="checkbox"] {
+  margin: 0;
+  margin-top: 3px;
+  cursor: pointer;
+  accent-color: var(--stripe-purple);
+  flex-shrink: 0;
+}
+
+.option-label:has(input:checked) {
+  border-color: var(--stripe-purple);
+  background: var(--stripe-purple-light);
+}
+
+.option-label:has(input:checked) .option-content {
+  color: var(--heading);
+  font-weight: 500;
+}
+
+.option-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.option-content small {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 0;
+}
+
+.btn {
+  padding: 10px 20px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  letter-spacing: -0.005em;
+}
+
+.btn-primary {
+  background: var(--stripe-purple);
+  color: white;
+  box-shadow: 0 1px 3px rgba(83, 58, 253, 0.3);
+}
+
+.btn-primary:hover {
+  background: var(--stripe-purple-hover);
+  box-shadow: 0 2px 8px rgba(83, 58, 253, 0.35);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active { transform: translateY(0); }
+
+.btn-primary:disabled {
+  background: var(--hint);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.btn-secondary {
+  background: var(--bg);
+  color: var(--heading);
+  border-color: var(--border-strong);
+}
+
+.btn-secondary:hover {
+  background: var(--bg-soft);
+  border-color: var(--hint);
+}
+
+.btn-text {
+  background: transparent;
+  color: var(--muted);
+  padding: 10px 12px;
+}
+
+.btn-text:hover { color: var(--heading); }
+
+.spacer { flex: 1; }
+
+.expand-prompt {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 24px;
+  background: var(--stripe-purple-light);
+  border: 1px solid #d4caff;
+  border-radius: var(--radius-lg);
+  margin-bottom: 24px;
+}
+
+.expand-prompt-icon {
+  width: 32px;
+  height: 32px;
+  background: var(--stripe-purple);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+  font-weight: 600;
+}
+
+.expand-prompt-body { flex: 1; }
+
+.expand-prompt h3 {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--heading);
+  margin-bottom: 4px;
+}
+
+.expand-prompt p {
+  font-size: 13px;
+  color: var(--body);
+  margin-bottom: 12px;
+  line-height: 1.55;
+}
+
+.expand-prompt-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.expand-prompt .btn {
+  font-size: 13px;
+  padding: 6px 14px;
+}
+
+#detailedSection {
+  display: none;
+  animation: fadeIn 0.4s ease-out;
+}
+#detailedSection.show { display: block; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.success-state, .error-state {
+  text-align: center;
+  padding: 48px 32px;
+}
+
+.success-icon, .error-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  font-size: 28px;
+}
+
+.success-icon {
+  background: var(--success-bg);
+  color: var(--success);
+}
+
+.error-icon {
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+
+.success-state h2, .error-state h2 {
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--heading);
+  margin-bottom: 12px;
+  letter-spacing: -0.01em;
+}
+
+.success-state p, .error-state p {
+  color: var(--body);
+  font-size: 15px;
+  max-width: 480px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+.success-state ul {
+  list-style: none;
+  text-align: left;
+  max-width: 420px;
+  margin: 24px auto 0;
+  padding: 20px 24px;
+  background: var(--bg-soft);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  color: var(--body);
+}
+
+.success-state ul li {
+  padding: 6px 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  line-height: 1.55;
+}
+
+.success-state ul li::before {
+  content: "→";
+  color: var(--stripe-purple);
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.success-fallback {
+  margin-top: 24px;
+  padding: 16px 20px;
+  background: #fff8e6;
+  border: 1px solid #f5d97f;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  color: var(--heading);
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+  line-height: 1.6;
+}
+
+.success-fallback strong { font-weight: 500; }
+
+.field-error {
+  font-size: 12px;
+  color: var(--danger);
+  margin-top: 4px;
+  display: none;
+}
+
+.field-error.show { display: block; }
+
+input.has-error, select.has-error, textarea.has-error {
+  border-color: var(--danger);
+}
+
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(4px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.loading-overlay.show { display: flex; }
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border);
+  border-top-color: var(--stripe-purple);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+footer {
+  border-top: 1px solid var(--border);
+  padding: 32px 0;
+  margin-top: 64px;
+  font-size: 13px;
+  color: var(--muted);
+  text-align: center;
+}
+
+footer a {
+  color: var(--stripe-purple);
+  text-decoration: none;
+}
+
+footer a:hover { text-decoration: underline; }
+
+.privacy-note {
+  font-size: 12px;
+  color: var(--muted);
+  background: var(--bg-soft);
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  margin-top: 16px;
+  line-height: 1.55;
+  border-left: 3px solid var(--stripe-purple);
+}
+
+.required-summary {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 24px;
+}
+
+.required-summary .required {
+  color: var(--danger);
+  font-weight: 500;
+}
+
+@media (max-width: 640px) {
+  .container { padding: 0 16px; }
+  h1 { font-size: 32px; }
+  .card { padding: 24px 20px; }
+  .actions { flex-direction: column-reverse; align-items: stretch; }
+  .actions .btn { justify-content: center; }
+  .spacer { display: none; }
+  .progress-track { font-size: 12px; }
+  .why-fill { padding: 16px 18px; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="https://cindyflower.github.io/ai-consultant-studio/" class="brand">
+      <div class="brand-mark">CF</div>
+      <div class="brand-text">
+        CindyFlower 智能顧問工作室
+        <small>AI Consultant Studio · 客戶需求問卷</small>
+      </div>
+    </a>
+  </div>
+</header>
+
+<main>
+<div class="container">
+
+<section class="hero">
+  <span class="eyebrow">客戶需求問卷</span>
+  <h1>讓我先了解<br>您的 AI 導入需求</h1>
+  <p class="lede">
+    為了給您一份<strong>精準到位的報價</strong>(而不是憑印象的數字),我設計了這份問卷協助掌握您的現況。
+    填寫只需 3-10 分鐘,完成後 24 小時內您會收到我的回覆。
+  </p>
+
+  <div class="why-fill">
+    <h3>為什麼需要您填寫?</h3>
+    <ol>
+      <li>不同的 GWS 方案 / Gemini 版本可用功能差很多,影響報價</li>
+      <li>客戶數量、訂單量級會直接影響架構選擇與工時</li>
+      <li>了解「絕對不能」的限制,避免提案偏離實際情況</li>
+    </ol>
+  </div>
+</section>
+
+<div class="progress-track" id="progressTrack">
+  <div class="progress-step active" data-step="1">
+    <div class="progress-dot">1</div>
+    <div class="progress-label">基本資訊</div>
+  </div>
+  <div class="progress-line"></div>
+  <div class="progress-step" data-step="2">
+    <div class="progress-dot">2</div>
+    <div class="progress-label">深入了解</div>
+  </div>
+  <div class="progress-line"></div>
+  <div class="progress-step" data-step="3">
+    <div class="progress-dot">3</div>
+    <div class="progress-label">送出</div>
+  </div>
+</div>
+
+<form id="intakeForm" novalidate>
+
+<div class="card" id="basicSection">
+
+<div class="card-section">
+  <h2 class="section-title">公司基本資料</h2>
+  <p class="required-summary">標記 <span class="required">*</span> 為必填</p>
+
+  <div class="field-group">
+    <label class="field-label" for="companyName">公司名稱<span class="required">*</span></label>
+    <input type="text" id="companyName" name="companyName" required maxlength="200" autocomplete="organization">
+    <div class="field-error">請輸入公司名稱</div>
+  </div>
+
+  <div class="field-group">
+    <label class="field-label" for="contactName">聯絡人姓名<span class="required">*</span></label>
+    <input type="text" id="contactName" name="contactName" required maxlength="100" autocomplete="name">
+    <div class="field-error">請輸入您的姓名</div>
+  </div>
+
+  <div class="field-group">
+    <label class="field-label" for="email">Email<span class="required">*</span></label>
+    <p class="field-help">用於寄送確認信與後續報價</p>
+    <input type="email" id="email" name="email" required maxlength="200" autocomplete="email">
+    <div class="field-error">請輸入有效的 Email</div>
+  </div>
+
+  <div class="field-group">
+    <label class="field-label" for="phone">聯絡電話</label>
+    <input type="tel" id="phone" name="phone" maxlength="50" autocomplete="tel">
+  </div>
+
+  <div class="field-group">
+    <label class="field-label" for="line">LINE ID(選填)</label>
+    <input type="text" id="line" name="line" maxlength="100">
+  </div>
+</div>
+
+<div class="card-section">
+  <h2 class="section-title">公司規模</h2>
+
+  <div class="field-group">
+    <label class="field-label">行業類別</label>
+    <select id="industry" name="industry">
+      <option value="">請選擇</option>
+      <option value="批發零售">批發零售</option>
+      <option value="製造業">製造業</option>
+      <option value="服務業">服務業</option>
+      <option value="科技/軟體">科技/軟體</option>
+      <option value="餐飲/食品">餐飲/食品</option>
+      <option value="醫療/健康">醫療/健康</option>
+      <option value="教育/培訓">教育/培訓</option>
+      <option value="金融/保險">金融/保險</option>
+      <option value="其他">其他</option>
+    </select>
+  </div>
+
+  <div class="field-group">
+    <label class="field-label">員工人數規模</label>
+    <select id="employeeSize" name="employeeSize">
+      <option value="">請選擇</option>
+      <option value="1-10 人">1-10 人</option>
+      <option value="11-30 人">11-30 人</option>
+      <option value="31-100 人">31-100 人</option>
+      <option value="100 人以上">100 人以上</option>
+    </select>
+  </div>
+
+  <div class="field-group">
+    <label class="field-label" for="region">所在地區</label>
+    <input type="text" id="region" name="region" maxlength="200" placeholder="例:高雄市鼓山區">
+  </div>
+</div>
+
+<div class="card-section">
+  <h2 class="section-title">需求重點</h2>
+  <p class="section-hint">先用一段話描述,我們在訪談時會深入</p>
+
+  <div class="field-group">
+    <label class="field-label" for="painPoint">此次想解決的最重要問題<span class="required">*</span></label>
+    <p class="field-help">如果這個專案只能解決一件事,必須是什麼?</p>
+    <textarea id="painPoint" name="painPoint" required maxlength="2000" rows="3" placeholder="例:每天有 50 封客戶來信要手動處理下單,人工耗時且容易出錯"></textarea>
+    <div class="field-error">請描述您想解決的問題</div>
+  </div>
+
+  <div class="field-group">
+    <label class="field-label">期望的上線時程</label>
+    <select id="timeline" name="timeline">
+      <option value="">請選擇</option>
+      <option value="1 個月內">1 個月內</option>
+      <option value="1-3 個月">1-3 個月</option>
+      <option value="3-6 個月">3-6 個月</option>
+      <option value="半年以上">半年以上</option>
+      <option value="評估中">還在評估</option>
+    </select>
+  </div>
+</div>
+
+<div class="expand-prompt" id="expandPrompt">
+  <div class="expand-prompt-icon">+</div>
+  <div class="expand-prompt-body">
+    <h3>多花 5 分鐘,讓報價更精準</h3>
+    <p>進階問題協助我在報價前完成可行性評估與建議架構,訪談時就能直接討論方案,而不是花時間了解現況。</p>
+    <div class="expand-prompt-actions">
+      <button type="button" class="btn btn-primary" id="expandBtn">展開進階問題</button>
+      <button type="button" class="btn btn-text" id="skipBtn">先送出基本資料</button>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div class="card" id="detailedSection">
+
+<div class="card-section">
+  <h2 class="section-title">現有 Google Workspace 環境</h2>
+  <p class="section-hint">這幾題會直接影響可行的解決方案</p>
+
+  <div class="field-group">
+    <label class="field-label">目前使用的 GWS 版本</label>
+    <select id="gwsVersion" name="gwsVersion">
+      <option value="">請選擇</option>
+      <option value="Business Starter">Business Starter</option>
+      <option value="Business Standard">Business Standard</option>
+      <option value="Business Plus">Business Plus</option>
+      <option value="Enterprise">Enterprise</option>
+      <option value="不確定">不確定</option>
+      <option value="N/A">沒有使用 GWS</option>
+    </select>
+  </div>
+
+  <div class="field-group">
+    <label class="field-label">Gemini 是哪一個方案</label>
+    <p class="field-help">影響可用功能與 API 額度</p>
+    <select id="geminiPlan" name="geminiPlan">
+      <option value="">請選擇</option>
+      <option value="Gemini Business">Gemini Business</option>
+      <option value="Gemini Enterprise">Gemini Enterprise</option>
+      <option value="Gemini AI Pro/Ultra">Gemini AI Pro / Ultra(個人版)</option>
+      <option value="無">沒有訂閱</option>
+      <option value="不確定">不確定</option>
+    </select>
+  </div>
+
+  <div class="field-group">
+    <label class="field-label" for="existingSystems">目前使用的 ERP / 進銷存 / CRM 系統</label>
+    <p class="field-help">例:鼎新、SAP、自建系統、Excel、Google Sheets,以及是否有 API 可串接</p>
+    <textarea id="existingSystems" name="existingSystems" maxlength="10000" rows="2"></textarea>
+  </div>
+
+  <div class="field-group">
+    <label class="field-label" for="dataLocation">商品、庫存、客戶、價格資料目前儲存在哪</label>
+    <p class="field-help">可說明大致資料量(如:商品 5,000 項在 Excel)</p>
+    <textarea id="dataLocation" name="dataLocation" maxlength="10000" rows="2"></textarea>
+  </div>
+
+  <div class="field-group">
+    <label class="field-label">公司 IT 資源</label>
+    <select id="itResource" name="itResource">
+      <option value="">請選擇</option>
+      <option value="專職 IT 團隊">專職 IT 團隊</option>
+      <option value="兼職 IT">兼職 IT</option>
+      <option value="外部廠商">配合的外部廠商</option>
+      <option value="無 IT">無,需顧問處理所有技術細節</option>
+    </select>
+  </div>
+</div>
+
+<div class="card-section">
+  <h2 class="section-title">業務規模</h2>
+
+  <div class="field-group">
+    <label class="field-label">每月平均訂單筆數</label>
+    <select id="monthlyOrders" name="monthlyOrders">
+      <option value="">請選擇</option>
+      <option value="< 100 筆">少於 100 筆</option>
+      <option value="100-500 筆">100-500 筆</option>
+      <option value="500-2000 筆">500-2000 筆</option>
+      <option value="2000 筆以上">2000 筆以上</option>
+    </select>
+  </div>
+
+  <div class="field-group">
+    <label class="field-label">客戶下單 Portal 的使用對象</label>
+    <p class="field-help">會決定能否純在 GWS 內完成,或需要外部前端</p>
+    <div class="radio-group">
+      <label class="option-label">
+        <input type="radio" name="portalAudience" value="對外公開">
+        <span class="option-content">
+          對外公開
+          <small>終端客戶 B2B / B2C 公開使用</small>
+        </span>
+      </label>
+      <label class="option-label">
+        <input type="radio" name="portalAudience" value="限定簽約客戶">
+        <span class="option-content">
+          限定簽約客戶
+          <small>需登入,僅特定客戶可用</small>
+        </span>
+      </label>
+      <label class="option-label">
+        <input type="radio" name="portalAudience" value="內部員工">
+        <span class="option-content">
+          內部員工
+          <small>員工協助客戶下單</small>
+        </span>
+      </label>
+      <label class="option-label">
+        <input type="radio" name="portalAudience" value="混合">
+        <span class="option-content">混合(以上皆有)</span>
+      </label>
+    </div>
+  </div>
+</div>
+
+<div class="card-section">
+  <h2 class="section-title">自動讀信與 AI Agent</h2>
+
+  <div class="field-group">
+    <label class="field-label">每天進來的客戶來信量級</label>
+    <select id="emailVolume" name="emailVolume">
+      <option value="">請選擇</option>
+      <option value="< 20 封">少於 20 封</option>
+      <option value="20-100 封">20-100 封</option>
+      <option value="100-500 封">100-500 封</option>
+      <option value="500 封以上">500 封以上</option>
+    </select>
+  </div>
+
+  <div class="field-group">
+    <label class="field-label">來信的格式樣態</label>
+    <p class="field-help">影響 AI 解析難度與準確率</p>
+    <div class="radio-group">
+      <label class="option-label">
+        <input type="radio" name="emailFormat" value="制式表單">
+        <span class="option-content">
+          大多為制式表單
+          <small>固定欄位、結構化</small>
+        </span>
+      </label>
+      <label class="option-label">
+        <input type="radio" name="emailFormat" value="半結構化">
+        <span class="option-content">
+          半結構化
+          <small>有訂單但格式不一</small>
+        </span>
+      </label>
+      <label class="option-label">
+        <input type="radio" name="emailFormat" value="完全自然語言">
+        <span class="option-content">
+          完全自然語言
+          <small>中英文混雜、附件多種</small>
+        </span>
+      </label>
+    </div>
+  </div>
+
+  <div class="field-group">
+    <label class="field-label">想像中的 AI Agent 職能(可複選)</label>
+    <div class="checkbox-group horizontal">
+      <label class="option-label"><input type="checkbox" name="agentRoles" value="訂單解析"><span class="option-content">訂單解析建立</span></label>
+      <label class="option-label"><input type="checkbox" name="agentRoles" value="報價詢價"><span class="option-content">報價/詢價回覆</span></label>
+      <label class="option-label"><input type="checkbox" name="agentRoles" value="庫存查詢"><span class="option-content">庫存查詢</span></label>
+      <label class="option-label"><input type="checkbox" name="agentRoles" value="出貨追蹤"><span class="option-content">出貨追蹤</span></label>
+      <label class="option-label"><input type="checkbox" name="agentRoles" value="客訴處理"><span class="option-content">客訴處理</span></label>
+      <label class="option-label"><input type="checkbox" name="agentRoles" value="帳款催收"><span class="option-content">帳款催收</span></label>
+      <label class="option-label"><input type="checkbox" name="agentRoles" value="行銷推播"><span class="option-content">行銷推播</span></label>
+      <label class="option-label"><input type="checkbox" name="agentRoles" value="其他"><span class="option-content">其他</span></label>
+    </div>
+  </div>
+
+  <div class="field-group">
+    <label class="field-label">AI 自動化的允許範圍</label>
+    <p class="field-help">會決定系統設計的安全機制</p>
+    <div class="radio-group">
+      <label class="option-label">
+        <input type="radio" name="automationScope" value="全自動">
+        <span class="option-content">
+          全自動執行
+          <small>含寫入訂單、回信給客戶</small>
+        </span>
+      </label>
+      <label class="option-label">
+        <input type="radio" name="automationScope" value="人工審核">
+        <span class="option-content">
+          AI 處理後送人工審核
+          <small>審核通過才執行(推薦)</small>
+        </span>
+      </label>
+      <label class="option-label">
+        <input type="radio" name="automationScope" value="僅做草稿">
+        <span class="option-content">
+          AI 僅做分類/草稿
+          <small>所有決策由人完成</small>
+        </span>
+      </label>
+    </div>
+  </div>
+</div>
+
+<div class="card-section">
+  <h2 class="section-title">期望與限制</h2>
+
+  <div class="field-group">
+    <label class="field-label" for="successCriteria">三個月後算成功的具體標準</label>
+    <p class="field-help">例:每天節省 3 小時人工、訂單錯誤率降 50%、客戶回覆從 4 小時縮短到 30 分鐘</p>
+    <textarea id="successCriteria" name="successCriteria" maxlength="10000" rows="3"></textarea>
+  </div>
+
+  <div class="field-group">
+    <label class="field-label">為什麼希望「盡量留在 GWS 內完成」?(可複選)</label>
+    <p class="field-help">影響我們是否能建議使用外部工具補強</p>
+    <div class="checkbox-group">
+      <label class="option-label"><input type="checkbox" name="gwsPreferReason" value="成本控制"><span class="option-content">控制成本(不想再額外付費)</span></label>
+      <label class="option-label"><input type="checkbox" name="gwsPreferReason" value="資安合規"><span class="option-content">資安/合規(資料不出 Google)</span></label>
+      <label class="option-label"><input type="checkbox" name="gwsPreferReason" value="學習成本"><span class="option-content">同仁學習成本(已熟悉 GWS)</span></label>
+      <label class="option-label"><input type="checkbox" name="gwsPreferReason" value="其他"><span class="option-content">其他考量</span></label>
+    </div>
+  </div>
+
+  <div class="field-group">
+    <label class="field-label" for="forbidden">有哪些「絕對不能」的限制</label>
+    <p class="field-help">例:客戶名單不能上雲、不能用境外 AI、不能影響現有系統、特定資安規範等</p>
+    <textarea id="forbidden" name="forbidden" maxlength="10000" rows="2"></textarea>
+  </div>
+</div>
+
+</div>
+
+<div class="card">
+<div class="actions">
+  <div class="spacer"></div>
+  <button type="submit" class="btn btn-primary" id="submitBtn">送出問卷</button>
+</div>
+<p class="privacy-note">
+  您填寫的資料僅用於本次顧問評估,儲存在 CindyFlower 個人 Notion 工作區內,不會分享給第三方。
+</p>
+</div>
+
+</form>
+
+</div>
+</main>
+
+<footer>
+  <div class="container">
+    CindyFlower 智能顧問工作室 · <a href="https://cindyflower.github.io/ai-consultant-studio/">ai-consultant-studio</a>
+  </div>
+</footer>
+
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+</div>
+
+<script>
+const CONFIG = {
+  WEB_APP_URL: 'PASTE_YOUR_GAS_WEB_APP_URL_HERE'
+};
+
+const form = document.getElementById('intakeForm');
+const expandBtn = document.getElementById('expandBtn');
+const skipBtn = document.getElementById('skipBtn');
+const detailedSection = document.getElementById('detailedSection');
+const expandPrompt = document.getElementById('expandPrompt');
+const submitBtn = document.getElementById('submitBtn');
+const loadingOverlay = document.getElementById('loadingOverlay');
+
+expandBtn.addEventListener('click', () => {
+  detailedSection.classList.add('show');
+  expandPrompt.style.display = 'none';
+  setTimeout(() => {
+    detailedSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 100);
+  setProgress(2);
+});
+
+skipBtn.addEventListener('click', () => {
+  expandPrompt.style.display = 'none';
+  setTimeout(() => {
+    submitBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 100);
+});
+
+function setProgress(step) {
+  document.querySelectorAll('.progress-step').forEach(el => {
+    const s = parseInt(el.dataset.step);
+    el.classList.remove('active', 'complete');
+    if (s < step) el.classList.add('complete');
+    else if (s === step) el.classList.add('active');
+  });
+}
+
+function clearErrors() {
+  document.querySelectorAll('.has-error').forEach(el => el.classList.remove('has-error'));
+  document.querySelectorAll('.field-error.show').forEach(el => el.classList.remove('show'));
+}
+
+function showError(fieldId) {
+  const field = document.getElementById(fieldId);
+  if (field) field.classList.add('has-error');
+  const errorEl = field?.parentElement.querySelector('.field-error');
+  if (errorEl) errorEl.classList.add('show');
+}
+
+function validateForm() {
+  clearErrors();
+  let firstError = null;
+
+  ['companyName', 'contactName', 'painPoint'].forEach(fid => {
+    const value = document.getElementById(fid).value.trim();
+    if (!value) {
+      showError(fid);
+      if (!firstError) firstError = fid;
+    }
+  });
+
+  const email = document.getElementById('email').value.trim();
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    showError('email');
+    if (!firstError) firstError = 'email';
+  }
+
+  if (firstError) {
+    document.getElementById(firstError).scrollIntoView({ behavior: 'smooth', block: 'center' });
+    document.getElementById(firstError).focus();
+    return false;
+  }
+  return true;
+}
+
+function collectFormData() {
+  const data = {};
+  const formData = new FormData(form);
+
+  ['companyName','contactName','email','phone','line','industry','employeeSize','region',
+   'painPoint','timeline','gwsVersion','geminiPlan','existingSystems','dataLocation',
+   'itResource','monthlyOrders','portalAudience','emailVolume','emailFormat',
+   'automationScope','successCriteria','forbidden'].forEach(field => {
+    const value = formData.get(field);
+    if (value) data[field] = value.trim();
+  });
+
+  data.agentRoles = formData.getAll('agentRoles');
+  data.gwsPreferReason = formData.getAll('gwsPreferReason');
+
+  const params = new URLSearchParams(window.location.search);
+  if (params.has('ref')) data.ref = params.get('ref').substring(0, 50);
+
+  return data;
+}
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (!validateForm()) return;
+
+  const data = collectFormData();
+  loadingOverlay.classList.add('show');
+  submitBtn.disabled = true;
+
+  const startTime = Date.now();
+
+  try {
+    await fetch(CONFIG.WEB_APP_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(data)
+    });
+
+    const elapsed = Date.now() - startTime;
+    if (elapsed < 800) {
+      await new Promise(r => setTimeout(r, 800 - elapsed));
+    }
+
+    showSuccess(data);
+  } catch (err) {
+    showFailure(err.message);
+  } finally {
+    loadingOverlay.classList.remove('show');
+    submitBtn.disabled = false;
+  }
+});
+
+function showSuccess(data) {
+  document.querySelectorAll('.progress-step').forEach(el => {
+    el.classList.remove('active');
+    el.classList.add('complete');
+  });
+
+  const main = document.querySelector('main .container');
+  main.innerHTML = `
+    <div class="card">
+      <div class="success-state">
+        <div class="success-icon">✓</div>
+        <h2>感謝填寫!已收到您的問卷</h2>
+        <p>接下來我會根據您的需求,在 24 小時內準備初步可行性評估與訪談大綱。</p>
+        <ul>
+          <li>${data.email ? `5 分鐘內您會收到一封確認信(寄到 ${data.email})` : '請保持電話暢通,我會主動聯繫'}</li>
+          <li>24 小時內我會回覆您並安排線上訪談</li>
+          <li>訪談後 3-5 個工作天內提供精準報價</li>
+        </ul>
+        ${data.email ? `
+        <div class="success-fallback">
+          <strong>如果 5 分鐘後沒收到確認信</strong>,可能是系統小問題。請直接 Email 或 LINE 聯繫我,我會手動補處理,不會讓您的需求漏掉。
+        </div>` : ''}
+      </div>
+    </div>
+  `;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showFailure(msg) {
+  alert('送出失敗:' + msg + '\n\n請稍後再試,或直接 Email 聯繫 CindyFlower。');
+}
+
+document.addEventListener('input', (e) => {
+  if (e.target.matches('input, select, textarea')) {
+    e.target.classList.remove('has-error');
+    const errorEl = e.target.parentElement.querySelector('.field-error');
+    if (errorEl) errorEl.classList.remove('show');
+  }
+});
+</script>
+
+</body>
+</html>
