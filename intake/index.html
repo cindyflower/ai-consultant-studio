@@ -844,7 +844,6 @@ footer a:hover { text-decoration: underline; }
     <p>進階問題協助我在報價前完成可行性評估與建議架構,訪談時就能直接討論方案,而不是花時間了解現況。</p>
     <div class="expand-prompt-actions">
       <button type="button" class="btn btn-primary" id="expandBtn">展開進階問題</button>
-      <button type="button" class="btn btn-text" id="skipBtn">先送出基本資料</button>
     </div>
   </div>
 </div>
@@ -1100,7 +1099,6 @@ const CONFIG = {
 
 const form = document.getElementById('intakeForm');
 const expandBtn = document.getElementById('expandBtn');
-const skipBtn = document.getElementById('skipBtn');
 const detailedSection = document.getElementById('detailedSection');
 const expandPrompt = document.getElementById('expandPrompt');
 const submitBtn = document.getElementById('submitBtn');
@@ -1121,7 +1119,6 @@ skipBtn.addEventListener('click', () => {
     submitBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }, 100);
 });
-
 function setProgress(step) {
   document.querySelectorAll('.progress-step').forEach(el => {
     const s = parseInt(el.dataset.step);
