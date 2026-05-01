@@ -1,0 +1,2351 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 導入需求問卷 | CindyFlower 智能顧問工作室</title>
+<meta name="description" content="協助我們了解您的需求,提供最合適的 AI 導入規劃">
+<style>
+  /* ============ Stripe-inspired Design System ============ */
+  :root {
+    --purple: #533afd;
+    --purple-hover: #4434d4;
+    --purple-deep: #2e2b8c;
+    --purple-light: #b9b9f9;
+    --purple-soft: #d6d9fc;
+    --purple-bg: rgba(83, 58, 253, 0.05);
+    --navy: #061b31;
+    --label: #273951;
+    --body: #64748d;
+    --body-light: #8a96a8;
+    --border: #e5edf5;
+    --border-soft: #f0f4f9;
+    --bg: #ffffff;
+    --bg-soft: #fafbfd;
+    --ruby: #ea2261;
+    --magenta: #f96bee;
+    --success: #15be53;
+    --success-text: #108c3d;
+    --success-bg: rgba(21, 190, 83, 0.1);
+    --shadow-sm: rgba(50, 50, 93, 0.08) 0px 2px 5px -1px, rgba(0, 0, 0, 0.05) 0px 1px 3px -1px;
+    --shadow-md: rgba(50, 50, 93, 0.15) 0px 13px 27px -5px, rgba(0, 0, 0, 0.1) 0px 8px 16px -8px;
+    --shadow-lg: rgba(50, 50, 93, 0.25) 0px 30px 45px -30px, rgba(0, 0, 0, 0.1) 0px 18px 36px -18px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue",
+                 "PingFang TC", "Microsoft JhengHei", sans-serif;
+    font-feature-settings: "ss01" on;
+    background: var(--bg);
+    color: var(--navy);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    font-weight: 300;
+  }
+
+  /* ============ Layout ============ */
+  .page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  /* ============ Client Info Card ============ */
+  .client-card {
+    display: none;
+    max-width: 920px;
+    margin: 0 auto 36px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 28px 32px;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .client-card.visible { display: block; }
+
+  /* Subtle purple accent bar on the left */
+  .client-card::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(180deg, var(--purple) 0%, var(--magenta) 100%);
+  }
+
+  .client-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+  }
+
+  .client-card-label {
+    font-size: 11px;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--body-light);
+  }
+
+  .client-card-source {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--success-text);
+    background: var(--success-bg);
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-weight: 400;
+  }
+
+  .client-card-source svg {
+    width: 12px;
+    height: 12px;
+    stroke-width: 2.5;
+  }
+
+  .client-card-body {
+    margin-bottom: 4px;
+  }
+
+  .client-name {
+    font-size: 26px;
+    font-weight: 300;
+    letter-spacing: -0.26px;
+    line-height: 1.15;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+
+  .client-email {
+    font-size: 14px;
+    color: var(--body);
+    margin-bottom: 16px;
+    word-break: break-all;
+  }
+
+  .client-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+  }
+
+  .client-meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--label);
+    font-weight: 400;
+  }
+
+  .client-meta-item svg {
+    width: 14px;
+    height: 14px;
+    color: var(--purple);
+    flex-shrink: 0;
+  }
+
+  .client-meta-item .meta-value {
+    font-feature-settings: "ss01" on, "tnum" on;
+  }
+
+  /* Toggle for advanced info */
+  .client-card-toggle {
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border-soft);
+  }
+
+  .toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: transparent;
+    border: none;
+    color: var(--purple);
+    font-size: 13px;
+    font-weight: 400;
+    font-family: inherit;
+    cursor: pointer;
+    padding: 4px 0;
+    font-feature-settings: "ss01" on;
+  }
+
+  .toggle-btn:hover { color: var(--purple-hover); }
+
+  .toggle-icon {
+    width: 10px;
+    height: 7px;
+    transition: transform 0.2s ease;
+  }
+
+  .toggle-btn[aria-expanded="true"] .toggle-icon {
+    transform: rotate(180deg);
+  }
+
+  .client-advanced {
+    display: none;
+    margin-top: 14px;
+    padding: 14px 16px;
+    background: var(--bg-soft);
+    border-radius: 5px;
+    border: 1px solid var(--border-soft);
+  }
+
+  .client-advanced.visible { display: block; }
+
+  .advanced-row {
+    display: flex;
+    gap: 12px;
+    padding: 4px 0;
+    font-size: 13px;
+  }
+
+  .advanced-row + .advanced-row {
+    border-top: 1px solid var(--border-soft);
+    margin-top: 4px;
+    padding-top: 8px;
+  }
+
+  .advanced-key {
+    color: var(--body-light);
+    min-width: 80px;
+    flex-shrink: 0;
+  }
+
+  .advanced-value {
+    color: var(--label);
+    font-weight: 400;
+  }
+
+  .client-card-note {
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border-soft);
+    font-size: 12px;
+    color: var(--body-light);
+    line-height: 1.5;
+  }
+
+  @media (max-width: 600px) {
+    .client-card { padding: 22px 20px; }
+    .client-name { font-size: 22px; }
+    .client-meta { flex-direction: column; gap: 8px; }
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 56px;
+    padding: 0 16px;
+  }
+
+  .brand-tag {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--purple);
+    background: var(--purple-bg);
+    padding: 4px 12px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    letter-spacing: 0.4px;
+  }
+
+  h1 {
+    font-size: 48px;
+    font-weight: 300;
+    line-height: 1.15;
+    letter-spacing: -0.96px;
+    color: var(--navy);
+    margin-bottom: 16px;
+  }
+
+  .subtitle {
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--body);
+    font-weight: 300;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+
+  /* ============ Sidebar Progress ============ */
+  .sidebar {
+    position: sticky;
+    top: 24px;
+    padding: 20px 0;
+  }
+
+  .progress-title {
+    font-size: 11px;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--body-light);
+    margin-bottom: 16px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    margin: 2px 0;
+    border-radius: 4px;
+    text-decoration: none;
+    color: var(--body);
+    font-size: 14px;
+    font-weight: 400;
+    transition: all 0.15s ease;
+    cursor: pointer;
+    border: 1px solid transparent;
+  }
+
+  .nav-item:hover {
+    background: var(--purple-bg);
+    color: var(--purple);
+  }
+
+  .nav-item.active {
+    background: var(--purple-bg);
+    color: var(--purple);
+    border-color: var(--purple-soft);
+  }
+
+  .nav-item.completed .nav-dot {
+    background: var(--success);
+    border-color: var(--success);
+  }
+
+  .nav-item.completed .nav-dot::after {
+    content: "";
+    width: 5px;
+    height: 8px;
+    border-right: 1.5px solid white;
+    border-bottom: 1.5px solid white;
+    transform: rotate(45deg) translate(-1px, -1px);
+  }
+
+  .nav-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
+    background: var(--bg);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+
+  .nav-item.active .nav-dot {
+    border-color: var(--purple);
+    background: var(--purple);
+  }
+
+  .nav-item.active .nav-dot::after {
+    content: "";
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: white;
+  }
+
+  /* ============ Main content ============ */
+  .main { min-width: 0; }
+
+  .section {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 32px;
+    margin-bottom: 24px;
+    scroll-margin-top: 24px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+
+  .section-number {
+    font-family: "SF Mono", Menlo, monospace;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--purple);
+    background: var(--purple-bg);
+    padding: 2px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.4px;
+  }
+
+  .section-title {
+    font-size: 26px;
+    font-weight: 300;
+    line-height: 1.12;
+    letter-spacing: -0.26px;
+    color: var(--navy);
+  }
+
+  .section-desc {
+    font-size: 14px;
+    color: var(--body);
+    margin-bottom: 28px;
+    margin-top: 8px;
+    line-height: 1.5;
+  }
+
+  /* ============ Form fields ============ */
+  .field {
+    margin-bottom: 24px;
+  }
+
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .label {
+    display: block;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--label);
+    margin-bottom: 8px;
+  }
+
+  .label .required {
+    color: var(--ruby);
+    margin-left: 2px;
+  }
+
+  .label .optional {
+    color: var(--body-light);
+    font-size: 12px;
+    margin-left: 6px;
+    font-weight: 300;
+  }
+
+  .hint {
+    font-size: 13px;
+    color: var(--body-light);
+    margin-top: 6px;
+    line-height: 1.5;
+  }
+
+  .input, .textarea, .select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--navy);
+    background: var(--bg);
+    font-family: inherit;
+    font-feature-settings: "ss01" on;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .input:focus, .textarea:focus, .select:focus {
+    outline: none;
+    border-color: var(--purple);
+    box-shadow: 0 0 0 3px var(--purple-bg);
+  }
+
+  .textarea {
+    min-height: 96px;
+    resize: vertical;
+    line-height: 1.5;
+  }
+
+  .select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='none' stroke='%2364748d' stroke-width='1.5' d='M1 1.5L6 6.5L11 1.5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+  }
+
+  /* ============ Radio / Checkbox cards ============ */
+  .options {
+    display: grid;
+    gap: 8px;
+  }
+
+  .options.grid-2 { grid-template-columns: 1fr 1fr; }
+  .options.grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+  .option {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    cursor: pointer;
+    background: var(--bg);
+    transition: all 0.15s ease;
+  }
+
+  .option:hover {
+    border-color: var(--purple-soft);
+    background: var(--bg-soft);
+  }
+
+  .option input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .option .indicator {
+    width: 16px;
+    height: 16px;
+    border: 1.5px solid var(--border);
+    background: var(--bg);
+    flex-shrink: 0;
+    margin-top: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
+  }
+
+  .option input[type="radio"] ~ .indicator { border-radius: 50%; }
+  .option input[type="checkbox"] ~ .indicator { border-radius: 3px; }
+
+  .option input:checked ~ .indicator {
+    border-color: var(--purple);
+    background: var(--purple);
+  }
+
+  .option input[type="radio"]:checked ~ .indicator::after {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: white;
+  }
+
+  .option input[type="checkbox"]:checked ~ .indicator::after {
+    content: "";
+    width: 4px;
+    height: 7px;
+    border-right: 1.5px solid white;
+    border-bottom: 1.5px solid white;
+    transform: rotate(45deg) translate(0, -1px);
+  }
+
+  .option:has(input:checked) {
+    border-color: var(--purple);
+    background: var(--purple-bg);
+  }
+
+  .option-content { flex: 1; min-width: 0; }
+
+  .option-title {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--navy);
+    line-height: 1.3;
+  }
+
+  .option-desc {
+    font-size: 12px;
+    color: var(--body);
+    margin-top: 3px;
+    line-height: 1.4;
+  }
+
+  /* ============ Conditional groups ============ */
+  .conditional {
+    display: none;
+    margin-top: 20px;
+    padding: 20px;
+    background: var(--bg-soft);
+    border-left: 2px solid var(--purple);
+    border-radius: 0 4px 4px 0;
+  }
+
+  .conditional.visible {
+    display: block;
+    animation: slideIn 0.25s ease;
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .conditional-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--purple);
+    margin-bottom: 12px;
+    font-weight: 400;
+  }
+
+  /* ============ Buttons ============ */
+  .actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-top: 32px;
+    padding-top: 28px;
+    border-top: 1px solid var(--border);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 4px;
+    font-size: 15px;
+    font-weight: 400;
+    font-family: inherit;
+    font-feature-settings: "ss01" on;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-decoration: none;
+  }
+
+  .btn-primary {
+    background: var(--purple);
+    color: white;
+  }
+
+  .btn-primary:hover { background: var(--purple-hover); }
+
+  .btn-primary:disabled {
+    background: var(--border);
+    color: var(--body-light);
+    cursor: not-allowed;
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--purple);
+    border: 1px solid var(--purple-light);
+  }
+
+  .btn-ghost:hover { background: var(--purple-bg); }
+
+  .btn-flex { flex: 1; }
+
+  /* ============ Success state ============ */
+  .success-card {
+    display: none;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 48px 40px;
+    text-align: center;
+    box-shadow: var(--shadow-md);
+  }
+
+  .success-card.visible { display: block; }
+
+  .success-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 24px;
+    background: var(--success-bg);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .success-icon svg { width: 32px; height: 32px; color: var(--success-text); }
+
+  .success-card h2 {
+    font-size: 32px;
+    font-weight: 300;
+    letter-spacing: -0.64px;
+    color: var(--navy);
+    margin-bottom: 12px;
+  }
+
+  .success-card p {
+    color: var(--body);
+    margin-bottom: 28px;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  .summary-box {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 16px;
+    text-align: left;
+    max-height: 280px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    font-family: "SF Mono", Menlo, monospace;
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--label);
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .copied-toast {
+    position: fixed;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--navy);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 5px;
+    font-size: 14px;
+    box-shadow: var(--shadow-lg);
+    transition: transform 0.3s ease;
+    z-index: 100;
+  }
+
+  .copied-toast.visible { transform: translateX(-50%) translateY(0); }
+
+  /* ============ Footer ============ */
+  .footer {
+    text-align: center;
+    margin-top: 48px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border-soft);
+    color: var(--body-light);
+    font-size: 13px;
+  }
+
+  .footer a { color: var(--purple); text-decoration: none; }
+  .footer a:hover { text-decoration: underline; }
+
+  /* ============ Mobile ============ */
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; gap: 24px; }
+    .sidebar {
+      position: relative;
+      top: 0;
+      padding: 0;
+      overflow-x: auto;
+      white-space: nowrap;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 16px;
+    }
+    .progress-title { display: none; }
+    .nav-item {
+      display: inline-flex;
+      margin-right: 4px;
+      font-size: 13px;
+      padding: 8px 12px;
+    }
+    h1 { font-size: 32px; letter-spacing: -0.64px; }
+    .section { padding: 24px 20px; }
+    .section-title { font-size: 22px; }
+    .field-row { grid-template-columns: 1fr; }
+    .options.grid-2, .options.grid-3 { grid-template-columns: 1fr; }
+    .actions { flex-direction: column; }
+    .btn { width: 100%; }
+    .page { padding: 24px 16px 48px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <header class="header">
+    <span class="brand-tag">CindyFlower 智能顧問工作室</span>
+    <h1>AI 導入需求問卷</h1>
+    <p class="subtitle">
+      請花 5–8 分鐘協助我們了解您的工作場景與需求,我們會根據您的回覆,
+      提供量身打造的 AI 導入方案建議。
+    </p>
+  </header>
+
+  <!-- Client info card (populated from URL params via 360 form) -->
+  <div class="client-card" id="clientCard">
+    <div class="client-card-header">
+      <span class="client-card-label">您的聯絡資訊</span>
+      <span class="client-card-source">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+        由先前表單帶入
+      </span>
+    </div>
+
+    <div class="client-card-body">
+      <div class="client-name" id="clientName"></div>
+      <div class="client-email" id="clientEmail"></div>
+
+      <div class="client-meta" id="clientMeta">
+        <!-- phone & location injected here by JS -->
+      </div>
+    </div>
+
+    <div class="client-card-toggle" id="clientToggle" style="display:none">
+      <button type="button" class="toggle-btn" id="toggleAdvanced" aria-expanded="false">
+        <span class="toggle-text">查看進階資訊</span>
+        <svg class="toggle-icon" viewBox="0 0 12 8" fill="none">
+          <path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <div class="client-advanced" id="clientAdvanced">
+        <!-- contact hours, full address detail, etc -->
+      </div>
+    </div>
+
+    <p class="client-card-note">如需修改聯絡資訊,請於下方「其他補充說明」欄告知,或直接與我們聯繫。</p>
+  </div>
+
+  <div class="layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="progress-title">問卷進度</div>
+      <a class="nav-item active" data-target="s1"><span class="nav-dot"></span><span>基本資料</span></a>
+      <a class="nav-item" data-target="s2"><span class="nav-dot"></span><span>LINE × NAS 助理</span></a>
+      <a class="nav-item" data-target="s3"><span class="nav-dot"></span><span>報價與 CAD 估算</span></a>
+      <a class="nav-item" data-target="s4"><span class="nav-dot"></span><span>會議錄音與追蹤</span></a>
+      <a class="nav-item" data-target="s5"><span class="nav-dot"></span><span>工作流程提醒</span></a>
+      <a class="nav-item" data-target="s6"><span class="nav-dot"></span><span>資安與其他</span></a>
+    </aside>
+
+    <!-- Main form -->
+    <main class="main">
+      <form id="intakeForm" novalidate>
+
+        <!-- ============ Section 1: Basic Info ============ -->
+        <section class="section" id="s1">
+          <div class="section-header">
+            <span class="section-number">01</span>
+            <h2 class="section-title">基本資料</h2>
+          </div>
+          <p class="section-desc">您的聯絡資訊已在上方顯示。以下幾題協助我們了解這次合作的輪廓。</p>
+
+          <div class="field">
+            <label class="label" for="line_id">LINE ID<span class="optional">選填,方便快速聯繫</span></label>
+            <input class="input" type="text" id="line_id" name="line_id" placeholder="@your_line_id" style="max-width: 320px;">
+          </div>
+
+          <div class="field">
+            <label class="label" for="industry">產業類別<span class="required">*</span></label>
+            <select class="select" id="industry" name="industry" required>
+              <option value="">請選擇...</option>
+              <option value="室內設計/裝潢">室內設計 / 裝潢</option>
+              <option value="建築/營造">建築 / 營造</option>
+              <option value="機械/製造">機械 / 製造</option>
+              <option value="鈑金/金屬加工">鈑金 / 金屬加工</option>
+              <option value="廣告/設計">廣告 / 設計</option>
+              <option value="影像/攝影/影視">影像 / 攝影 / 影視</option>
+              <option value="活動企劃">活動企劃 / 行銷</option>
+              <option value="顧問/專業服務">顧問 / 專業服務</option>
+              <option value="貿易/批發零售">貿易 / 批發零售</option>
+              <option value="其他">其他</option>
+            </select>
+            <p class="hint">產業會影響我們對「報價單」「CAD 圖面」「Shot List」的理解,請盡量精確選擇。</p>
+
+            <div class="conditional" id="industryOtherDetail">
+              <div class="conditional-label">請說明您的產業</div>
+              <input class="input" type="text" id="industry_other_detail" name="industry_other_detail"
+                     placeholder="例:寵物美容、農產加工、長照服務...">
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">使用情境<span class="required">*</span></label>
+            <div class="options grid-2">
+              <label class="option">
+                <input type="radio" name="team_size" value="僅自己使用" required>
+                <span class="indicator"></span>
+                <span class="option-content">
+                  <span class="option-title">僅我自己使用</span>
+                  <span class="option-desc">純粹輔助個人工作</span>
+                </span>
+              </label>
+              <label class="option">
+                <input type="radio" name="team_size" value="自己+少數合作夥伴">
+                <span class="indicator"></span>
+                <span class="option-content">
+                  <span class="option-title">我 + 少數合作夥伴</span>
+                  <span class="option-desc">2–5 人,例如外包設計師、會計</span>
+                </span>
+              </label>
+              <label class="option">
+                <input type="radio" name="team_size" value="自己+小型團隊">
+                <span class="indicator"></span>
+                <span class="option-content">
+                  <span class="option-title">我 + 小型工作室</span>
+                  <span class="option-desc">6–15 人</span>
+                </span>
+              </label>
+              <label class="option">
+                <input type="radio" name="team_size" value="跨團隊使用">
+                <span class="indicator"></span>
+                <span class="option-content">
+                  <span class="option-title">會與多個團隊或客戶共用</span>
+                  <span class="option-desc">15 人以上或跨組織</span>
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">預期投入預算範圍<span class="optional">選填,但有助於規劃合適方案</span></label>
+            <div class="options grid-2">
+              <label class="option">
+                <input type="radio" name="budget" value="10萬以下">
+                <span class="indicator"></span>
+                <span class="option-content">
+                  <span class="option-title">10 萬以下</span>
+                  <span class="option-desc">以現成工具整合為主</span>
+                </span>
+              </label>
+              <label class="option">
+                <input type="radio" name="budget" value="10-30萬">
+                <span class="indicator"></span>
+                <span class="option-content">
+                  <span class="option-title">10–30 萬</span>
+                  <span class="option-desc">部分客製 + 工具整合</span>
+                </span>
+              </label>
+              <label class="option">
+                <input type="radio" name="budget" value="30-80萬">
+                <span class="indicator"></span>
+                <span class="option-content">
+                  <span class="option-title">30–80 萬</span>
+                  <span class="option-desc">完整客製化系統</span>
+                </span>
+              </label>
+              <label class="option">
+                <input type="radio" name="budget" value="80萬以上">
+                <span class="indicator"></span>
+                <span class="option-content">
+                  <span class="option-title">80 萬以上</span>
+                  <span class="option-desc">企業級導入與長期維運</span>
+                </span>
+              </label>
+              <label class="option">
+                <input type="radio" name="budget" value="再評估">
+                <span class="indicator"></span>
+                <span class="option-content">
+                  <span class="option-title">先聽建議再決定</span>
+                  <span class="option-desc">想先了解可能性與費用區間</span>
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">期望導入時程<span class="optional">選填</span></label>
+            <div class="options grid-3">
+              <label class="option">
+                <input type="radio" name="timeline" value="1個月內">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">1 個月內</span></span>
+              </label>
+              <label class="option">
+                <input type="radio" name="timeline" value="1-3個月">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">1–3 個月</span></span>
+              </label>
+              <label class="option">
+                <input type="radio" name="timeline" value="3-6個月">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">3–6 個月</span></span>
+              </label>
+              <label class="option">
+                <input type="radio" name="timeline" value="6個月以上">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">6 個月以上</span></span>
+              </label>
+              <label class="option">
+                <input type="radio" name="timeline" value="彈性">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">彈性,沒急迫性</span></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">想優先處理的功能<span class="required">*</span><span class="optional">可複選</span></label>
+            <div class="options">
+              <label class="option">
+                <input type="checkbox" name="priority_features" value="LINE 智慧助理 + NAS 取檔">
+                <span class="indicator"></span>
+                <span class="option-content">
+                  <span class="option-title">LINE 智慧助理 + NAS 取檔</span>
+                  <span class="option-desc">在 LINE 內以對話查詢、取得 NAS 上的資料</span>
+                </span>
+              </label>
+              <label class="option">
+                <input type="checkbox" name="priority_features" value="報價單與 CAD 自動估價">
+                <span class="indicator"></span>
+                <span class="option-content">
+                  <span class="option-title">報價單與 CAD 自動估價</span>
+                  <span class="option-desc">讀取舊報價單、CAD 圖面,自動產出數量與估價表</span>
+                </span>
+              </label>
+              <label class="option">
+                <input type="checkbox" name="priority_features" value="會議錄音轉任務追蹤">
+                <span class="indicator"></span>
+                <span class="option-content">
+                  <span class="option-title">會議錄音轉任務追蹤</span>
+                  <span class="option-desc">會議錄音 → 自動產生待辦清單、指派執行對象、追蹤進度</span>
+                </span>
+              </label>
+              <label class="option">
+                <input type="checkbox" name="priority_features" value="工作流程時間點提醒">
+                <span class="indicator"></span>
+                <span class="option-content">
+                  <span class="option-title">工作流程時間點提醒</span>
+                  <span class="option-desc">讀取 Excel 工作流程,在到期前主動提醒</span>
+                </span>
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ Section 2: LINE x NAS ============ -->
+        <section class="section" id="s2">
+          <div class="section-header">
+            <span class="section-number">02</span>
+            <h2 class="section-title">LINE × NAS 智慧助理</h2>
+          </div>
+          <p class="section-desc">
+            這個區段協助我們釐清您的 LINE 環境與 NAS 設備,以評估技術整合方式。
+            如未勾選此項功能可略過。
+          </p>
+
+          <div class="field">
+            <label class="label">您目前的 LINE 使用情境</label>
+            <div class="options">
+              <label class="option">
+                <input type="radio" name="line_type" value="個人 LINE 帳號">
+                <span class="indicator"></span>
+                <span class="option-content">
+                  <span class="option-title">個人 LINE 帳號</span>
+                  <span class="option-desc">用我自己的 LINE 跟 AI 對話</span>
+                </span>
+              </label>
+              <label class="option">
+                <input type="radio" name="line_type" value="LINE 官方帳號">
+                <span class="indicator"></span>
+                <span class="option-content">
+                  <span class="option-title">LINE 官方帳號 (LINE Official Account)</span>
+                  <span class="option-desc">公司專用帳號,可加入 Bot 與多人使用</span>
+                </span>
+              </label>
+              <label class="option">
+                <input type="radio" name="line_type" value="LINE 群組">
+                <span class="indicator"></span>
+                <span class="option-content">
+                  <span class="option-title">LINE 群組(團隊內部)</span>
+                  <span class="option-desc">讓 AI Bot 加入工作群組協助大家</span>
+                </span>
+              </label>
+              <label class="option">
+                <input type="radio" name="line_type" value="不確定">
+                <span class="indicator"></span>
+                <span class="option-content">
+                  <span class="option-title">不確定,需要您建議</span>
+                </span>
+              </label>
+            </div>
+            <p class="hint">
+              ⓘ 個人 LINE 沒有官方對外開放 Bot API,通常會建議改用 LINE 官方帳號或群組整合。
+            </p>
+          </div>
+
+          <div class="field">
+            <label class="label" for="nas_brand">您使用的 NAS 品牌與型號<span class="optional">選填</span></label>
+            <input class="input" type="text" id="nas_brand" name="nas_brand"
+                   placeholder="例:Synology DS923+ / QNAP TS-464 / 不確定">
+            <p class="hint">Synology、QNAP 都有完整 API,整合相對容易;其他品牌需個別評估。</p>
+          </div>
+
+          <div class="field">
+            <label class="label">NAS 對外連線方式</label>
+            <div class="options grid-2">
+              <label class="option">
+                <input type="radio" name="nas_network" value="固定 IP">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">固定 IP</span></span>
+              </label>
+              <label class="option">
+                <input type="radio" name="nas_network" value="DDNS 動態網域">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">DDNS 動態網域</span></span>
+              </label>
+              <label class="option">
+                <input type="radio" name="nas_network" value="QuickConnect/myQNAPcloud">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">QuickConnect / myQNAPcloud</span></span>
+              </label>
+              <label class="option">
+                <input type="radio" name="nas_network" value="僅內網">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">僅內網,沒對外</span></span>
+              </label>
+              <label class="option">
+                <input type="radio" name="nas_network" value="不清楚">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">不清楚</span></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">您預期讓 AI 從 NAS 取得哪類資料?<span class="optional">可複選</span></label>
+            <div class="options">
+              <label class="option">
+                <input type="checkbox" name="nas_data_types" value="產品圖片/型錄">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">產品圖片 / 型錄</span></span>
+              </label>
+              <label class="option">
+                <input type="checkbox" name="nas_data_types" value="報價單/合約">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">報價單 / 合約</span></span>
+              </label>
+              <label class="option">
+                <input type="checkbox" name="nas_data_types" value="CAD/設計圖檔">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">CAD / 設計圖檔</span></span>
+              </label>
+              <label class="option">
+                <input type="checkbox" name="nas_data_types" value="客戶資料/訂單記錄">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">客戶資料 / 訂單記錄</span></span>
+              </label>
+              <label class="option">
+                <input type="checkbox" name="nas_data_types" value="作品集/案例照片">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">作品集 / 案例照片</span></span>
+              </label>
+              <label class="option">
+                <input type="checkbox" name="nas_data_types" value="技術文件/SOP">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">技術文件 / SOP</span></span>
+              </label>
+              <label class="option">
+                <input type="checkbox" name="nas_data_types" value="其他">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">其他</span></span>
+              </label>
+            </div>
+
+            <div class="conditional" id="nasDataOtherDetail">
+              <div class="conditional-label">請說明其他資料類型</div>
+              <input class="input" type="text" id="nas_data_other_detail" name="nas_data_other_detail"
+                     placeholder="例:會議錄音、廠商資料、市場調查報告...">
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label" for="line_scenario">理想中的對話場景舉例<span class="optional">選填</span></label>
+            <textarea class="textarea" id="line_scenario" name="line_scenario"
+                      placeholder="例:在工地時用 LINE 問「上次給 A 客戶的報價單在哪?」AI 直接從 NAS 找到並傳檔案到 LINE 給我。"></textarea>
+          </div>
+        </section>
+
+        <!-- ============ Section 3: Quote + CAD ============ -->
+        <section class="section" id="s3">
+          <div class="section-header">
+            <span class="section-number">03</span>
+            <h2 class="section-title">報價單與 CAD 自動估價</h2>
+          </div>
+          <p class="section-desc">
+            這是技術上最關鍵的一塊,以下幾題會直接影響可行性與報價,
+            請盡量提供您手邊的實際情況。
+          </p>
+
+          <div class="field">
+            <label class="label">您現有「舊報價單」的格式<span class="optional">可複選</span></label>
+            <div class="options grid-2">
+              <label class="option">
+                <input type="checkbox" name="quote_formats" value="Excel">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">Excel (.xlsx)</span></span>
+              </label>
+              <label class="option">
+                <input type="checkbox" name="quote_formats" value="PDF">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">PDF</span></span>
+              </label>
+              <label class="option">
+                <input type="checkbox" name="quote_formats" value="Word">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">Word (.docx)</span></span>
+              </label>
+              <label class="option">
+                <input type="checkbox" name="quote_formats" value="紙本掃描">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">紙本掃描 / 拍照</span></span>
+              </label>
+              <label class="option">
+                <input type="checkbox" name="quote_formats" value="ERP/系統匯出">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">ERP / 系統匯出</span></span>
+              </label>
+              <label class="option">
+                <input type="checkbox" name="quote_formats" value="其他">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">其他</span></span>
+              </label>
+            </div>
+
+            <div class="conditional" id="quoteFormatOtherDetail">
+              <div class="conditional-label">請說明其他格式</div>
+              <input class="input" type="text" id="quote_format_other_detail" name="quote_format_other_detail"
+                     placeholder="例:Google Sheets、自家系統匯出、Numbers...">
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">舊報價單格式是否一致(同一套範本)?</label>
+            <div class="options grid-3">
+              <label class="option">
+                <input type="radio" name="quote_consistency" value="非常一致">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">非常一致</span></span>
+              </label>
+              <label class="option">
+                <input type="radio" name="quote_consistency" value="大致一致">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">大致一致</span></span>
+              </label>
+              <label class="option">
+                <input type="radio" name="quote_consistency" value="差異很大">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">每份都不太一樣</span></span>
+              </label>
+            </div>
+            <p class="hint">格式越一致,AI 解讀越準確。差異大時通常需要先做標準化整理。</p>
+          </div>
+
+          <div class="field">
+            <label class="label">您使用的 CAD 檔案格式<span class="optional">可複選</span></label>
+            <div class="options grid-2">
+              <label class="option">
+                <input type="checkbox" name="cad_formats" value="DWG (AutoCAD)">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">DWG (AutoCAD)</span></span>
+              </label>
+              <label class="option">
+                <input type="checkbox" name="cad_formats" value="DXF">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">DXF</span></span>
+              </label>
+              <label class="option">
+                <input type="checkbox" name="cad_formats" value="PDF 圖面">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">PDF 圖面</span></span>
+              </label>
+              <label class="option">
+                <input type="checkbox" name="cad_formats" value="SketchUp">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">SketchUp (.skp)</span></span>
+              </label>
+              <label class="option">
+                <input type="checkbox" name="cad_formats" value="Revit/BIM">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">Revit / BIM</span></span>
+              </label>
+              <label class="option">
+                <input type="checkbox" name="cad_formats" value="其他">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">其他</span></span>
+              </label>
+            </div>
+            <p class="hint">DXF 最容易自動解析;DWG 需要轉檔;PDF 圖面則須仰賴視覺辨識。</p>
+
+            <div class="conditional" id="cadFormatOtherDetail">
+              <div class="conditional-label">請說明其他 CAD 格式</div>
+              <input class="input" type="text" id="cad_format_other_detail" name="cad_format_other_detail"
+                     placeholder="例:Rhino、Fusion 360、SolidWorks...">
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">⚠️ 關鍵問題:CAD 圖層(Layer)是否有標準命名規則?</label>
+            <div class="options">
+              <label class="option">
+                <input type="radio" name="cad_layer_standard" value="有,且嚴格遵守">
+                <span class="indicator"></span>
+                <span class="option-content">
+                  <span class="option-title">有,所有圖檔都嚴格遵守同一套命名規則</span>
+                  <span class="option-desc">例如:不同材料、不同線種類都有固定的圖層名稱</span>
+                </span>
+              </label>
+              <label class="option">
+                <input type="radio" name="cad_layer_standard" value="有,但執行不嚴">
+                <span class="indicator"></span>
+                <span class="option-content">
+                  <span class="option-title">有規則,但實際執行不太嚴謹</span>
+                  <span class="option-desc">理論上應遵守,但圖面間還是會有差異</span>
+                </span>
+              </label>
+              <label class="option">
+                <input type="radio" name="cad_layer_standard" value="沒有,自由命名">
+                <span class="indicator"></span>
+                <span class="option-content">
+                  <span class="option-title">沒有規則,每個案子隨繪圖者命名</span>
+                </span>
+              </label>
+              <label class="option">
+                <input type="radio" name="cad_layer_standard" value="不清楚">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">不清楚 / 從沒注意過</span></span>
+              </label>
+            </div>
+            <p class="hint">
+              ⓘ 這題決定可行性。圖層命名混亂時,AI 無法可靠地分類「哪條線是水管、哪條是電路」,需先建立標準。
+            </p>
+          </div>
+
+          <div class="field">
+            <label class="label" for="cad_calc_logic">您目前計算數量的邏輯<span class="optional">選填,但越詳細越好</span></label>
+            <textarea class="textarea" id="cad_calc_logic" name="cad_calc_logic"
+                      placeholder="例:量測各圖層線段長度 → 詢問樓層高度 → 線段長 × 高度 = 面積 → 按單價計價。或請說明您現在如何在腦中或 Excel 中換算。"></textarea>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label class="label">每月估價案件量</label>
+              <select class="select" name="quote_volume">
+                <option value="">請選擇...</option>
+                <option value="1-5件">1–5 件</option>
+                <option value="6-15件">6–15 件</option>
+                <option value="16-40件">16–40 件</option>
+                <option value="40件以上">40 件以上</option>
+                <option value="不固定">不固定</option>
+              </select>
+            </div>
+            <div class="field">
+              <label class="label">每件平均估價時間</label>
+              <select class="select" name="quote_time">
+                <option value="">請選擇...</option>
+                <option value="30分鐘以內">30 分鐘以內</option>
+                <option value="30分到1小時">30 分–1 小時</option>
+                <option value="1-3小時">1–3 小時</option>
+                <option value="3小時以上">3 小時以上</option>
+                <option value="一整天">一整天甚至更久</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label" for="quote_pain">目前估價流程最痛的點<span class="optional">選填</span></label>
+            <textarea class="textarea" id="quote_pain" name="quote_pain"
+                      placeholder="例:每次都要翻幾百份舊單找類似案子單價 / 圖面太複雜算到漏項 / 客戶催得急但圖面還沒到位..."></textarea>
+          </div>
+        </section>
+
+        <!-- ============ Section 4: Meeting Recording ============ -->
+        <section class="section" id="s4">
+          <div class="section-header">
+            <span class="section-number">04</span>
+            <h2 class="section-title">會議錄音與任務追蹤</h2>
+          </div>
+          <p class="section-desc">釐清「Shot List」對您的實際意義,以及您希望追蹤的對象與方式。</p>
+
+          <div class="field">
+            <label class="label">⚠️ 您所說的「Shot List」是指?</label>
+            <div class="options">
+              <label class="option">
+                <input type="radio" name="shotlist_meaning" value="影像/攝影拍攝清單">
+                <span class="indicator"></span>
+                <span class="option-content">
+                  <span class="option-title">影像 / 攝影業的拍攝清單</span>
+                  <span class="option-desc">每個鏡頭、場景、角度的拍攝計畫</span>
+                </span>
+              </label>
+              <label class="option">
+                <input type="radio" name="shotlist_meaning" value="一般待辦清單">
+                <span class="indicator"></span>
+                <span class="option-content">
+                  <span class="option-title">一般「會議待辦清單」</span>
+                  <span class="option-desc">會議結論、誰要做什麼、什麼時候完成</span>
+                </span>
+              </label>
+              <label class="option">
+                <input type="radio" name="shotlist_meaning" value="兩者都要">
+                <span class="indicator"></span>
+                <span class="option-content">
+                  <span class="option-title">兩種我都需要</span>
+                </span>
+              </label>
+              <label class="option">
+                <input type="radio" name="shotlist_meaning" value="其他">
+                <span class="indicator"></span>
+                <span class="option-content">
+                  <span class="option-title">其他用法(請於下方補充)</span>
+                </span>
+              </label>
+            </div>
+
+            <!-- Conditional: only shown when 其他 is selected -->
+            <div class="conditional" id="shotlistOtherDetail">
+              <div class="conditional-label">請說明您的用法</div>
+              <textarea class="textarea" id="shotlist_other_detail" name="shotlist_other_detail"
+                        placeholder="例:錄音整理成「廚具規格清單」「材料採購單」「後續客戶跟進名單」等..."></textarea>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label" for="shotlist_example">請舉一個您理想中的範例<span class="optional">選填</span></label>
+            <textarea class="textarea" id="shotlist_example" name="shotlist_example"
+                      placeholder="例:會議結束後上傳錄音,AI 自動產生:「1. 王經理 → 下週三前提供報價 / 2. 設計師小張 → 修改平面圖 / 3. 行政 → 寄合約給客戶」並設定提醒。"></textarea>
+          </div>
+
+          <div class="field">
+            <label class="label">會議形式<span class="optional">可複選</span></label>
+            <div class="options grid-2">
+              <label class="option">
+                <input type="checkbox" name="meeting_format" value="實體會議">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">實體會議錄音</span></span>
+              </label>
+              <label class="option">
+                <input type="checkbox" name="meeting_format" value="線上會議">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">Google Meet / Teams / Zoom</span></span>
+              </label>
+              <label class="option">
+                <input type="checkbox" name="meeting_format" value="電話會議">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">電話 / LINE 通話</span></span>
+              </label>
+              <label class="option">
+                <input type="checkbox" name="meeting_format" value="現場勘查錄音">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">現場勘查 / 工地對話</span></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">會議使用語言<span class="optional">可複選</span></label>
+            <div class="options grid-3">
+              <label class="option">
+                <input type="checkbox" name="meeting_language" value="繁體中文">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">繁體中文</span></span>
+              </label>
+              <label class="option">
+                <input type="checkbox" name="meeting_language" value="台語">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">台語</span></span>
+              </label>
+              <label class="option">
+                <input type="checkbox" name="meeting_language" value="英文">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">英文</span></span>
+              </label>
+              <label class="option">
+                <input type="checkbox" name="meeting_language" value="中英夾雜">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">中英夾雜</span></span>
+              </label>
+              <label class="option">
+                <input type="checkbox" name="meeting_language" value="專業術語多">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">含大量專業術語</span></span>
+              </label>
+              <label class="option">
+                <input type="checkbox" name="meeting_language" value="其他語言">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">其他語言</span></span>
+              </label>
+            </div>
+            <p class="hint">台語與多人交談會明顯影響辨識準確度,可能需要人工校對機制。</p>
+
+            <div class="conditional" id="meetingLanguageOtherDetail">
+              <div class="conditional-label">請說明使用的其他語言</div>
+              <input class="input" type="text" id="meeting_language_other_detail" name="meeting_language_other_detail"
+                     placeholder="例:日文、越南話、客語、粵語...">
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">需要追蹤的執行對象</label>
+            <div class="options grid-2">
+              <label class="option">
+                <input type="radio" name="follow_up_targets" value="僅內部團隊">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">僅內部團隊成員</span></span>
+              </label>
+              <label class="option">
+                <input type="radio" name="follow_up_targets" value="內部+外部廠商">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">內部 + 外部廠商</span></span>
+              </label>
+              <label class="option">
+                <input type="radio" name="follow_up_targets" value="內部+客戶">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">內部 + 客戶</span></span>
+              </label>
+              <label class="option">
+                <input type="radio" name="follow_up_targets" value="全部都有">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">內部、廠商、客戶都有</span></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">提醒方式偏好<span class="optional">可複選</span></label>
+            <div class="options grid-2">
+              <label class="option">
+                <input type="checkbox" name="reminder_channels" value="LINE">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">LINE 推播</span></span>
+              </label>
+              <label class="option">
+                <input type="checkbox" name="reminder_channels" value="Email">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">Email 通知</span></span>
+              </label>
+              <label class="option">
+                <input type="checkbox" name="reminder_channels" value="行事曆">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">Google 行事曆</span></span>
+              </label>
+              <label class="option">
+                <input type="checkbox" name="reminder_channels" value="Notion">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">Notion / Trello</span></span>
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ Section 5: Workflow Reminders ============ -->
+        <section class="section" id="s5">
+          <div class="section-header">
+            <span class="section-number">05</span>
+            <h2 class="section-title">工作流程提醒</h2>
+          </div>
+          <p class="section-desc">您現有的 Excel 工作流程文件長什麼樣?我們需要評估解析難度。</p>
+
+          <div class="field">
+            <label class="label">您的工作流程目前是哪種格式?</label>
+            <div class="options">
+              <label class="option">
+                <input type="radio" name="workflow_format" value="甘特圖">
+                <span class="indicator"></span>
+                <span class="option-content">
+                  <span class="option-title">Excel 甘特圖</span>
+                  <span class="option-desc">橫向時間軸,每個任務一個橫條</span>
+                </span>
+              </label>
+              <label class="option">
+                <input type="radio" name="workflow_format" value="任務清單">
+                <span class="indicator"></span>
+                <span class="option-content">
+                  <span class="option-title">任務清單表</span>
+                  <span class="option-desc">每列一個任務:項目、負責人、起訖日、進度</span>
+                </span>
+              </label>
+              <label class="option">
+                <input type="radio" name="workflow_format" value="流程圖">
+                <span class="indicator"></span>
+                <span class="option-content">
+                  <span class="option-title">流程圖 / 步驟圖</span>
+                  <span class="option-desc">用方塊與箭頭繪製的流程</span>
+                </span>
+              </label>
+              <label class="option">
+                <input type="radio" name="workflow_format" value="專案管理工具">
+                <span class="indicator"></span>
+                <span class="option-content">
+                  <span class="option-title">已使用 Notion / Asana / Trello 等工具</span>
+                </span>
+              </label>
+              <label class="option">
+                <input type="radio" name="workflow_format" value="混合">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">多種混合使用</span></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">您能否提供一份範本檔案<span class="optional">作為設計參考</span></label>
+            <div class="options grid-2">
+              <label class="option">
+                <input type="radio" name="workflow_sample" value="可以,會後續提供">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">可以,會後續寄給您</span></span>
+              </label>
+              <label class="option">
+                <input type="radio" name="workflow_sample" value="可以,但要去敏感">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">可以,但需先去除敏感資料</span></span>
+              </label>
+              <label class="option">
+                <input type="radio" name="workflow_sample" value="目前沒有">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">目前還沒建立</span></span>
+              </label>
+              <label class="option">
+                <input type="radio" name="workflow_sample" value="不方便提供">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">不方便提供</span></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">提醒時機偏好<span class="optional">可複選</span></label>
+            <div class="options grid-2">
+              <label class="option">
+                <input type="checkbox" name="reminder_timing" value="到期前1週">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">到期前 1 週</span></span>
+              </label>
+              <label class="option">
+                <input type="checkbox" name="reminder_timing" value="到期前3天">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">到期前 3 天</span></span>
+              </label>
+              <label class="option">
+                <input type="checkbox" name="reminder_timing" value="到期前1天">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">到期前 1 天</span></span>
+              </label>
+              <label class="option">
+                <input type="checkbox" name="reminder_timing" value="到期當天">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">到期當天</span></span>
+              </label>
+              <label class="option">
+                <input type="checkbox" name="reminder_timing" value="逾期升級提醒">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">逾期後升級通知主管</span></span>
+              </label>
+              <label class="option">
+                <input type="checkbox" name="reminder_timing" value="自訂">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">需要更彈性的設定</span></span>
+              </label>
+            </div>
+
+            <div class="conditional" id="reminderTimingOtherDetail">
+              <div class="conditional-label">請說明您理想的提醒時機</div>
+              <textarea class="textarea" id="reminder_timing_other_detail" name="reminder_timing_other_detail"
+                        placeholder="例:每週一早上 9 點彙整本週所有到期項目 / 重要里程碑前 30 天就開始提醒..."></textarea>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ Section 6: Security & Other ============ -->
+        <section class="section" id="s6">
+          <div class="section-header">
+            <span class="section-number">06</span>
+            <h2 class="section-title">資安與其他補充</h2>
+          </div>
+          <p class="section-desc">最後幾題,協助我們判斷適合的部署方式與資安等級。</p>
+
+          <div class="field">
+            <label class="label">資料是否能上雲(送到 OpenAI / Anthropic 等服務商)?</label>
+            <div class="options">
+              <label class="option">
+                <input type="radio" name="cloud_ok" value="完全可以">
+                <span class="indicator"></span>
+                <span class="option-content">
+                  <span class="option-title">完全可以,只要服務商有資安認證</span>
+                  <span class="option-desc">可採用 Claude API、GPT API 等雲端方案</span>
+                </span>
+              </label>
+              <label class="option">
+                <input type="radio" name="cloud_ok" value="部分可以">
+                <span class="indicator"></span>
+                <span class="option-content">
+                  <span class="option-title">部分可以(去敏感資料後可上雲)</span>
+                  <span class="option-desc">客戶名稱、價格等需先遮蔽</span>
+                </span>
+              </label>
+              <label class="option">
+                <input type="radio" name="cloud_ok" value="不可以">
+                <span class="indicator"></span>
+                <span class="option-content">
+                  <span class="option-title">不可以,必須完全本地運行</span>
+                  <span class="option-desc">需評估地端部署 + 開源模型方案</span>
+                </span>
+              </label>
+              <label class="option">
+                <input type="radio" name="cloud_ok" value="不確定">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">不確定,需要您建議</span></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">資料是否含敏感資訊?<span class="optional">可複選</span></label>
+            <div class="options grid-2">
+              <label class="option">
+                <input type="checkbox" name="sensitive_data" value="客戶個資">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">客戶個資</span></span>
+              </label>
+              <label class="option">
+                <input type="checkbox" name="sensitive_data" value="商業機密報價">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">商業機密 / 報價成本</span></span>
+              </label>
+              <label class="option">
+                <input type="checkbox" name="sensitive_data" value="員工資料">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">員工資料 / 薪資</span></span>
+              </label>
+              <label class="option">
+                <input type="checkbox" name="sensitive_data" value="合約檔案">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">合約 / 法律文件</span></span>
+              </label>
+              <label class="option">
+                <input type="checkbox" name="sensitive_data" value="均無">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">基本上沒有</span></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">您目前已使用的 AI 工具<span class="optional">可複選</span></label>
+            <div class="options grid-3">
+              <label class="option">
+                <input type="checkbox" name="current_ai" value="ChatGPT">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">ChatGPT</span></span>
+              </label>
+              <label class="option">
+                <input type="checkbox" name="current_ai" value="Claude">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">Claude</span></span>
+              </label>
+              <label class="option">
+                <input type="checkbox" name="current_ai" value="Gemini">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">Gemini</span></span>
+              </label>
+              <label class="option">
+                <input type="checkbox" name="current_ai" value="Copilot">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">Microsoft Copilot</span></span>
+              </label>
+              <label class="option">
+                <input type="checkbox" name="current_ai" value="Notion AI">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">Notion AI</span></span>
+              </label>
+              <label class="option">
+                <input type="checkbox" name="current_ai" value="無">
+                <span class="indicator"></span>
+                <span class="option-content"><span class="option-title">尚未使用</span></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label" for="additional_notes">其他補充說明<span class="optional">選填</span></label>
+            <textarea class="textarea" id="additional_notes" name="additional_notes" rows="5"
+                      placeholder="任何想讓我們知道的事:遇到的痛點、過去嘗試過的方案、特殊需求、預期效益..."></textarea>
+          </div>
+
+          <div class="actions">
+            <button type="button" class="btn btn-ghost" id="resetBtn">清空表單</button>
+            <button type="submit" class="btn btn-primary btn-flex" id="submitBtn">
+              送出問卷
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M2 7H12M12 7L7 2M12 7L7 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </section>
+      </form>
+
+      <!-- Success state -->
+      <div class="success-card" id="successCard">
+        <div class="success-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </div>
+        <h2>問卷已送出</h2>
+        <p>感謝您完整填寫,我們會在 1–2 個工作日內與您聯繫,提供初步建議。</p>
+        <div class="summary-box" id="summaryBox"></div>
+        <div class="actions" style="border-top: none; padding-top: 0; margin-top: 0;">
+          <button type="button" class="btn btn-ghost" id="copyBtn">複製摘要</button>
+          <button type="button" class="btn btn-ghost" id="downloadBtn">下載 JSON</button>
+          <button type="button" class="btn btn-primary btn-flex" id="newBtn">填寫新問卷</button>
+        </div>
+      </div>
+
+      <footer class="footer">
+        <p>© 2026 CindyFlower 智能顧問工作室 · <a href="https://cindyflower.github.io/ai-consultant-studio/">回首頁</a></p>
+      </footer>
+    </main>
+  </div>
+</div>
+
+<div class="copied-toast" id="toast">已複製到剪貼簿</div>
+
+<script>
+/* ============ Configuration ============ */
+// 部署後請填入您的 Google Apps Script Web App URL
+// 留空時會 fallback 到只產生摘要,不打 API
+const SUBMIT_URL = "";
+
+/* ============ URL parameter prefill (from 360 form) ============ */
+// 從 URL 讀取 360 表單帶入的資料,展示成客戶資料卡,並注入隱藏欄位以便一起送出
+//
+// 完整支援的 URL 參數:
+//   ?name=Chenyu+Chao
+//    &email=ine.arch@gmail.com
+//    &phone=0987320166
+//    &unit=個人
+//    &city=台北市
+//    &district=中山區
+//    &contact_hours=上午、下午、晚上
+//
+// 如果某參數缺少,該位置會直接隱藏,不會出現空白佔位
+
+(function applyPrefill() {
+  const params = new URLSearchParams(window.location.search);
+  const get = (key) => {
+    const v = params.get(key);
+    return v ? v.trim() : "";
+  };
+
+  const data = {
+    name:          get("name"),
+    email:         get("email"),
+    phone:         get("phone"),
+    unit:          get("unit"),
+    city:          get("city"),
+    district:      get("district"),
+    contact_hours: get("contact_hours")
+  };
+
+  const card = document.getElementById("clientCard");
+  const form = document.getElementById("intakeForm");
+
+  // No params at all → don't show the card
+  const hasAny = Object.values(data).some(v => v !== "");
+  if (!hasAny) return;
+
+  // ---- Main display (姓名 / Email / 電話 / 地點) ----
+  const nameEl = document.getElementById("clientName");
+  const emailEl = document.getElementById("clientEmail");
+  const metaEl = document.getElementById("clientMeta");
+
+  if (data.name) {
+    nameEl.textContent = data.name;
+  } else {
+    nameEl.style.display = "none";
+  }
+
+  if (data.email) {
+    emailEl.textContent = data.email;
+  } else {
+    emailEl.style.display = "none";
+  }
+
+  // Phone (plain text, no clickable tel:)
+  if (data.phone) {
+    metaEl.insertAdjacentHTML("beforeend", `
+      <span class="client-meta-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+        </svg>
+        <span class="meta-value">${escapeHtml(data.phone)}</span>
+      </span>
+    `);
+  }
+
+  // Location (city + district combined)
+  const location = [data.city, data.district].filter(Boolean).join(" ");
+  if (location) {
+    metaEl.insertAdjacentHTML("beforeend", `
+      <span class="client-meta-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+          <circle cx="12" cy="10" r="3"/>
+        </svg>
+        <span class="meta-value">${escapeHtml(location)}</span>
+      </span>
+    `);
+  }
+
+  // ---- Advanced display (foldable) ----
+  const advanced = document.getElementById("clientAdvanced");
+  const toggle = document.getElementById("clientToggle");
+  const advancedItems = [];
+
+  if (data.unit) advancedItems.push({ key: "服務單位", value: data.unit });
+  if (data.contact_hours) advancedItems.push({ key: "聯絡時段", value: data.contact_hours });
+
+  if (advancedItems.length > 0) {
+    advancedItems.forEach(item => {
+      advanced.insertAdjacentHTML("beforeend", `
+        <div class="advanced-row">
+          <span class="advanced-key">${escapeHtml(item.key)}</span>
+          <span class="advanced-value">${escapeHtml(item.value)}</span>
+        </div>
+      `);
+    });
+    toggle.style.display = "block";
+  }
+
+  // ---- Inject hidden inputs so this data flows into the submission ----
+  // contact_name/contact_email/contact_phone are now sourced here
+  // (they used to be visible inputs in section 01; required validation reused these names)
+  const hiddenFields = [
+    { name: "contact_name",  value: data.name },
+    { name: "contact_email", value: data.email },
+    { name: "contact_phone", value: data.phone },
+    { name: "prefill_unit",     value: data.unit },
+    { name: "prefill_city",     value: data.city },
+    { name: "prefill_district", value: data.district },
+    { name: "prefill_contact_hours", value: data.contact_hours }
+  ];
+
+  hiddenFields.forEach(f => {
+    if (!f.value) return;
+    const hidden = document.createElement("input");
+    hidden.type = "hidden";
+    hidden.name = f.name;
+    hidden.value = f.value;
+    form.appendChild(hidden);
+  });
+
+  card.classList.add("visible");
+
+  // ---- Toggle handler for advanced info ----
+  document.getElementById("toggleAdvanced").addEventListener("click", function() {
+    const expanded = this.getAttribute("aria-expanded") === "true";
+    this.setAttribute("aria-expanded", !expanded);
+    advanced.classList.toggle("visible", !expanded);
+    this.querySelector(".toggle-text").textContent = expanded ? "查看進階資訊" : "收合進階資訊";
+  });
+})();
+
+// XSS-safe text injection helper for any user-controlled values pulled from URL
+function escapeHtml(str) {
+  const div = document.createElement("div");
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+/* ============ Conditional fields ============ */
+// Show a detail input/textarea only when a specific value is selected/checked.
+// To add more: append another entry below — no other code changes needed.
+const CONDITIONAL_FIELDS = [
+  { trigger: "industry",          type: "select",   value: "其他",     containerId: "industryOtherDetail",         inputId: "industry_other_detail" },
+  { trigger: "nas_data_types",    type: "checkbox", value: "其他",     containerId: "nasDataOtherDetail",           inputId: "nas_data_other_detail" },
+  { trigger: "quote_formats",     type: "checkbox", value: "其他",     containerId: "quoteFormatOtherDetail",       inputId: "quote_format_other_detail" },
+  { trigger: "cad_formats",       type: "checkbox", value: "其他",     containerId: "cadFormatOtherDetail",         inputId: "cad_format_other_detail" },
+  { trigger: "shotlist_meaning",  type: "radio",    value: "其他",     containerId: "shotlistOtherDetail",          inputId: "shotlist_other_detail" },
+  { trigger: "meeting_language",  type: "checkbox", value: "其他語言", containerId: "meetingLanguageOtherDetail",   inputId: "meeting_language_other_detail" },
+  { trigger: "reminder_timing",   type: "checkbox", value: "自訂",     containerId: "reminderTimingOtherDetail",    inputId: "reminder_timing_other_detail" }
+];
+
+CONDITIONAL_FIELDS.forEach(cf => {
+  const container = document.getElementById(cf.containerId);
+  const input = document.getElementById(cf.inputId);
+  if (!container || !input) return;
+
+  const evaluate = () => {
+    let isActive = false;
+    if (cf.type === "select") {
+      const sel = document.querySelector(`select[name="${cf.trigger}"]`);
+      isActive = sel?.value === cf.value;
+    } else if (cf.type === "radio") {
+      const r = document.querySelector(`input[name="${cf.trigger}"]:checked`);
+      isActive = r?.value === cf.value;
+    } else if (cf.type === "checkbox") {
+      isActive = !!document.querySelector(`input[name="${cf.trigger}"][value="${cf.value}"]:checked`);
+    }
+    container.classList.toggle("visible", isActive);
+    if (!isActive) input.value = ""; // clear when hidden so stale data doesn't get submitted
+  };
+
+  // Listen on whichever element type triggers this field
+  const triggers = document.querySelectorAll(
+    cf.type === "select"
+      ? `select[name="${cf.trigger}"]`
+      : `input[name="${cf.trigger}"]`
+  );
+  triggers.forEach(t => t.addEventListener("change", evaluate));
+});
+
+/* ============ Section navigation ============ */
+const sections = ["s1", "s2", "s3", "s4", "s5", "s6"];
+const navItems = document.querySelectorAll(".nav-item");
+
+navItems.forEach(item => {
+  item.addEventListener("click", () => {
+    const targetId = item.dataset.target;
+    document.getElementById(targetId).scrollIntoView({ behavior: "smooth" });
+  });
+});
+
+// Highlight current section on scroll
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.id;
+      navItems.forEach(item => {
+        item.classList.toggle("active", item.dataset.target === id);
+      });
+    }
+  });
+}, { rootMargin: "-30% 0px -60% 0px" });
+
+sections.forEach(id => {
+  const el = document.getElementById(id);
+  if (el) observer.observe(el);
+});
+
+// Mark sections as completed when key fields are filled
+function updateCompletion() {
+  const checks = {
+    s1: () => {
+      // contact_name/email are now hidden fields injected by prefill;
+      // if missing, the form was opened without 360 prefill — still allow s1 to count complete
+      const f = document.getElementById("intakeForm");
+      const hasContact = !f.contact_name || f.contact_name.value;
+      const hasEmail = !f.contact_email || f.contact_email.value;
+      return hasContact && hasEmail && f.industry.value
+             && f.querySelector('input[name="team_size"]:checked')
+             && f.querySelectorAll('input[name="priority_features"]:checked').length > 0;
+    },
+    s2: () => document.querySelector('input[name="line_type"]:checked'),
+    s3: () => document.querySelectorAll('input[name="quote_formats"]:checked').length > 0
+              || document.querySelectorAll('input[name="cad_formats"]:checked').length > 0,
+    s4: () => document.querySelector('input[name="shotlist_meaning"]:checked'),
+    s5: () => document.querySelector('input[name="workflow_format"]:checked'),
+    s6: () => document.querySelector('input[name="cloud_ok"]:checked')
+  };
+
+  navItems.forEach(item => {
+    const id = item.dataset.target;
+    if (checks[id] && checks[id]()) {
+      item.classList.add("completed");
+    } else {
+      item.classList.remove("completed");
+    }
+  });
+}
+
+document.addEventListener("change", updateCompletion);
+document.addEventListener("input", updateCompletion);
+
+/* ============ Form data collection ============ */
+function collectFormData() {
+  const form = document.getElementById("intakeForm");
+  const formData = new FormData(form);
+  const data = {};
+
+  // Collect single-value fields
+  for (const [key, value] of formData.entries()) {
+    if (data[key]) {
+      if (Array.isArray(data[key])) {
+        data[key].push(value);
+      } else {
+        data[key] = [data[key], value];
+      }
+    } else {
+      data[key] = value;
+    }
+  }
+
+  // Ensure checkbox groups are always arrays even if single-selected
+  const checkboxGroups = ["priority_features", "nas_data_types", "quote_formats", "cad_formats",
+                           "meeting_format", "meeting_language", "reminder_channels",
+                           "reminder_timing", "sensitive_data", "current_ai"];
+  checkboxGroups.forEach(name => {
+    const checked = document.querySelectorAll(`input[name="${name}"]:checked`);
+    data[name] = Array.from(checked).map(c => c.value);
+  });
+
+  data.submitted_at = new Date().toISOString();
+  data.user_agent = navigator.userAgent;
+  data.referrer = document.referrer || "(direct)";
+  return data;
+}
+
+/* ============ Markdown summary generation ============ */
+const FIELD_LABELS = {
+  contact_name: "聯絡人姓名",
+  contact_email: "Email",
+  contact_phone: "電話",
+  line_id: "LINE ID",
+  industry: "產業",
+  industry_other_detail: "產業 (其他)",
+  team_size: "使用情境",
+  budget: "預算範圍",
+  timeline: "期望時程",
+  priority_features: "優先處理功能",
+  // From 360 form (prefill)
+  prefill_unit: "服務單位 (來自 360)",
+  prefill_city: "縣市 (來自 360)",
+  prefill_district: "區域 (來自 360)",
+  prefill_contact_hours: "聯絡時段 (來自 360)",
+  // Section 2+
+  line_type: "LINE 使用情境",
+  nas_brand: "NAS 品牌型號",
+  nas_network: "NAS 連線方式",
+  nas_data_types: "希望從 NAS 取得的資料",
+  nas_data_other_detail: "其他資料類型說明",
+  line_scenario: "理想對話場景",
+  quote_formats: "舊報價單格式",
+  quote_format_other_detail: "其他報價單格式說明",
+  quote_consistency: "報價單格式一致性",
+  cad_formats: "CAD 檔案格式",
+  cad_format_other_detail: "其他 CAD 格式說明",
+  cad_layer_standard: "CAD 圖層命名規則",
+  cad_calc_logic: "現有計算邏輯",
+  quote_volume: "每月估價案件量",
+  quote_time: "每件平均估價時間",
+  quote_pain: "估價流程痛點",
+  shotlist_meaning: "Shot List 意義",
+  shotlist_other_detail: "其他用法說明",
+  shotlist_example: "理想範例",
+  meeting_format: "會議形式",
+  meeting_language: "會議語言",
+  meeting_language_other_detail: "其他語言說明",
+  follow_up_targets: "追蹤對象",
+  reminder_channels: "提醒方式",
+  workflow_format: "工作流程格式",
+  workflow_sample: "可否提供範本",
+  reminder_timing: "提醒時機",
+  reminder_timing_other_detail: "自訂提醒時機說明",
+  cloud_ok: "資料是否可上雲",
+  sensitive_data: "敏感資料類型",
+  current_ai: "現有 AI 工具",
+  additional_notes: "其他補充"
+};
+
+function generateMarkdown(data) {
+  const lines = ["# AI 導入需求問卷回覆", ""];
+  lines.push(`**送出時間**:${new Date(data.submitted_at).toLocaleString("zh-TW")}`);
+  lines.push("");
+  lines.push("---");
+  lines.push("");
+
+  const sections = [
+    { title: "從 360 表單帶入", fields: ["prefill_unit", "prefill_city", "prefill_district", "prefill_contact_hours"], skipIfAllEmpty: true },
+    { title: "一、基本資料", fields: ["contact_name", "contact_email", "contact_phone", "line_id",
+                                       "industry", "industry_other_detail", "team_size", "budget",
+                                       "timeline", "priority_features"] },
+    { title: "二、LINE × NAS 智慧助理", fields: ["line_type", "nas_brand", "nas_network",
+                                                  "nas_data_types", "nas_data_other_detail", "line_scenario"] },
+    { title: "三、報價與 CAD 自動估價", fields: ["quote_formats", "quote_format_other_detail",
+                                                   "quote_consistency", "cad_formats", "cad_format_other_detail",
+                                                   "cad_layer_standard", "cad_calc_logic", "quote_volume",
+                                                   "quote_time", "quote_pain"] },
+    { title: "四、會議錄音與任務追蹤", fields: ["shotlist_meaning", "shotlist_other_detail", "shotlist_example",
+                                                  "meeting_format", "meeting_language", "meeting_language_other_detail",
+                                                  "follow_up_targets", "reminder_channels"] },
+    { title: "五、工作流程提醒", fields: ["workflow_format", "workflow_sample", "reminder_timing",
+                                           "reminder_timing_other_detail"] },
+    { title: "六、資安與其他", fields: ["cloud_ok", "sensitive_data", "current_ai", "additional_notes"] }
+  ];
+
+  // Conditional detail fields are only shown when their trigger is selected;
+  // skip them from the markdown when empty (no need to show a wall of "未填寫")
+  const CONDITIONAL_DETAIL_FIELDS = [
+    "industry_other_detail",
+    "nas_data_other_detail",
+    "quote_format_other_detail",
+    "cad_format_other_detail",
+    "shotlist_other_detail",
+    "meeting_language_other_detail",
+    "reminder_timing_other_detail"
+  ];
+
+  sections.forEach(section => {
+    // Skip "從 360 帶入" section entirely if no prefill data exists
+    if (section.skipIfAllEmpty) {
+      const hasAny = section.fields.some(f => data[f] && data[f] !== "");
+      if (!hasAny) return;
+    }
+    lines.push(`## ${section.title}`);
+    lines.push("");
+    section.fields.forEach(field => {
+      const label = FIELD_LABELS[field] || field;
+      const value = data[field];
+      const isEmpty = value === undefined || value === "" || (Array.isArray(value) && value.length === 0);
+
+      // Skip conditional detail fields when empty
+      if (isEmpty && CONDITIONAL_DETAIL_FIELDS.includes(field)) return;
+
+      if (isEmpty) {
+        lines.push(`- **${label}**:_(未填寫)_`);
+      } else if (Array.isArray(value)) {
+        lines.push(`- **${label}**:${value.join("、")}`);
+      } else {
+        const formatted = String(value).includes("\n")
+          ? `\n  > ${String(value).split("\n").join("\n  > ")}`
+          : String(value);
+        lines.push(`- **${label}**:${formatted}`);
+      }
+    });
+    lines.push("");
+  });
+
+  return lines.join("\n");
+}
+
+/* ============ Submit handling ============ */
+const form = document.getElementById("intakeForm");
+const successCard = document.getElementById("successCard");
+const summaryBox = document.getElementById("summaryBox");
+const submitBtn = document.getElementById("submitBtn");
+let lastSubmittedData = null;
+let lastSubmittedMarkdown = "";
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  // Sanity check: if there's no contact_name (no prefill), warn the user
+  // — they probably accessed the form directly instead of via the 360 flow
+  if (!form.contact_name || !form.contact_name.value) {
+    showToast("缺少聯絡資訊,請從前一個表單進入此問卷");
+    return;
+  }
+
+  // Validate required fields
+  const requiredFields = form.querySelectorAll("[required]");
+  let firstInvalid = null;
+  requiredFields.forEach(field => {
+    if (!field.value) firstInvalid = firstInvalid || field;
+  });
+
+  // Validate priority features (at least 1 checkbox)
+  const priorityChecked = form.querySelectorAll('input[name="priority_features"]:checked');
+  if (priorityChecked.length === 0 && !firstInvalid) {
+    firstInvalid = form.querySelector('input[name="priority_features"]');
+  }
+
+  if (firstInvalid) {
+    firstInvalid.scrollIntoView({ behavior: "smooth", block: "center" });
+    if (firstInvalid.focus) firstInvalid.focus();
+    showToast("請完成必填欄位");
+    return;
+  }
+
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = "送出中...";
+
+  const data = collectFormData();
+  const markdown = generateMarkdown(data);
+  lastSubmittedData = data;
+  lastSubmittedMarkdown = markdown;
+
+  // Send to backend if configured
+  if (SUBMIT_URL) {
+    try {
+      await fetch(SUBMIT_URL, {
+        method: "POST",
+        mode: "no-cors", // GAS doesn't return CORS headers; treat as fire-and-forget
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ data, markdown })
+      });
+    } catch (err) {
+      console.warn("Submit endpoint failed, continuing anyway:", err);
+    }
+  }
+
+  // Show success
+  summaryBox.textContent = markdown;
+  form.style.display = "none";
+  document.getElementById("sidebar").style.display = "none";
+  successCard.classList.add("visible");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+/* ============ Reset / Copy / Download ============ */
+document.getElementById("resetBtn").addEventListener("click", () => {
+  if (confirm("確定要清空所有已填寫的內容嗎?")) {
+    form.reset();
+    updateCompletion();
+    document.getElementById("s1").scrollIntoView({ behavior: "smooth" });
+  }
+});
+
+document.getElementById("copyBtn").addEventListener("click", async () => {
+  try {
+    await navigator.clipboard.writeText(lastSubmittedMarkdown);
+    showToast("已複製摘要到剪貼簿");
+  } catch (err) {
+    showToast("複製失敗,請手動選取");
+  }
+});
+
+document.getElementById("downloadBtn").addEventListener("click", () => {
+  const blob = new Blob([JSON.stringify(lastSubmittedData, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  const name = lastSubmittedData.contact_name || "anonymous";
+  const date = new Date().toISOString().split("T")[0];
+  a.download = `intake-${name}-${date}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+});
+
+document.getElementById("newBtn").addEventListener("click", () => {
+  form.reset();
+  form.style.display = "block";
+  document.getElementById("sidebar").style.display = "";
+  successCard.classList.remove("visible");
+  submitBtn.disabled = false;
+  submitBtn.innerHTML = `送出問卷 <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7H12M12 7L7 2M12 7L7 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  updateCompletion();
+  document.getElementById("s1").scrollIntoView({ behavior: "smooth" });
+});
+
+/* ============ Toast ============ */
+const toast = document.getElementById("toast");
+function showToast(message) {
+  toast.textContent = message;
+  toast.classList.add("visible");
+  setTimeout(() => toast.classList.remove("visible"), 2200);
+}
+</script>
+</body>
+</html>
