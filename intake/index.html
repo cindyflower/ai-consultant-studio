@@ -1125,6 +1125,33 @@ footer a:hover { text-decoration: underline; }
 </div>
 
 <script>
+const __hubMode = !new URLSearchParams(window.location.search).get('form');
+
+if (__hubMode) {
+  const mainContainer = document.querySelector('main .container');
+  if (mainContainer) {
+    mainContainer.innerHTML = `
+      <section class="hero">
+        <span class="eyebrow">Intake Forms</span>
+        <h1>選擇要進入的問卷</h1>
+        <p class="lede">此頁為問卷入口。請依需求選擇不同表單填寫。</p>
+      </section>
+
+      <div class="card">
+        <div class="card-section">
+          <h2 class="section-title">可用問卷入口</h2>
+          <div class="actions" style="margin-top: 8px;">
+            <a class="btn btn-primary" href="./?form=ai-to-meeting">AI to Meeting 問卷</a>
+            <a class="btn btn-secondary" href="./forms/ai-line-assistant/">AI LINE Assistant 問卷</a>
+          </div>
+          <p class="privacy-note" style="margin-top: 14px;">
+            後續新增問卷請放在 <code>intake/forms/&lt;form-slug&gt;/</code>，此入口頁只負責導流。
+          </p>
+        </div>
+      </div>
+    `;
+  }
+} else {
 const CONFIG = {
   WEB_APP_URL: 'https://script.google.com/macros/s/AKfycbzyBXasa4lZmfC2NnItnSg8LQzE8vqcbVjZ8LRk_2poWtnZMeAi43lCW2CzOjyGiLj6aw/exec'
 };
@@ -1292,6 +1319,7 @@ document.addEventListener('input', (e) => {
     if (errorEl) errorEl.classList.remove('show');
   }
 });
+}
 </script>
 
 </body>
